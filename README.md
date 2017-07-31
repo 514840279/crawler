@@ -4,7 +4,6 @@
 
 ## 文件介绍
 1. application.py 	程序的入口
-2. applicationUrl.py 	程序的入口
 2. Currency.py		通用网页采集程序
 3. z_code_*.py		特殊网页采集程序（独立程序）
 4. HtmlSource.py 	网页采集程序

@@ -109,16 +109,18 @@ class Rule:
 
     # 数据提取列表页处理方式
     def html_content_analysis_list(self,html_text, column,url):
-        column_content = self.html_content_analysis(html_text, column, url)
+        column_content = self.html_content_analysis_detial(html_text, column, url)
         le = len(column_content)
         c = column_content[3][1]
         lista = []
         for i in range(len(c)):
+            listb=[]
             for a in column_content:
                 if a[0] == '标题链接':
                     continue
                 if len(a[1]) < len(c):
-                    lista.append(a)
+                    listb.append(a)
                 else:
-                    lista.append((a[0], a[1][i]))
+                    listb.append((a[0], a[1][i]))
+            lista.append(listb)
         return lista

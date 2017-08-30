@@ -21,6 +21,7 @@ def run_it():
     sql = '''
            SELECT `md5`,`url`,`flag`
             FROM `result`.`sys_url_info`
+            where flag = 0
     '''
     res,list_a = applicationDb.read_sql(sql)
 
@@ -46,13 +47,16 @@ def run_it():
     run_model = __import__(name_model)
     flag = True
     for a in  list_a: # 地址列表
+        print("验证链接地址： " ,a )
         for  config in config_list: # 配置列表
             # 如果有进入采集程序
             if a[1].find(config[5]) > 0:
+                print("开始分析网页")
                 flag = False
                 # 通用模块调用
                 run_model.run_it(uuid=config[0],url=a[1],uri=config[5])
         if flag:
+            print("缺少采集配置信息")
             # 如果没有自动添加新的配置信息，并提示用户进行修改 状态修改-1
             sql = "update sys_url_info set flag =-1 where md5='"+config[0]+"'"
             rule = Rule()

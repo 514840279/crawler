@@ -35,8 +35,9 @@ class Rule:
     def html_content_analysis_detial(self,html_text, column,url):
         md5 = self.get_md5_value(src=html_text)
         tree = html.fromstring(html_text)
-        column_context = [("md5", [md5])]
-        column_context.append(("标题链接", [url]))
+        column_context = []
+        #column_context = [("md5", [md5])]
+        # column_context.append(("标题链接", [url]))
         for a in column:
             if 'l' == a[2]:
                 # 进行lxml方式解析

@@ -1,3 +1,16 @@
+# 环境搭建
+本系统依据python3.4.4进行开发的
+其他依赖模块如下：
+* pymysql
+* lxml （这个使用pip 直接安装并不能安装成功，使用已经编译好的/model/lxml-3.7.3-cp34-cp34m-win_amd64.whl 安装，
+安装方法：cd model
+ pip install lxml-3.7.3-cp34-cp34m-win_amd64.whl
+ ）
+ * requests
+ * BeautifulSoup4
+ * selenium
+各位在执行本系统前 需要将以上依赖依次安装，安装方法：（ pip3 install 模块名 ）
+
 #crawler 网络爬虫
 本项目是ldae工作室的定制爬虫项目
 仅供个人开发学习，拒绝一切商业目的

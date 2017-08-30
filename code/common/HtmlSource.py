@@ -21,55 +21,35 @@ class HtmlSource:
         try:
             # get的方法
             if (type_p == 'rg'):
-
-                try:
                     html = requests.get(url=url_p, timeout=timeout_p, headers=headers_p)
                     txt = str(html.text.encode(html.encoding), encoding=chartset_p)
                     html.close()
-                except:
-                    pass
 
             # post的方法
             if (type_p == 'rp'):
-
-                try:
                     html = requests.post(url=url_p, timeout=timeout_p, headers=headers_p)
                     txt = str(html.text.encode(html.encoding), encoding=chartset_p)
                     html.close()
-                except:
-                    pass
 
             # session的方法
             if (type_p == 'ss'):
-
-                try:
                     res_addr = self.session.get(url_p, timeout=timeout_p, headers=headers_p)
                     res_addr.encoding = chardet.detect(res_addr.content)["encoding"]
                     txt = bs_4(res_addr.text, "lxml")
-                except:
-                    pass
 
             # urllib的方法
             if (type_p == 'ul'):
-
-                try:
                     html = urllib.request.urlopen(url=url_p)
                     txt = html.read().decode(chartset_p, "ignore")
                     html.close()
-                except:
-                    pass
 
             # Selenium的方法 待完善
             if (type_p == 'se'):
-
-                try:
                     self.driver.get(url_p)
                     js = "var q=document.body.scrollTop=100000"
                     self.driver.execute_script(js)
                     self.driver.implicitly_wait(30)  # 据说此方法是智能等待，看效果还不错，数据加载完就返回了 30 代表等待秒
                     txt = self.driver.page_source
-                except:
-                    pass
 
             # login的方法 待完善
             if (type_p == 'lg'):
@@ -81,13 +61,9 @@ class HtmlSource:
 
             # 最后默认的方法
             if (type_p == 'df'):
-
-                try:
                     html = requests.get(url=url_p, timeout=timeout_p, headers=headers_p)
                     txt = html.text
                     html.close()
-                except:
-                    pass
 
         except(Exception):
             html = requests.get(url=url_p, headers=headers_p)

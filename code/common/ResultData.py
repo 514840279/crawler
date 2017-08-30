@@ -3,7 +3,7 @@
 # develop 514840279
 
 from db.inc_conn import *
-
+import re
 resultDb = Conn_mysql(db="application") # 结果入库
 
 class ResultData:
@@ -20,10 +20,10 @@ class ResultData:
     def writeToMysql(self,table_uuid,result,type):
         # 查询入库的表名
         sql = "SELECT   `table_name` FROM  `application`.`sys_table_info` WHERE UUID = '%s'" %table_uuid
-        re, table_name = resultDb.read_sql(sql=sql)
+        redx, table_name = resultDb.read_sql(sql=sql)
         # 查询出完整的字段映射对应关系
         sql = "SELECT  `cols_name`,    `ruler_colum_name` FROM `application`.`sys_seed_result_ruler_info` WHERE table_uuid = '%s'"%table_uuid
-        re, data = resultDb.read_sql(sql=sql)
+        redx, data = resultDb.read_sql(sql=sql)
         # 拼接入库语句
         #sql =" insert into %s (%s) values(%s)"
         col=""
@@ -41,7 +41,7 @@ class ResultData:
                 for i in  range(len(data)):
                     if (i > 0):
                         value = value + ","
-                    value = value + "'"+ str(info[data[i][1]]) +"'"
+                    value = value + "'"+ re.sub(r"[','\"\]\[]","",str(info[data[i][0]])).strip() +"'"
                 # 拼接入库语句
                 sql = "insert into %s (%s) values(%s)"%(table_name[0][0],col,value)
                 resultDb.write_sql(sql=sql)
@@ -49,10 +49,10 @@ class ResultData:
             print("详细模板信息入库！")
             info = self.tupleDataToDic(result)
             value = ""
-            for i in range(len(result)):
+            for i in range(len(data)):
                 if (i > 0):
                     value = value + ","
-                value = value + "'" + str(info[result[i][0]]) + "'"
+                value = value + "'" + re.sub(r"[','\"\]\[]","",str(info[data[i][0]])).strip() + "'"
             # 拼接入库语句
             sql = "insert into %s (%s) values(%s)" % (table_name[0][0], col, value)
             resultDb.write_sql(sql=sql)

@@ -53,11 +53,20 @@ def run_it(*args,**kwargs):
     rule = Rule()
     # 粗提取url
     list_a = htmlSource.get_url_list_xpath(html_text)
+    for a in list_a:
+        print("原文："+a)
+
     list_a = htmlSource.addr_clear(list_a) # 去噪点去重复
-    list_a = htmlSource.addr_whole(list_a,url_root= rule.get_url_root(url)) # 补全路径
+    for a in list_a:
+        print("去噪点："+a)
+    list_a = htmlSource.addr_whole(list_a, url_root=rule.get_url_root(url))  # 补全路径
+    for a in list_a:
+        print("补全路径：" + a)
+
     # 判断url是否当前的网站内地址 TODO
-        # 如果是入库标记状态0
-        # 如果不是丢弃url
+    # 如果是入库标记状态0
+    # 如果不是丢弃url
+
     # 数据入库
     for a in list_a:
         sql ='''

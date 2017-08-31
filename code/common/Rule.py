@@ -112,7 +112,7 @@ class Rule:
     def html_content_analysis_list(self,html_text, column,url):
         column_content = self.html_content_analysis_detial(html_text, column, url)
         le = len(column_content)
-        c = column_content[3][1]
+        c = column_content[0][1]
         lista = []
         for i in range(len(c)):
             listb=[]

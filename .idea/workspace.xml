@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5cfd4e7e-6b65-4d90-9546-6a87f936a1a6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/Currency.py" afterPath="$PROJECT_DIR$/code/Currency.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/application.py" afterPath="$PROJECT_DIR$/code/application.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/common/HtmlSource.py" afterPath="$PROJECT_DIR$/code/common/HtmlSource.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/common/ResultData.py" afterPath="$PROJECT_DIR$/code/common/ResultData.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/common/Rule.py" afterPath="$PROJECT_DIR$/code/common/Rule.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/db/inc_conn.py" afterPath="$PROJECT_DIR$/code/db/inc_conn.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +32,8 @@
       <file leaf-file-name="Rule.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/common/Rule.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="703">
-              <caret line="37" column="27" lean-forward="true" selection-start-line="37" selection-start-column="27" selection-end-line="37" selection-end-column="27" />
+            <state relative-caret-position="2034">
+              <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
               <folding>
                 <element signature="e#48#62#0" expanded="true" />
               </folding>
@@ -41,18 +44,28 @@
       <file leaf-file-name="application.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/application.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="50" column="19" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="19" />
+            <state relative-caret-position="605">
+              <caret line="74" column="21" lean-forward="true" selection-start-line="74" selection-start-column="21" selection-end-line="74" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Currency.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="inc_conn.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/db/inc_conn.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="235">
+              <caret line="71" column="26" lean-forward="false" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Currency.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/Currency.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="66" column="8" lean-forward="true" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="8" />
+            <state relative-caret-position="171">
+              <caret line="61" column="29" lean-forward="true" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
               <folding>
                 <element signature="e#108#129#0" expanded="true" />
               </folding>
@@ -60,21 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HtmlSource.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="HtmlSource.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/common/HtmlSource.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="65" column="32" lean-forward="false" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="connections.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python34/Lib/site-packages/pymysql/connections.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="1021" column="0" lean-forward="false" selection-start-line="1021" selection-start-column="0" selection-end-line="1021" selection-end-column="0" />
+            <state relative-caret-position="419">
+              <caret line="226" column="27" lean-forward="true" selection-start-line="226" selection-start-column="27" selection-end-line="226" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -92,24 +95,29 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>addr_reckon</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/code/db/inc_conn.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="H:/ldae/bak/b/code/z_code_18.py" />
-        <option value="$PROJECT_DIR$/code/application.py" />
-        <option value="$PROJECT_DIR$/code/common/Rule.py" />
-        <option value="$PROJECT_DIR$/code/common/HtmlSource.py" />
         <option value="$PROJECT_DIR$/code/common/ResultData.py" />
+        <option value="$PROJECT_DIR$/code/common/Rule.py" />
+        <option value="$PROJECT_DIR$/code/application.py" />
+        <option value="$PROJECT_DIR$/code/db/inc_conn.py" />
         <option value="$PROJECT_DIR$/code/Currency.py" />
+        <option value="$PROJECT_DIR$/code/common/HtmlSource.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="260" />
     <option name="y" value="20" />
     <option name="width" value="1400" />
@@ -251,13 +259,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18020834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46666667" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26666668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -279,6 +287,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/Currency.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -289,27 +304,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="30" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/code/db/inc_conn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="39" column="30" lean-forward="true" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-209">
-          <caret line="10" column="11" lean-forward="false" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://H:/ldae/crawler/code/z_code_0.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-968">
@@ -377,37 +376,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python34/Lib/site-packages/pymysql/connections.py">
+    <entry file="file://$PROJECT_DIR$/code/db/inc_conn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="1021" column="0" lean-forward="false" selection-start-line="1021" selection-start-column="0" selection-end-line="1021" selection-end-column="0" />
+        <state relative-caret-position="235">
+          <caret line="71" column="26" lean-forward="false" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/application.py">
+    <entry file="file://C:/Python34/Lib/site-packages/pymysql/connections.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="50" column="19" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="19" />
+        <state relative-caret-position="170">
+          <caret line="784" column="8" lean-forward="false" selection-start-line="784" selection-start-column="8" selection-end-line="784" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/common/Rule.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="37" column="27" lean-forward="true" selection-start-line="37" selection-start-column="27" selection-end-line="37" selection-end-column="27" />
+        <state relative-caret-position="2034">
+          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
           <folding>
             <element signature="e#48#62#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/common/HtmlSource.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="65" column="32" lean-forward="false" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -421,13 +412,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/application.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="74" column="21" lean-forward="true" selection-start-line="74" selection-start-column="21" selection-end-line="74" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-209">
+          <caret line="10" column="11" lean-forward="false" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/Currency.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="66" column="8" lean-forward="true" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="8" />
+        <state relative-caret-position="171">
+          <caret line="61" column="29" lean-forward="true" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
           <folding>
             <element signature="e#108#129#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/common/HtmlSource.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="419">
+          <caret line="226" column="27" lean-forward="true" selection-start-line="226" selection-start-column="27" selection-end-line="226" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>

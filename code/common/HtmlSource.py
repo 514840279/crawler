@@ -209,7 +209,7 @@ class HtmlSource:
         url_temp = []
         current_url = self.current_url_get(url_p=url_root)
         for url in all_a_url:
-            if "http://" not in url:
+            if "http" not in url:
                 # 计算完整路径
                 url = self.addr_reckon(url, url_root=current_url)
             # 简单验证地址的正确性
@@ -224,6 +224,8 @@ class HtmlSource:
         url_head = url.split(':')[0]
         if url_head not in ['http','https','ftp']:
             if url[0:2] == '//':
+                return True
+            if url[0:1] == '/':
                 return True
             return False
         else:

@@ -22,6 +22,7 @@ def run_it():
            SELECT `md5`,`url`,`flag`
             FROM `result`.`sys_url_info`
             where flag = 0
+            and url like '%https://zhidao.baidu.com/search%'
     '''
     res,list_a = applicationDb.read_sql(sql)
 
@@ -50,7 +51,7 @@ def run_it():
         print("验证链接地址： " ,a )
         for  config in config_list: # 配置列表
             # 如果有进入采集程序
-            if a[1].find(config[5]) > 0:
+            if a[1].find(config[5]) > -1:
                 print("开始分析网页")
                 flag = False
                 # 通用模块调用
@@ -64,6 +65,15 @@ def run_it():
             sql = "INSERT INTO application.sys_seed_url_info(UUID,delete_flag, seed_url)VALUES ('%s','-1','%s') " %(rule.get_md5_value(rule.get_url_root(a[1])),a[1])
             applicationDb.write_sql(sql)
             # 并提示用户进行修改 TODO
+
+        # 更新url
+        sql = '''
+                UPDATE `result`.`sys_url_info`
+                SET `flag` = -1
+                WHERE `url` = '%s'
+            ''' % (a)
+        resultDb.write_sql(sql)
+
 
 #--------- 内部模块处理<<结束>> ---------#
 

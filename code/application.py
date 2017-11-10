@@ -6,7 +6,7 @@
 #-----系统自带必备模块引用-----
 
 #-----DIY自定义库模块引用-----
-from db.inc_conn import *
+from common.inc_conn import *
 from common.Rule import Rule
 # ---全局变量处理
 

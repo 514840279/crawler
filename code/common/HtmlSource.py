@@ -73,12 +73,14 @@ class HtmlSource:
             html.close()
         return txt
 
+    #  获取网页原文 （ulib）
     def get_html_ulib(self,url_p, type_p='rp', chartset_p='utf-8'):
         html = urllib.request.urlopen(url=url_p)
         txt = html.read().decode(chartset_p)
         html.close()
         return txt
 
+    #  获取网页原文 （selenium）
     def get_html_selenium(self,url_p):
         driver = webdriver.Chrome("chromedriver")
         driver.get(url_p)

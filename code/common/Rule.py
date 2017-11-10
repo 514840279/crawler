@@ -73,6 +73,28 @@ class Rule:
                 # 二次处理 几个中的一个
                 text = tree.xpath(a[1])
                 column_context.append((a[0], text[a[3]].strip()))
+            elif 'sarr' == a[2]:
+                # 二次处理 几个中的和成一个
+                text = tree.xpath(a[1])
+                st = ''
+                for item in text:
+                    #print(item)
+                    if item.strip() == '':
+                        pass
+                    else:
+                        st = st +item.strip()
+                column_context.append((a[0], [st.strip()]))
+            elif 'sarra' == a[2]:
+                # 二次处理 几个中的和成一个
+                text = tree.xpath(a[1])
+                st = ''
+                for item in text:
+                    #print(item)
+                    if item.strip() == '':
+                        pass
+                    else:
+                        st = st +item.strip()+a[3]
+                column_context.append((a[0], [st.strip()]))
             elif 'nsp' == a[2]:
                 # 二次处理 非固定列 ul处理
                 # 应届生网最后的不固定信息

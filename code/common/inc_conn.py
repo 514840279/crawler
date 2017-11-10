@@ -32,7 +32,7 @@ sys.path.append("..")
 # mysql数据库对象
 class Conn_mysql():
 
-    def __init__(self, host='47.52.93.94', user='root', passwd='root', db='application', port=3306):
+    def __init__(self, host='localhost', user='root', passwd='root', db='application', port=3306):
         try:
             self.conn = pymysql.connect(host=host, user=user, passwd=passwd, db=db, port=port, charset="utf8")
             self.cur = self.conn.cursor()
@@ -73,7 +73,6 @@ class Conn_mysql():
             return True
         except:
             return False
-            pass
         
     # 传递连接对象
     def get_conn(self):
@@ -81,8 +80,8 @@ class Conn_mysql():
     
     # 关闭连接对象
     def close(self):
-        self.cur.close()
         self.conn.commit()
+        self.cur.close()
         self.conn.close()
         
 #--------- 内部模块处理<<结束>> ---------#

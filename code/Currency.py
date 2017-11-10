@@ -12,7 +12,7 @@ import time  # 时间模块
 import datetime  # 日期模块
 
 #-----DIY自定义库模块引用-----
-from db.inc_conn import *
+from common.inc_conn import *
 from common.HtmlSource import *
 from common.Rule import *
 from common.ResultData import *
@@ -35,19 +35,22 @@ def run_it(*args,**kwargs):
         WHERE delete_flag = 0
         and seed_uuid = '%s'
     ''' % (uuid)
-    res ,datarole = applicationDb.read_sql(sql)
+    res ,datarule = applicationDb.read_sql(sql)
 
-    lastrole=()
+    print(datarule)
+    lastrule=()
     urllen = 0
-    for i in datarole:
+    for i in datarule:
         if url.find(i[3]) > -1:
             if len(i[3]) > urllen:
-                lastrole = i
+                lastrule = i
                 urllen = len(i[3])
     # 获取网页源码（HtmlSource）
     htmlSource = HtmlSource()
-    if len(lastrole) > 0:
-        html_text = htmlSource.get_html(url_p=url, type_p=lastrole[2], chartset_p=lastrole[1])
+
+    print("读取网页%s" %(url))
+    if len(lastrule) > 0:
+        html_text = htmlSource.get_html(url_p=url, type_p=lastrule[2], chartset_p=lastrule[1])
     else:
         html_text = htmlSource.get_html(url_p=url)
     rule = Rule()
@@ -75,7 +78,7 @@ def run_it(*args,**kwargs):
         '''%(rule.get_md5_value(a),a)
         resultDb.write_sql(sql)
     print("网页链接提取完毕.")
-    if(len(lastrole) > 0):
+    if(len(lastrule) > 0):
         print("读取模板信息.")
         # 获取模板信息
         sql ='''
@@ -83,7 +86,7 @@ def run_it(*args,**kwargs):
             FROM `application`.`sys_seed_ruler_colum_info`
             where delete_flag = 0
             and ruler_uuid = '%s'
-        ''' %(lastrole[0])
+        ''' %(lastrule[0])
         res2, columrole = applicationDb.read_sql(sql)
 
         # 如果有调用网页采集程序，调用规则提取数据，调用结果配置数据入库，完成采集任务
@@ -91,11 +94,11 @@ def run_it(*args,**kwargs):
             print(columrole)
             # 将网页源码和当前url传递给（Rule）获得结果
             result=[]
-            if lastrole[4] == 'detial':
+            if lastrule[4] == '0':
                 print("详细页面信息提取.")
                 result = rule.html_content_analysis_detial(html_text=html_text, column=columrole, url=url)
 
-            elif  lastrole[4] =='list':
+            elif  lastrule[4] =='1':
                 print("列表页面信息提取.")
                 result = rule.html_content_analysis_list(html_text=html_text,column=columrole,url=url)
 

@@ -98,7 +98,7 @@ I.基于通用程序进行快速二次开发流程
 
 II. 模板
 
-···
+```
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 from common.HtmlSource import HtmlSource
@@ -145,7 +145,7 @@ def main():
 if __name__ == '__main__': # 判断文件入口
     main()
 
-···
+```
 
 
 

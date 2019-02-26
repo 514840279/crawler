@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # develop 514840279
 
-from db.inc_conn import *
+from common.inc_conn import *
 import re
 resultDb = Conn_mysql(db="application") # 结果入库
 

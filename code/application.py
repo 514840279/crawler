@@ -22,7 +22,7 @@ def run_it():
            SELECT `md5`,`url`,`flag`
             FROM `result`.`sys_url_info`
             where flag = 0
-            and url like '%https://zhidao.baidu.com/search%'
+            and url like '%https://www.qidian.com/all%'
     '''
     res,list_a = applicationDb.read_sql(sql)
 
@@ -80,7 +80,7 @@ def run_it():
 #---------- 主过程<<开始>> -----------#
 
 def main():
-    while True:
+    #while True:
         run_it()
 
 if __name__ == '__main__':

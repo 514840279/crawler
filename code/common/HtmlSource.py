@@ -10,6 +10,8 @@ import chardet
 from bs4 import BeautifulSoup as bs_4
 from selenium import webdriver # 浏览器引擎webdriver模块
 from lxml import etree
+import os
+from selenium.webdriver.chrome.options import Options 
 
 # 获取网页源码 重要
 class HtmlSource:
@@ -22,13 +24,13 @@ class HtmlSource:
             # get的方法
             if (type_p == 'rg'):
                     html = requests.get(url=url_p, timeout=timeout_p, headers=headers_p)
-                    txt = str(html.text.encode(html.encoding), encoding=chartset_p)
+                    txt = str(html.text.encode(html.encoding,errors='ignore'), encoding=chartset_p)
                     html.close()
 
             # post的方法
             if (type_p == 'rp'):
                     html = requests.post(url=url_p, timeout=timeout_p, headers=headers_p)
-                    txt = str(html.text.encode(html.encoding), encoding=chartset_p)
+                    txt = str(html.text.encode(html.encoding,errors='ignore'), encoding=chartset_p)
                     html.close()
 
             # session的方法
@@ -69,7 +71,7 @@ class HtmlSource:
             html = requests.get(url=url_p, headers=headers_p)
             txt = html.text
             chartset_p = self.get_encodings_from_content(txt)
-            txt = str(html.text.encode(html.encoding), encoding=chartset_p)
+            txt = str(html.text.encode(html.encoding,errors='ignore'), encoding=chartset_p,errors='ignore')
             html.close()
         return txt
 
@@ -82,14 +84,15 @@ class HtmlSource:
 
     #  获取网页原文 （selenium）
     def get_html_selenium(self,url_p):
-        driver = webdriver.Chrome("chromedriver")
+        driver = webdriver.Chrome("../driver/chromedriver.exe")
+
         driver.get(url_p)
-        js = "var q=document.body.scrollTop=100000"
+        js = "document.documentElement.scrollTop=1000000"
         driver.execute_script(js)
         driver.implicitly_wait(30)  # 据说此方法是智能等待，看效果还不错，数据加载完就返回了 30 代表等待秒
         print(driver)
         txt = driver.page_source
-        return txt
+        return txt,driver
 
     # 获取网页字符集
     def get_encodings_from_content(self,content):

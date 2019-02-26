@@ -76,7 +76,7 @@ def run_it(*args,**kwargs):
             INSERT INTO `result`.`sys_url_info`
             VALUES ('%s', '%s',0)
         '''%(rule.get_md5_value(a),a)
-        resultDb.write_sql(sql)
+        #resultDb.write_sql(sql)
     print("网页链接提取完毕.")
     if(len(lastrule) > 0):
         print("读取模板信息.")

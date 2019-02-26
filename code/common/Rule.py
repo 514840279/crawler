@@ -49,6 +49,7 @@ class Rule:
             elif 'sp' == a[2]:
                 # 二次处理
                 text = tree.xpath(a[1])
+                print(text)
                 if len(text)>0:
                     column_context.append((a[0], [(text[0].split(a[3])[a[4]]).strip()]))
                 else:

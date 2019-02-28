@@ -54,7 +54,8 @@ def main():
         list = rule.html_content_analysis_detial(html_text=list_html,column=colum,url=url)
         #print(list)
         for a in list[0][1]:
-            read_detial(a,i)
+            if(a.find(".asp")<0):
+                read_detial(a,i)
            # th = threading.Thread(target=read_detial, args=(a))
            # th.start()  # 启动线程
 

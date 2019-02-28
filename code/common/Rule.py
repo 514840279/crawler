@@ -73,7 +73,13 @@ class Rule:
             elif 'arr' == a[2]:
                 # 二次处理 几个中的一个
                 text = tree.xpath(a[1])
-                column_context.append((a[0], text[a[3]].strip()))
+                if(len(text)==0 or len(text)<a[3]):
+                    if(len(text)==0):
+                        column_context.append((a[0], text))
+                    else:
+                        column_context.append((a[0], text.strip()))
+                else:
+                    column_context.append((a[0], text[a[3]].strip()))
             elif 'sarr' == a[2]:
                 # 二次处理 几个中的和成一个
                 text = tree.xpath(a[1])

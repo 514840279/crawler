@@ -22,9 +22,9 @@ def read_detial(url,i):
 
     files.save_source(path=path,file=file_name, all_the_text=detial_html , encoding_='utf-8')
     colum=[
-        ('title','//h1[@class="articleHead"]//text()','l'),
-        ('pushDate', '//div[@class="info"]//span[@class="infoA"][@id="pubtime_baidu"]//text()', 'l'),
-        ('content','//div[@class="articleText"]//text()','sarra',',')
+        ('title','//h1[@class="h2 fz-23 YH"]//text()','l'),
+        ('pushDate', '//span[@id="pubtime_baidu"]//text()', 'l'),
+        ('content','//div[@id="ctrlfscont"]//text()','sarra',',')
    ]
     result = rule.html_content_analysis_detial(html_text=detial_html, column=colum, url=url)
     print(result)
@@ -39,13 +39,13 @@ def read_detial(url,i):
 
 # 多页
 def main():
-    floder = File_floder()
-    floder.add(path_p=path)
-    csv = Csv_base()
-    csv.write_csv_file_line(file_path=path+"/data.csv",mode='w+',str=['网站名','网址','标题','新闻内容','发布时间','页码','采集时间'])
+    # floder = File_floder()
+    # floder.add(path_p=path)
+    # csv = Csv_base()
+    # csv.write_csv_file_line(file_path=path+"/data.csv",mode='w+',str=['网站名','网址','标题','新闻内容','发布时间','页码','采集时间'])
     # 爬虫
     start_url = "http://www.cankaoxiaoxi.com/mil/gjjq/%d.shtml"
-    for i in range(1,101):
+    for i in range(13,101):
         url = start_url%(i)
         #print(url)
         list_html = htmlSource.get_html(url_p=url,type_p='rg')

@@ -29,14 +29,12 @@ class Rule:
         url_root = url.split('/')[0]
         return (http + https + url_root)
 
-     # 解析页面
 
-    # 数据提取详细页的
-    def html_content_analysis_detial(self,html_text, column,url):
-        md5 = self.get_md5_value(src=html_text)
-        tree = html.fromstring(html_text)
+
+    # 解析页面
+    def _analysis_(self, tree, column,url):
         column_context = []
-        #column_context = [("md5", [md5])]
+        # column_context = [("md5", [md5])]
         # column_context.append(("标题链接", [url]))
         for a in column:
             if 'l' == a[2]:
@@ -50,7 +48,7 @@ class Rule:
                 # 二次处理
                 text = tree.xpath(a[1])
                 print(text)
-                if len(text)>0:
+                if len(text) > 0:
                     column_context.append((a[0], [(text[0].split(a[3])[a[4]]).strip()]))
                 else:
                     column_context.append((a[0], []))
@@ -73,8 +71,8 @@ class Rule:
             elif 'arr' == a[2]:
                 # 二次处理 几个中的一个
                 text = tree.xpath(a[1])
-                if(len(text)==0 or len(text)<a[3]):
-                    if(len(text)==0):
+                if (len(text) == 0 or len(text) < a[3]):
+                    if (len(text) == 0):
                         column_context.append((a[0], text))
                     else:
                         column_context.append((a[0], text.strip()))
@@ -85,22 +83,22 @@ class Rule:
                 text = tree.xpath(a[1])
                 st = ''
                 for item in text:
-                    #print(item)
+                    # print(item)
                     if item.strip() == '':
                         pass
                     else:
-                        st = st +item.strip()
+                        st = st + item.strip()
                 column_context.append((a[0], [st.strip()]))
             elif 'sarra' == a[2]:
                 # 二次处理 几个中的和成一个
                 text = tree.xpath(a[1])
                 st = ''
                 for item in text:
-                    #print(item)
+                    # print(item)
                     if item.strip() == '':
                         pass
                     else:
-                        st = st +item.strip()+a[3]
+                        st = st + item.strip() + a[3]
                 column_context.append((a[0], [st.strip()]))
             elif 'nsp' == a[2]:
                 # 二次处理 非固定列 ul处理
@@ -137,6 +135,12 @@ class Rule:
                 # print(a[0]+a[1]+a[2])
         return column_context
 
+    # 数据提取详细页的
+    def html_content_analysis_detial(self,html_text, column,url):
+        md5 = self.get_md5_value(src=html_text)
+        tree = html.fromstring(html_text)
+        return self._analysis_(tree=tree,column=column,url=url)
+
     # 数据提取列表页处理方式
     def html_content_analysis_list(self,html_text, column,url):
         column_content = self.html_content_analysis_detial(html_text, column, url)
@@ -153,4 +157,18 @@ class Rule:
                 else:
                     listb.append((a[0], a[1][i]))
             lista.append(listb)
+        return lista
+
+
+    # 数据提取列表页处理方式
+    def html_content_analysis_list(self,html_text,group, column,url):
+        tree = html.fromstring(html_text)
+        column_content =  self._analysis_(tree=tree, column=group, url=url)
+        #htmlsource = HtmlSource()
+        #nextpage = htmlsource.addr_reckon(nextpage)
+        lista = []
+        for a in range(len(column_content[0][1])):
+            row = self._analysis_(tree=column_content[0][1][a], column=column,url=url)
+            lista.append(row)
+        print(lista)
         return lista

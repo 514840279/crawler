@@ -32,9 +32,9 @@ sys.path.append("..")
 # mysql数据库对象
 class Conn_mysql():
 
-    def __init__(self, host='localhost', user='root', passwd='root', db='application', port=3306):
+    def __init__(self, host='localhost', user='root', passwd='root', db='application', port=3306,cursorclass = pymysql.cursors.DictCursor):
         try:
-            self.conn = pymysql.connect(host=host, user=user, passwd=passwd, db=db, port=port, charset="utf8")
+            self.conn = pymysql.connect(host=host, user=user, passwd=passwd, db=db, port=port, charset="utf8",cursorclass = cursorclass)
             self.cur = self.conn.cursor()
         except Exception as e:
             print('事务处理失败', e)

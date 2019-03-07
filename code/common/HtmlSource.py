@@ -10,14 +10,13 @@ import chardet
 from bs4 import BeautifulSoup as bs_4
 from selenium import webdriver # 浏览器引擎webdriver模块
 from lxml import etree
+import json
 import os
 from selenium.webdriver.chrome.options import Options 
 
 # 获取网页源码 重要
 class HtmlSource:
-    def get_html(self,url_p, type_p='rp', chartset_p='utf-8',timeout_p=10):
-        headers_p = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
-
+    def get_html(self,url_p, type_p='rp', chartset_p='utf-8',timeout_p=10,post_data='',headers_p={"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}):
         txt = "nothing"
         # 获取网页源码
         try:
@@ -29,6 +28,11 @@ class HtmlSource:
 
             # post的方法
             if (type_p == 'rp'):
+                if(post_data!=''):
+                    html = requests.post(url=url_p,data=json.dumps(post_data), timeout=timeout_p, headers=headers_p)
+                    txt = str(html.text.encode(html.encoding, errors='ignore'), encoding=chartset_p)
+                    html.close()
+                else:
                     html = requests.post(url=url_p, timeout=timeout_p, headers=headers_p)
                     txt = str(html.text.encode(html.encoding,errors='ignore'), encoding=chartset_p)
                     html.close()

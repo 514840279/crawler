@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>大众点评</title>
+    <meta name="x5-cache" content="enable">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="dns-prefetch" href="//www.dpfile.com">
+    <link rel="dns-prefetch" href="//mapi.dianping.com">
+    <link rel="shortcut icon" href="https://www.dpfile.com/s/res/favicon.5ff777c11d7833e57e01c9d192b7e427.ico" type="image/x-icon" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <meta name="apple-mobile-web-app-title" content="大众点评" />
+    <link rel="apple-touch-icon-precomposed" href="//www.dpfile.com/m/img/app/dianping/logoforiphone.eb494fad081fe8a318aec427d5de0b43.png" />
+    <link rel="apple-touch-startup-image" href="//www.dpfile.com/m/img/app/dianping/iphonesplash.88eba14b27357f754baa669bebbdd78b.png" />
+    <link rel="icon" sizes="any" mask href="//www.dpfile.com/m/img/app/dianping/logo.svg" />
+    <meta name="theme-color" content="#f2991b" />
+
+    <meta name="keywords" content="天露冰淇淋,天露冰淇淋点评,天露冰淇淋团购" />
+    <meta name="description" content="为您提供天露冰淇淋的人均消费、品牌简介、店铺图片、折扣优惠、用户口碑、美食攻略、菜单、订餐、预约订座、推荐菜等信息，天露冰淇淋好不好，旅顺口区冰淇淋选择天露冰淇淋怎么样？快来看看大家如何点评吧！" />
+    <script>
+        "use strict";!function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:"_Owl_",a=window;a[e]||(a[e]={isRunning:!1,isReady:!1,preTasks:[],dataSet:[],pageData:[],disableMutaObserver:!1,observer:null,use:function(e,t){this.isReady&&a.Owl&&a.Owl[e](t),this.preTasks.push({api:e,data:[t]})},add:function(e){this.dataSet.push(e)},run:function(){var t=this;if(!this.isRunning){this.isRunning=!0;var e=a.onerror;a.onerror=function(){this.isReady||this.add({type:"jsError",data:arguments}),e&&e.apply(a,arguments)}.bind(this),(a.addEventListener||a.attachEvent)("error",function(e){t.isReady||t.add({type:"resError",data:[e]})},!0);var i=window.MutationObserver||window.WebKitMutationObserver||window.MozMutationObserver,r=window.performance||window.WebKitPerformance;if(i&&r){var n=-1,s=window.navigator.userAgent;if(-1<s.indexOf("compatible")&&-1<s.indexOf("MSIE")?(new RegExp("MSIE (\\d+\\.\\d+);").test(s),n=parseFloat(RegExp.$1)):-1<s.indexOf("Trident")&&-1<s.indexOf("rv:11.0")&&(n=11),-1!==n&&n<=11)return void(this.disableMutaObserver=!0);try{this.observer=new i(function(e){t.pageData.push({mutations:e,startTime:r.now()})}),this.observer.observe(document,{childList:!0,subtree:!0})}catch(e){console.log("mutationObserver err")}}else this.disableMutaObserver=!0}}},a[e].run())}();
+
+        
+    </script>
+    
+    <script>
+        var rohrdata = "";
+        var Rohr_Opt = new Object;
+        Rohr_Opt.Flag = 100020;
+        Rohr_Opt.LogVal = "rohrdata";
+    </script>
+   
+    <script defer crossorigin="anonymous" src="https://s0.meituan.net/mx/rohr/rohr.min.js"></script>
+
+    <meta name="location" content="province=辽宁;city=大连">
+<link rel="canonical" href="http://www.dianping.com/shop/27478413" >
+
+    
+
+    <!-- headder中 H5页面PV埋点代码 start-->
+    <!-- 上报通道标识 -->
+    <meta name="lx:category" content="dianping_nova">
+    <meta name="lx:cid" content='dp210008'>
+    <meta name="lx:autopv" content="off"/>
+    <!-- 上报应用标识 -->
+    <meta name="lx:appnm" content="dp_m">
+    <!-- 加载sdk -->
+    <link rel="dns-prefetch" href="//analytics.meituan.net"/>
+    <script type="text/javascript">
+        !(function (win, doc, ns) {
+            var cacheFunName = '_MeiTuanALogObject';
+            win[cacheFunName] = ns;
+            if (!win[ns]) {
+                var _LX = function () {
+                    _LX.q.push(arguments);
+                    return _LX;
+                };
+                _LX.q = _LX.q || [];
+                _LX.l = +new Date();
+                win[ns] = _LX;
+            }
+        })(window, document, 'LXAnalytics');
+    
+    /**
+     * 设置页面相关环境信息  environment
+     * uid 用户登录账号
+     * logintype 用户登录类型
+     * cityid 当前页面选择城市
+     */
+    var environment = {
+        "uid":"0",
+        "logintype":"",
+        "cityid":"19"
+    };
+
+    var valLab = {
+        "custom": {
+            "abversion":'A',
+            "msource":'baidusearch',
+            "url": "shop",
+            "city_id": "19",
+            "page_id": "dp210008" ,
+            
+        }
+    };
+
+    var valBid = 'dp210008';
+    LXAnalytics('pageView', valLab, environment);
+
+    var G_rtop = +new Date;
+    var _hip = [
+        ['_autoPV', false]
+    ];
+    </script>
+
+
+    <link rel="stylesheet" href="//www.dpfile.com/concat/~mod~app-m-midas~0.6.7~css~style.css" type="text/css"/>
+</head>
+
+
+<body class="shop-details">
+    <script crossorigin="anonymous" src="//www.dpfile.com/app/owl/static/owl.min.70f24eda5cc87b34da76992cde625794.js"></script>
+    <script>
+        var devMode = location.href.indexOf('.51ping.com') !== -1;
+        Owl.start({
+            devMode: devMode,
+            page: {
+                sample: devMode ? 1 : 0.1,
+                auto: false
+            },
+            metric: {
+                sample: devMode ? 1 : 0.1,
+                combo: true
+            },
+            project: 'app-m-module'
+            
+            ,
+            pageUrl: 'shop'
+            
+        })
+    </script>
+    <script>
+        valLab.poi_id = '27478413'
+    </script>
+
+<link rel="stylesheet" href="//www.dpfile.com/app/app-m-module/static/shop-entry.min.5d3f19da757ac881333b50d2fe0937cf.css" type="text/css"/>
+
+<link rel="stylesheet" href="//s3plus.meituan.net/v1/mss_0a06a471f9514fc79c981b5466f56b91/svgtextcss/8ca1e133537c8e5f9a94f2e64340cea8.css" type="text/css">
+
+
+<script>
+    window.PAGE_DATA = {
+        shopId:'27478413',
+        shopIdTrue: '27478413',
+            regionId: '',
+            cityId: '19',
+            shopType: '10',
+            categoryId: '241',
+            pageInfo:'{"id":0,"mSource":"baidusearch","pageEnName":"shop","pageName":null,"abVersion":"A","finalRefMSource":null,"finalRefVersion":null,"refType":0,"otherInfo":{"lx_appname":"dp_m","hippoPageId":"dp210008"},"otherInfo2":{"lx_appname":"dp_m","hippoPageId":"dp210008"},"moduleInfoList":[{"moduleName":"header","config":{"enableSearchULink":false,"backLink":"/search/category/@@cityId@@/@@shopType@@","pos":""},"isServerRender":false},{"moduleName":"baseinfo","config":{"setLink":"","hidePicLink":false,"photo_link_ios":"https://m.dianping.com/shop/{shopId}/photos","hideMultipic":false,"enablePhotoULink":false,"shanhuiSourceType":"","hideShanhui":false,"isEnterprise":false,"photo_utm":"ulink_shopphoto","photo_link_android":"https://m.dianping.com/shop/{shopId}/photos"},"isServerRender":false},{"moduleName":"address","config":{"map_link_android":"https://m.dianping.com/shop/{shopId}/map","enableULink":false,"map_link_ios":"https://m.dianping.com/shop/{shopId}/map","map_utm":"ulink_shopmap"},"isServerRender":false},{"moduleName":"mixedrank","config":{},"isServerRender":false},{"moduleName":"massage-booking","config":{},"isServerRender":false},{"moduleName":"ktv-book","config":{},"isServerRender":false},{"moduleName":"orders","config":{"takeaway_link_ios":"{waimaiUrl}","enableTakeawayULink":false,"hasDingzuo":true,"hasDiancai":true,"hasPaihao":true,"takeaway_utm":"ulink_shoptakeaway","hasWaimai":true,"takeaway_link_android":"{waimaiUrl}"},"isServerRender":false},{"moduleName":"hotelinfo","config":{},"isServerRender":false},{"moduleName":"hotel-book","config":{},"isServerRender":false},{"moduleName":"shanhui","config":{"isEnterprise":false},"isServerRender":false},{"moduleName":"tuan","config":{"setLink":"","enableULink":false,"tuan_link_ios":"https://m.dianping.com/tuan/deal/{dealId}","shanhuiSourceType":"","hideShanhui":false,"isEnterprise":false,"tuan_link_android":"https://m.dianping.com/tuan/deal/{dealId}?appname=dp_m","tuan_utm":"ulink_shoptuan","enableTuanSchema":false},"isServerRender":false},{"moduleName":"membercard","config":{},"isServerRender":false},{"moduleName":"promo","config":{},"isServerRender":false},{"moduleName":"activity","config":{},"isServerRender":false},{"moduleName":"headline","config":{"jumpUrl":"detail"},"isServerRender":false},{"moduleName":"recommend","config":{"recommend_link_android":"{recommendUrl}","recommend_utm":"ulink_recommendish","enableULink":false,"hideLink":false,"recommend_link_ios":"{recommendUrl}"},"isServerRender":false},{"moduleName":"ktvmg","config":{},"isServerRender":false},{"moduleName":"review","config":{"enableULink":false,"review_utm":"ulink_shopreview","review_link_ios":"{reviewUrl}","reviewAppUrl":"https://evt.dianping.com/synthesislink/9993.html","hideLink":false,"review_link_android":"{reviewUrl}"},"isServerRender":false},{"moduleName":"question-answer","config":{"setLink":"/forum/question/shop"},"isServerRender":false},{"moduleName":"otherinfo","config":{},"isServerRender":false},{"moduleName":"ad_download","config":{"shopwelfare_link_ios":"https://link.dianping.com/universal-link?originalUrl=https%3A%2F%2Fevt.dianping.com%2Fsynthesislink%2F11041.html&schema=dianping%3A%2F%2Fweb%3Furl%3Dhttps%253A%252F%252Fh5.dianping.com%252Fapp%252Fop-task%252Fmobile%252Fevent%252Findex_v3.html%253Futm_source%253Dmcnxh","shopwelfare_utm":"ulink_shopwelfare","shopwelfare_link_android":"https://evt.dianping.com/synthesislink/11041.html"},"isServerRender":false},{"moduleName":"branch","config":{},"isServerRender":false},{"moduleName":"ad","config":{},"isServerRender":false},{"moduleName":"breadcrumb","config":{},"isServerRender":false},{"moduleName":"bottom-search","config":{},"isServerRender":false},{"moduleName":"footer","config":{},"isServerRender":false},{"moduleName":"autoopenapp","config":{"utm":"","app_utm":"w_mshop_auto","app_link_android":"dianping://shopinfo?id={shopId}&utm={utm}","disableTopPage":false,"timeout":3000,"app_link_ios":"dianping://shopinfo?id={shopId}&utm={utm}"},"isServerRender":false}]}',
+            content:'为您提供天露冰淇淋的人均消费、品牌简介、店铺图片、折扣优惠、用户口碑、美食攻略、菜单、订餐、预约订座、推荐菜等信息，天露冰淇淋好不好，旅顺口区冰淇淋选择天露冰淇淋怎么样？快来看看大家如何点评吧！',
+            showMTP:'false',
+            share:{
+                title: '【天露冰淇淋】电话,地址,价格,营业时间(图) - 大连美食 - 大众点评移动版',
+                desc: '',
+                image: 'https://p0.meituan.net/searchscenerec/9b951cd4038bc8ff97f1bfdb92c61ff8266011.png%40300w_225h_1e_1c_1l%7Cwatermark%3D1%26%26r%3D1%26p%3D9%26x%3D2%26y%3D2%26relative%3D1%26o%3D20',
+                url:location.href,
+                content:''
+            }
+    }
+
+    _hip = [
+        ['_autoPV', false],
+        ['_setPageId', 210008],
+        ['_setCityId', 19]
+    ];
+
+    
+</script>
+
+
+
+
+
+<script crossorigin="anonymous">!function(){try{var o="midasclick",n=document.cookie,t=n.split(";"),i="";t.forEach(function(n){var t=n.split("=");if(2===t.length){var c=t[0].trim(),e=t[1].trim();c===o&&""!==e&&'""'!==e&&(i=e)}});var c=function(o){var n=new Image(1,1);n.onload=n.onerror=function(){n=null},n.src=o},e=decodeURIComponent(i);if(""!==e&&'""'!==e){var a,m,r,p=e.split("|"),d=p[0],l=location.host;l.indexOf("dianping.com")>-1&&!/^ppe/.test(l)?(a="https://mlog.dianping.com/log",r="dianping.com"):(a="https://mlog.51ping.com/log",r="51ping.com"),m=d.indexOf("?")>-1?d:a+"?"+decodeURIComponent(d),m=m+"&act=2&t="+(new Date).getTime(),c(m),p[1]&&c(p[1]),document.cookie=o+"=;path=/;domain="+r}}catch(g){console.error(g)}}();</script>
+
+
+
+
+    
+        <div class="J_header" >
+        
+<header class="shop-head">
+    <a href="/search/category/19/10" class="head-back" onclick="LXAnalytics('moduleClick', 'b_xvairigv', {custom:{city_id:'19',user_id:'0',category:'241'}})">
+    </a>
+    <div class="head-title">商户详情</div>
+    <a class="head-search J_search_trigger"  href="javascript:;" onclick="LXAnalytics('moduleClick', 'b_kvu720re', {module:'shopinfo_search',shopid:'27478413',city_id:'19',user_id:'0',category:'241'})"></a>
+</header>
+
+        </div>
+    
+        <div class="J_baseinfo" >
+        
+
+
+    <div class="shopInfoPageletSinglePic">
+             
+            <div class="picAndNum">
+                <a href="//m.dianping.com/shop/27478413/photos" onclick="LXAnalytics('moduleClick', 'b_b2s470sd', {custom:{module:'shopinfo_photo',shopid:'27478413',city_id:'19',user_id:'0',category:'241'}})">    
+                </a>
+                <img src="//p0.meituan.net/searchscenerec/9b951cd4038bc8ff97f1bfdb92c61ff8266011.png%40345w_194h_1e_1c_1l%7Cwatermark%3D1%26%26r%3D1%26p%3D9%26x%3D20%26y%3D20"  class = "singlePic" alt="天露冰淇淋">
+                <div class = "imgNum" >
+                    <div class="photoLogo"></div>
+                    <div class = "picCount">0</div>
+                </div>
+            </div>
+        
+        <div class="shopDescription">
+            <h1 class="shopName">天露冰淇淋</h1>
+            <div class = "star_review">
+                <div class = "star_review_left">
+                    <div class="nebula_star">
+                        <div class="star_icon">
+                            <span class="star star_0"></span>
+                            <span class="star star_0"></span>
+                            <span class="star star_0"></span>
+                            <span class="star star_0"></span>
+                            <span class="star star_0"></span>
+                        </div>
+                    </div>
+                    <!-- <span class="star starBig star-0"></span> -->
+                    
+                    
+                </div>
+            </div>
+            <div class = "description_type">
+                
+                    <div class="description">
+                        
+                            
+                                
+                                    <span>口味:<span class="ixd70"></span>.<span class="ixd70"></span></span>
+                                           
+                            
+                                
+                                    <span>环<span class="bs71c"></span>:<span class="ixd70"></span>.<span class="ixd70"></span></span>
+                                           
+                            
+                                
+                                    <span>服务:<span class="ixd70"></span>.<span class="ixd70"></span></span>
+                                           
+                            
+                                           
+                            
+                                   
+                    </div>
+                
+                <span class="aboutType">
+                    
+                        <span class="mainType">旅顺口区</span>
+                    
+                    <span class="subType"><span class="bsjg8"></span>淇淋</span>
+                </span>
+            </div>
+        </div>
+    </div> 
+
+
+        </div>
+    
+        <div class="J_address" >
+        <div class = "addressInfo">
+    <div class = "addressAll">
+        <div class = "address_left">
+            <a class="item" href="//m.dianping.com/shop/27478413/map" onclick="LXAnalytics('moduleClick', 'b_v4ft9fwy', {custom:{module:'shopinfo_address',shopid:'27478413',city_id:'19',user_id:'',category:'241'}})"></a>
+            <div class = "addressLogo"></div>
+            <span class= "addressText">科技<span class="gioj7"></span>院正门200米</span>
+        </div>
+        <div id="phoneClick" class= "address_right" data-ktv=false style='display:none' >  
+            <span class="division"></span>
+            <div class = "phoneLogo"></div>        
+        </div>
+    </div>  
+</div>
+<div class = "standardBord"></div>
+
+<div class="layerbox">
+    <div class="telPop">
+        <div class="phone-wrap">
+            
+        </div>
+        <div class="phoneCancel" id="phoneCancel">取消</div>
+    </div>
+</div>
+
+<!-- <div class="details-mode info-address">
+    <div class="info-list link-list">
+        <a class="item" href="//m.dianping.com/shop/27478413/map" onclick="LXAnalytics('moduleClick', 'b_v4ft9fwy', {custom:{module:'shopinfo_address',shopid:'27478413',city_id:'19',user_id:'',category:'241'}})">
+            <i class="icon-address"></i>科技<span class="gioj7"></span>院正门200米
+            <i class="arrowent"></i>
+        </a>
+    </div>
+</div> -->
+
+        </div>
+    
+        <div class="J_mixedrank" >
+        
+        </div>
+    
+        <div class="J_massage-booking" >
+        
+        </div>
+    
+        <div class="J_ktv-book" >
+        
+        </div>
+    
+        <div class="J_orders" >
+        
+
+
+
+
+
+
+
+        </div>
+    
+        <div class="J_hotelinfo" >
+        
+        </div>
+    
+        <div class="J_hotel-book" >
+        
+        </div>
+    
+        <div class="J_shanhui" >
+        
+
+        </div>
+    
+        <div class="J_tuan" >
+        
+    
+    
+    
+    
+    
+    
+        </div>
+    
+        <div class="J_membercard" >
+        
+        </div>
+    
+        <div class="J_promo" >
+        
+        </div>
+    
+        <div class="J_activity" >
+        
+
+        </div>
+    
+        <div class="J_headline" >
+        
+        </div>
+    
+        <div class="J_recommend" >
+        
+
+        </div>
+    
+        <div class="J_ktvmg" >
+        
+        </div>
+    
+        <div class="J_review" >
+        
+
+        </div>
+    
+        <div class="J_question-answer" >
+        
+        </div>
+    
+        <div class="J_otherinfo" >
+        
+    <div class="shopInfo">
+        <div class="infoTitle">
+            商户信息
+        </div>
+        <div class="otherInfo">
+            <div class="businessTime">
+                营业时间：
+            </div>
+            <div class="businessHour">
+                周一至周日
+09:00-21:00
+            </div>
+        </div>
+    </div>
+    <div class="standardBord"></div>
+
+        </div>
+    
+        <div class="J_ad_download" >
+        
+<div class="download-welfare border-bottom-new">
+    <a class="main" href="//evt.dianping.com/synthesislink/11041.html" rel="nofollow">
+        <div class="content">
+            <p class="line-1">免费领取美食福利</p>
+            <p class="line-2">200元优惠及各种大奖等你来</p>
+            <div class="btn">去领取</div>
+        </div>
+    </a>
+</div>
+
+        </div>
+    
+        <div class="J_branch" >
+        
+        </div>
+    
+        <div class="J_ad" >
+        
+<div id = 'ad' class="J_midas-20004"></div>
+<div class="standardBord"></div>
+
+
+
+        </div>
+    
+        <div class="J_breadcrumb" >
+        
+<div class="shop-crumbs">
+    
+    <a href="//m.dianping.com/dalian/ch10">大连餐厅</a>
+    
+    <span class="arrowent"></span>
+    
+    
+    <a href="//m.dianping.com/dalian/ch10/r27683">旅顺口区</a>
+    
+    <span class="arrowent"></span>
+    
+    
+    <a href="//m.dianping.com/dalian/ch10/g34236r27683">饮品店</a>
+    
+    <span class="arrowent"></span>
+    
+    
+    <a href="//m.dianping.com/dalian/ch10/g241r27683">冰淇淋</a>
+    
+    
+</div>
+
+        </div>
+    
+        <div class="J_bottom-search" >
+        <div class="footer-tags-box">
+    <!--底部查找模块-->
+    <div class="home-search">
+        <form id="searchForm" method="post" action="/shoplist/19/search" autocomplete="off">
+            <input type="text" name="keyword" placeholder="商户名、地址等" autocorrect="off" autocapitalize="off"
+            onclick="LXAnalytics('moduleClick', 'b_puxorkbv', {custom:{module:'shopinfo_search_keyword',shopid:'27478413'}})"
+                   autocomplete="off"/>
+            <a href="javascript:;"
+               onclick="LXAnalytics('moduleClick', 'b_bt3mcf9a', {custom:{module:'shopinfo_keyword_success',shopid:'27478413'}})";document.getElementById('searchForm').submit();"
+               class="search-icon"></a>
+        </form>
+    </div>
+</div>
+        </div>
+    
+        <div class="J_footer" >
+        <footer class="footer">
+    
+    <a href="//m.dianping.com/nmy/myinfo" title="">我的</a><em>|</em>
+    <a href="//m.dianping.com/history" title="">最近浏览</a><em>|</em>
+    <a href="//m.dianping.com/sitemap/c19c10" title="">网站地图</a><em>|</em>
+    <a href="//evt.dianping.com/synthesislink/6513.html">添加商户</a><em>|</em>
+    <a href="//m.dianping.com/feedback" title="">意见反馈</a>
+    <br>
+    <a id="j-computer" href="//www.dianping.com" title="">电脑版</a><em>|</em>
+    <a id="F_d_client" href="javascript:void(0)" title="">客户端</a>
+    <br>
+    <p class="copyright">copyright ©2019 dianping.com</p>
+</footer>
+        </div>
+    
+        <div class="J_autoopenapp" >
+        
+        </div>
+    
+
+
+<script>
+    try {
+        window._FIRST_SCREEN_TIME = Date.now() - window.performance.timing.navigationStart
+    } catch (e) {
+        console.log('get first screen time fail')
+    }
+</script>
+
+<textarea style="display:none" id="shop-detail">
+     {"thumbUrl":"https://p0.meituan.net/searchscenerec/9b951cd4038bc8ff97f1bfdb92c61ff8266011.png%40300w_225h_1e_1c_1l%7Cwatermark%3D1%26%26r%3D1%26p%3D9%26x%3D2%26y%3D2%26relative%3D1%26o%3D20","shopId":"27478413","shopName":"天露冰淇淋","address":"科技学院正门200米","huiTime":"","phoneNum":""}
+ </textarea>
+<script crossorigin="anonymous" src="//www.dpfile.com/app/app-m-module/static/webpackruntime.min.c127ddd98d001d2420962201ead582db.js"></script>
+<script crossorigin="anonymous" src="//www.dpfile.com/app/app-m-module/static/common.min.953773fbf7b98372e5799adae80c7324.js"></script>
+<script crossorigin="anonymous" src="//www.dpfile.com/app/app-m-module/static/shop-entry.min.ae326fb105fecf4ea24ed26e1b8f890e.js"></script>
+
+
+<script src="//analytics.meituan.net/analytics.js" type="text/javascript" charset="utf-8" async defer></script>
+<script src="//www.dpfile.com/mod/neuron/7.1.4/neuron.js" id="neuron-js"></script>
+<script>neuron.config({path: "//www.dpfile.com/mod", loaded:["app-m-midas@0.6.7","m-midas-log@0.0.12","swipe@2.0.0","tpl@0.2.1","whereami@0.1.19","zepto@1.2.8","cookie@0.2.0"], graph:{"1":["0.0.12"],"2":["2.0.0"],"3":["0.2.1"],"5":["0.2.0"],"8":["1.0.1"],"10":["1.0.0"],"9":["6.1.0",{"asap@^1.0.0":10}],"7":["1.2.2",{"mix@^1.0.1":8,"promise@^6.1.0":9}],"11":["0.1.0"],"6":["1.7.1",{"dpapp-core@^1.1.1":7,"mix@^1.0.1":8,"dpapp-share@~0.1.0":11}],"12":["0.1.5"],"4":["0.1.19",{"cookie@~0.2.0":5,"dpapp@^1.1.11":6,"weixin-js-sdk-loader@~0.1.0":12}],"13":["1.2.8"],"0":["0.6.7",{"m-midas-log@~0.0.1":1,"swipe@^2.0.0":2,"tpl@~0.2.1":3,"whereami@~0.1.19":4,"zepto@^1.2.1":13}],"_":{"app-m-midas@*":0}}})</script>
+<script async src="//www.dpfile.com/concat/~mod~app-m-midas~0.6.7~app-m-midas.js,~mod~m-midas-log~0.0.12~m-midas-log.js,~mod~swipe~2.0.0~swipe.js,~mod~tpl~0.2.1~tpl.js,~mod~whereami~0.1.19~whereami.js,~mod~zepto~1.2.8~zepto.js,~mod~cookie~0.2.0~cookie.js"></script>
+<script>facade({entry:"app-m-midas", data: {
+query: {
+cityId:'19',
+userId:0,
+viewShopId: '27478413',
+shopType:10,
+lat:'0',
+lng:'0'
+},
+server: '/midasmkt/ajax/shopAdsMob',
+jsUrl:"//www.dpfile.com/s/j/app/midas/midas.min.a3b0723c9681ac0a76bdf4f12d71d02a.js"
+}});
+</script>
+
+</body>
+</html>

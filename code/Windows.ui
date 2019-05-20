@@ -6,102 +6,204 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>808</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>631</width>
-      <height>531</height>
+      <width>801</width>
+      <height>551</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLineEdit" name="urlLineEdit"/>
-       </item>
-       <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="9">
         <widget class="QPushButton" name="urlbutton">
          <property name="text">
-          <string>确定</string>
+          <string>获取源码</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="9">
+        <widget class="QLineEdit" name="urlLineEdit">
+         <property name="text">
+          <string>请输入列表页面的网址</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="9">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>测试</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="10">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>770</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="9">
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>添加</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QPushButton" name="pushButton_6">
+         <property name="text">
+          <string>删除</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="8">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>测试</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="9">
+        <widget class="QPushButton" name="pushButton_7">
+         <property name="text">
+          <string>显示表格</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="7">
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>文本</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>数组</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>文本拼接</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>数组截取</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLineEdit" name="lineEdit_2">
+         <property name="text">
+          <string>标题名</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" colspan="6">
+        <widget class="QLineEdit" name="lineEdit_3">
+         <property name="text">
+          <string>xpath</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>列表区域</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="8">
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="text">
+          <string>请输入正确范围的xpath</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QScrollArea" name="scrollArea">
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>627</width>
-          <height>490</height>
-         </rect>
-        </property>
-        <widget class="QWebEngineView" name="webEngineView">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>631</width>
-           <height>491</height>
-          </rect>
-         </property>
-         <property name="url">
-          <url>
-           <string>about:blank</string>
-          </url>
-         </property>
-        </widget>
-       </widget>
-      </widget>
+      <widget class="QTextBrowser" name="textBrowser"/>
      </item>
     </layout>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>0</y>
-      <width>151</width>
-      <height>61</height>
-     </rect>
-    </property>
-   </widget>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>808</width>
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>创建</string>
+    </property>
+    <addaction name="actionxinfjdska"/>
+    <addaction name="actionjiankong"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>关于我们</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>分析</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_2"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionxinfjdska">
+   <property name="text">
+    <string>新建任务</string>
+   </property>
+  </action>
+  <action name="actionjiankong">
+   <property name="text">
+    <string>监控</string>
+   </property>
+  </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebEngineView</class>
-   <extends>QWidget</extends>
-   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

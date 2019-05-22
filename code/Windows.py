@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(745, 705)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:/Users/Administrator/.designer/backup/favicon_32x32.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("favicon_32x32.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setToolTipDuration(-1)
         self.centralwidget = QtWidgets.QWidget(MainWindow)

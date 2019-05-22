@@ -2,9 +2,9 @@
 
 import sys
 from Windows import Ui_MainWindow
-from PyQt5 import QtCore,QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtGui import QStandardItemModel,QStandardItem
-from PyQt5.QtWidgets import QHBoxLayout,QWidget,QPushButton
+from PyQt5.QtWidgets import QHBoxLayout,QWidget,QPushButton,QTableWidgetItem
 from common.HtmlSource import HtmlSource
 from common.RuleConf import Rule
 from lxml import html
@@ -30,6 +30,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             # 隐藏表格
             self.tableView.setVisible(False)
             self.tableWidget.setVisible(False)
+
             # 设置测试数据
             self.urlLineEdit.setText("http://www.xuexi111.org/yingyv/")
             # url 测试
@@ -172,7 +173,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
                     # 设置每个位置的按钮
                     self.tableWidget.setCellWidget(row, column, button)
                 else:
-                    item = QtWidgets.QTableWidgetItem(self.conf["columns"][row][title[column]])
+                    item = QTableWidgetItem(self.conf["columns"][row][title[column]])
                     # 设置每个位置的文本值
                     self.tableWidget.setItem(row, column, item)
 

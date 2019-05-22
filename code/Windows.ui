@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>C:/Users/Administrator/.designer/backup/favicon_32x32.ico</normaloff>C:/Users/Administrator/.designer/backup/favicon_32x32.ico</iconset>
+    <normaloff>favicon_32x32.ico</normaloff>favicon_32x32.ico</iconset>
   </property>
   <property name="toolTipDuration">
    <number>-1</number>

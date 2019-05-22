@@ -29,7 +29,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             self.setupUi(self)
             # 隐藏表格
             self.tableView.setVisible(False)
-            self.tableView_2.setVisible(False)
+            self.tableWidget.setVisible(False)
             # 设置测试数据
             self.urlLineEdit.setText("http://www.xuexi111.org/yingyv/")
             # url 测试
@@ -154,28 +154,31 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
     # 展示配置信息
     def showColumns(self):
         print(self.conf["columns"])
-        self.tableView_2.setVisible(True)
+        self.tableWidget.setVisible(True)
 
         title = ["名称","规则","类型","操作"]
 
         # 设置数据层次结构，4行4列
-        self.tableView_2.model = QStandardItemModel(len(self.conf["columns"]), len(title))
+        self.tableWidget.setRowCount(len(self.conf["columns"]))  # 行下标最大值
+        self.tableWidget.setColumnCount(len(title))  # 列
+
         # 设置水平方向四个头标签文本内容
-        self.tableView_2.model.setHorizontalHeaderLabels(title)
-        _translate = QtCore.QCoreApplication.translate
+        self.tableWidget.setHorizontalHeaderLabels(title)
+
         for row in range(len(self.conf["columns"])):
             for column in range(len(title)):
                 if(title[column] == "操作"):
                     button = self.buttonForRow(str(self.conf["columns"][row]["uuid"]))
-
                     # 设置每个位置的按钮
-                    self.tableView_2.setCellWidget(row, column, button)
+                    self.tableWidget.setCellWidget(row, column, button)
                 else:
-                    item = QStandardItem(self.conf["columns"][row][title[column]])
+                    item = QtWidgets.QTableWidgetItem(self.conf["columns"][row][title[column]])
                     # 设置每个位置的文本值
-                    self.tableView_2.model.setItem(row, column, item)
+                    self.tableWidget.setItem(row, column, item)
+
+        print("1q23")
         # 实例化表格视图，设置模型为自定义的模型
-        self.tableView_2.setModel(self.tableView_2.model)
+        #self.tableWidget(self.tableWidget.model)
 
     # 列表内添加按钮
     def buttonForRow(self, id):

@@ -43,16 +43,6 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="5">
-       <widget class="QTableView" name="tableView_2">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>250</height>
-         </size>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0" colspan="4">
        <widget class="QLineEdit" name="urlLineEdit">
         <property name="text">
@@ -254,6 +244,9 @@
          <string>显示表格</string>
         </property>
        </widget>
+      </item>
+      <item row="3" column="0" colspan="5">
+       <widget class="QTableWidget" name="tableWidget"/>
       </item>
      </layout>
     </item>

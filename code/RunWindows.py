@@ -49,8 +49,6 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         except BaseException:
             print(BaseException.args)
 
-
-
     #定义槽函数 获取html页面
     def openUrl(self):
         self.textBrowser.setVisible(True)
@@ -245,7 +243,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     ui =  BtnLinsenWindow()
-
+    test = """
     # 创建QSplashScreen对象实例
     splash = QtWidgets.QSplashScreen(QtGui.QPixmap("uugai_94x194.png"))
     # 设置画面中的文字的字体
@@ -274,9 +272,10 @@ if __name__ == "__main__":
     time.sleep(2)
     splash.showMessage("启动中...100%", QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
     time.sleep(1)
-    ui.show()
+
     # 当主界面显示后销毁启动画面
     splash.finish(ui)
-
+    """
+    ui.show()
     sys.exit(app.exec_())
 

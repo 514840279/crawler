@@ -24,6 +24,25 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>下一页</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="lineEdit_2">
         <property name="minimumSize">
@@ -226,7 +245,13 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="4">
+      <item row="5" column="1" colspan="3">
+       <widget class="QLineEdit" name="lineEdit_4"/>
+      </item>
+      <item row="3" column="0" colspan="5">
+       <widget class="QTableWidget" name="tableWidget"/>
+      </item>
+      <item row="7" column="4">
        <widget class="QPushButton" name="saveConf">
         <property name="minimumSize">
          <size>
@@ -245,8 +270,24 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="5">
-       <widget class="QTableWidget" name="tableWidget"/>
+      <item row="5" column="4">
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>测试</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

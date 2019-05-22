@@ -6,161 +6,275 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
-    <height>602</height>
+    <width>745</width>
+    <height>705</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>爬虫管理</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>C:/Users/Administrator/.designer/backup/favicon_32x32.ico</normaloff>C:/Users/Administrator/.designer/backup/favicon_32x32.ico</iconset>
+  </property>
+  <property name="toolTipDuration">
+   <number>-1</number>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>801</width>
-      <height>551</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="9">
-        <widget class="QPushButton" name="urlbutton">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lineEdit_2">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>标题名</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="5">
+       <widget class="QTableView" name="tableView_2">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>250</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLineEdit" name="urlLineEdit">
+        <property name="text">
+         <string>请输入列表页面的网址</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>测试</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>列表区域</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>测试</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="3">
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="text">
+         <string>请输入正确范围的xpath</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QComboBox" name="comboBox">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <item>
          <property name="text">
-          <string>获取源码</string>
+          <string>文本</string>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="9">
-        <widget class="QLineEdit" name="urlLineEdit">
+        </item>
+        <item>
          <property name="text">
-          <string>请输入列表页面的网址</string>
+          <string>连接</string>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="9">
-        <widget class="QPushButton" name="pushButton">
+        </item>
+        <item>
          <property name="text">
-          <string>测试</string>
+          <string>数组</string>
          </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="10">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>770</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="9">
-        <widget class="QPushButton" name="pushButton_3">
+        </item>
+        <item>
          <property name="text">
-          <string>添加</string>
+          <string>数组转文本</string>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_4">
+        </item>
+        <item>
          <property name="text">
-          <string>TextLabel</string>
+          <string>文本拼接</string>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="label_3">
+        </item>
+        <item>
          <property name="text">
-          <string>TextLabel</string>
+          <string>文本截取</string>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QPushButton" name="pushButton_6">
+        </item>
+        <item>
          <property name="text">
-          <string>删除</string>
+          <string>数组截取</string>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="8">
-        <widget class="QPushButton" name="pushButton_2">
+        </item>
+        <item>
          <property name="text">
-          <string>测试</string>
+          <string>二值转换</string>
          </property>
-        </widget>
-       </item>
-       <item row="4" column="9">
-        <widget class="QPushButton" name="pushButton_7">
+        </item>
+        <item>
          <property name="text">
-          <string>显示表格</string>
+          <string>二值逆转换</string>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="7">
-        <widget class="QComboBox" name="comboBox">
-         <item>
-          <property name="text">
-           <string>文本</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>数组</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>文本拼接</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>数组截取</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLineEdit" name="lineEdit_2">
-         <property name="text">
-          <string>标题名</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="6">
-        <widget class="QLineEdit" name="lineEdit_3">
-         <property name="text">
-          <string>xpath</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>列表区域</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="8">
-        <widget class="QLineEdit" name="lineEdit">
-         <property name="text">
-          <string>请输入正确范围的xpath</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QTextBrowser" name="textBrowser"/>
-     </item>
-    </layout>
-   </widget>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>添加</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="urlbutton">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>获取源码</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>xpath</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="QPushButton" name="saveConf">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>显示表格</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="minimumSize">
+       <size>
+        <width>1</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QTableView" name="tableView">
+      <property name="showGrid">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
@@ -168,7 +282,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>808</width>
+     <width>745</width>
      <height>26</height>
     </rect>
    </property>

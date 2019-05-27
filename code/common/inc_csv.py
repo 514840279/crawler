@@ -73,7 +73,7 @@ class Csv_base(inc_sys.String_what):
         return csv_list
 
     # CSV 文件读取
-    def write_csv_file_line(self, file_path='',mode='a',str=[]):
+    def write_csv_file_line(self, file_path='',mode='a+',str=[]):
         # 打开文件，追加a
         out = open(file_path,mode=mode, newline='', encoding="utf-8")
         # 设定写入模式

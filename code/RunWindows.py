@@ -42,6 +42,9 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             self.pushButton_2.clicked.connect(self.testColumn)
             # 添加配置
             self.pushButton_3.clicked.connect(self.addColumn)
+            # 添加配置
+            self.pushButton_4.clicked.connect(self.testNext)
+
 
             # 保存配置
             #self.saveConf.clicked.connect(self.showTable)
@@ -61,7 +64,8 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         htmlSource = HtmlSource()
         self.html_context = htmlSource.get_html(url_p=self.conf["url"],type_p='rg')
         self.textBrowser.setText(self.html_context)
-        self.lineEdit.setText("// div[@class =\"padd w645\"]/div[@class=\"list_left\"]/div[@class=\"topic-list\"]/ul/li")
+        self.lineEdit.setText("//div[@class =\"padd w645\"]/div[@class=\"list_left\"]/div[@class=\"topic-list\"]/ul/li")
+        self.lineEdit_4.setText("//div[ @class =\"padd w645\"]/div[@ class =\"list_left\"]/div[@ class =\"show-page\"]/a[@ class =\"next\"]/@ href")
 
     # 定义槽函数 body 信息
     def testBody(self):
@@ -153,7 +157,8 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
 
     # 展示配置信息
     def showColumns(self):
-        print(self.conf["columns"])
+
+
         self.tableWidget.setVisible(True)
 
         title = ["名称","规则","类型","操作"]
@@ -176,9 +181,6 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
                     # 设置每个位置的文本值
                     self.tableWidget.setItem(row, column, item)
 
-        print("1q23")
-        # 实例化表格视图，设置模型为自定义的模型
-        #self.tableWidget(self.tableWidget.model)
 
     # 列表内添加按钮
     def buttonForRow(self, id):
@@ -209,7 +211,15 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         return widget
 
     def updateConfig(self,id):
+
         print("1")
+
+    def  testNext(self):
+        nextUrl = self.lineEdit_4.test()
+        print(nextUrl)
+        self.textBrowser.setVisible(False)
+        self.tableView.setVisible(True)
+        self.textBrowser.test('nextUrl')
 
 
     # 预览信息
@@ -237,6 +247,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         # 展示表格
         self.textBrowser.setVisible(False)
         self.tableView.setVisible(True)
+
 
 
 

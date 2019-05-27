@@ -24,8 +24,8 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
         <property name="minimumSize">
          <size>
           <width>60</width>
@@ -39,7 +39,64 @@
          </size>
         </property>
         <property name="text">
-         <string>下一页</string>
+         <string>列表区域</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>添加</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>测试</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="urlbutton">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>获取源码</string>
         </property>
        </widget>
       </item>
@@ -62,52 +119,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="4">
-       <widget class="QLineEdit" name="urlLineEdit">
-        <property name="text">
-         <string>请输入列表页面的网址</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QPushButton" name="pushButton">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>测试</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>列表区域</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
+      <item row="2" column="4">
        <widget class="QPushButton" name="pushButton_2">
         <property name="minimumSize">
          <size>
@@ -126,14 +138,62 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" colspan="3">
+      <item row="3" column="0" colspan="6">
+       <widget class="QTableWidget" name="tableWidget"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>下一页</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="5">
+       <widget class="QLineEdit" name="urlLineEdit">
+        <property name="text">
+         <string>请输入列表页面的网址</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="4">
        <widget class="QLineEdit" name="lineEdit">
         <property name="text">
          <string>请输入正确范围的xpath</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="5" column="4">
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>测试</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
        <widget class="QComboBox" name="comboBox">
         <property name="minimumSize">
          <size>
@@ -194,8 +254,8 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="4">
-       <widget class="QPushButton" name="pushButton_3">
+      <item row="5" column="3">
+       <widget class="QComboBox" name="comboBox_2">
         <property name="minimumSize">
          <size>
           <width>60</width>
@@ -208,50 +268,54 @@
           <height>16777215</height>
          </size>
         </property>
-        <property name="text">
-         <string>添加</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>文本</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>连接</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>数组</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>数组转文本</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>文本拼接</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>文本截取</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>数组截取</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>二值转换</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>二值逆转换</string>
+         </property>
+        </item>
        </widget>
       </item>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="urlbutton">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>获取源码</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_3">
-        <property name="minimumSize">
-         <size>
-          <width>400</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>xpath</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEdit_4"/>
-      </item>
-      <item row="3" column="0" colspan="5">
-       <widget class="QTableWidget" name="tableWidget"/>
-      </item>
-      <item row="7" column="4">
+      <item row="7" column="5">
        <widget class="QPushButton" name="saveConf">
         <property name="minimumSize">
          <size>
@@ -266,12 +330,12 @@
          </size>
         </property>
         <property name="text">
-         <string>显示表格</string>
+         <string>保存配置</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="4">
-       <widget class="QPushButton" name="pushButton_4">
+      <item row="5" column="5">
+       <widget class="QPushButton" name="nextPage">
         <property name="minimumSize">
          <size>
           <width>60</width>
@@ -285,7 +349,23 @@
          </size>
         </property>
         <property name="text">
-         <string>测试</string>
+         <string>翻页</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_4"/>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>xpath</string>
         </property>
        </widget>
       </item>
@@ -317,14 +397,21 @@
      <x>0</x>
      <y>0</y>
      <width>745</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
      <string>创建</string>
     </property>
-    <addaction name="actionxinfjdska"/>
+    <widget class="QMenu" name="menu_4">
+     <property name="title">
+      <string>新建任务</string>
+     </property>
+     <addaction name="actionLiebiao"/>
+     <addaction name="actionNeirong"/>
+    </widget>
+    <addaction name="menu_4"/>
     <addaction name="actionjiankong"/>
    </widget>
    <widget class="QMenu" name="menu_2">
@@ -341,14 +428,19 @@
    <addaction name="menu_3"/>
    <addaction name="menu_2"/>
   </widget>
-  <action name="actionxinfjdska">
-   <property name="text">
-    <string>新建任务</string>
-   </property>
-  </action>
   <action name="actionjiankong">
    <property name="text">
     <string>监控</string>
+   </property>
+  </action>
+  <action name="actionLiebiao">
+   <property name="text">
+    <string>列表</string>
+   </property>
+  </action>
+  <action name="actionNeirong">
+   <property name="text">
+    <string>内容</string>
    </property>
   </action>
  </widget>

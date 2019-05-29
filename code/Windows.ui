@@ -245,14 +245,11 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEdit_4"/>
-      </item>
       <item row="3" column="0" colspan="5">
        <widget class="QTableWidget" name="tableWidget"/>
       </item>
       <item row="7" column="4">
-       <widget class="QPushButton" name="saveConf">
+       <widget class="QPushButton" name="saveConfButton">
         <property name="minimumSize">
          <size>
           <width>60</width>
@@ -266,11 +263,14 @@
          </size>
         </property>
         <property name="text">
-         <string>显示表格</string>
+         <string>保存配置</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="4">
+      <item row="5" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_4"/>
+      </item>
+      <item row="5" column="3">
        <widget class="QPushButton" name="pushButton_4">
         <property name="minimumSize">
          <size>
@@ -286,6 +286,25 @@
         </property>
         <property name="text">
          <string>测试</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>下一页</string>
         </property>
        </widget>
       </item>

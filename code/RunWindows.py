@@ -7,10 +7,12 @@ from PyQt5.QtGui import QStandardItemModel,QStandardItem,QFont
 from PyQt5.QtWidgets import QHBoxLayout,QWidget,QPushButton,QTableWidgetItem,QStyle
 from common.HtmlSource import HtmlSource
 from common.RuleConf import Rule
+from common.inc_file import File_file
 from lxml import html
 
 import uuid
 import time
+import json
 
 
 
@@ -19,7 +21,8 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
     conf={
         "url":''  ,
         "body_content_xpath":"",
-        "columns":[]
+        "columns":[],
+        "nextpage":""
     }
     body_content_list = []
 
@@ -42,10 +45,13 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             self.pushButton_2.clicked.connect(self.testColumn)
             # 添加配置
             self.pushButton_3.clicked.connect(self.addColumn)
-
+            # 测试下一页
+            self.pushButton_4.clicked.connect(self.testNextPage)
+            # 测试爬虫
+            self.pushButton_5.clicked.connect(self.testCrawler)
             # 保存配置
-            #self.saveConf.clicked.connect(self.showTable)
-            self.saveConf.setVisible(False)
+            self.saveConfButton.clicked.connect(self.saveConf)
+            #self.saveConf.setVisible(False)
         except BaseException:
             print(BaseException.args)
 
@@ -57,11 +63,12 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         self.conf["url"] = self.urlLineEdit.text()
         # 加载外部页面，调用
         #self.webEngineView.setUrl(QtCore.QUrl(url))
-        print(self.conf["url"])
+        #print(self.conf["url"])
         htmlSource = HtmlSource()
         self.html_context = htmlSource.get_html(url_p=self.conf["url"],type_p='rg')
         self.textBrowser.setText(self.html_context)
-        self.lineEdit.setText("// div[@class =\"padd w645\"]/div[@class=\"list_left\"]/div[@class=\"topic-list\"]/ul/li")
+        self.lineEdit.setText("//div[@class =\"padd w645\"]/div[@class=\"list_left\"]/div[@class=\"topic-list\"]/ul/li")
+        self.lineEdit_4.setText("//div[@class =\"padd w645\"]/div[@class=\"list_left\"]/div[@class=\"show-page\"]/a[@class=\"next\"]/@href")
 
     # 定义槽函数 body 信息
     def testBody(self):
@@ -129,7 +136,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             self.lineEdit_3.setText('')
             self.lineEdit_2.setText('')
             self.column = {
-                "uuid": uuid.uuid4(),
+                "uuid": str(uuid.uuid4()),
                 "名称": '',  # 必须
                 "规则": '',  # 必须
                 "类型": '',  # 必须
@@ -175,8 +182,6 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
                     item = QTableWidgetItem(self.conf["columns"][row][title[column]])
                     # 设置每个位置的文本值
                     self.tableWidget.setItem(row, column, item)
-
-        print("1q23")
         # 实例化表格视图，设置模型为自定义的模型
         #self.tableWidget(self.tableWidget.model)
 
@@ -211,6 +216,76 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
     def updateConfig(self,id):
         print("1")
 
+    # 测试下一页的配置
+    def testNextPage(self):
+        self.conf["nextpage"] = self.lineEdit_4.text()
+        tree = html.fromstring(self.html_context)
+        nextpageurl = tree.xpath(self.conf['nextpage'])
+        if(len(nextpageurl)>0):
+            self.textBrowser.setVisible(True)
+            self.tableView.setVisible(False)
+            self.textBrowser.setText(nextpageurl[0])
+
+    # 测试爬虫整体配置
+    def testCrawler(self):
+        # 传入下一页url
+        self.crawler(self.conf['url'],times=1)
+        # 获取页面
+        # 获取列表区域信息
+        # 解析字段
+        # 输出结果
+        # 解析下一页url
+
+    # 爬虫预览
+    def crawler(self,nextPageUrl='',times=1):
+        if(times>5):
+            return
+        times = times+1
+        # 表格头信息
+        title = []
+        for column in self.conf['columns']:
+            title.append(column['名称'])
+        # 输出表格头 TODO
+        print(1)
+
+        self.textBrowser.setVisible(True)
+        self.tableView.setVisible(False)
+
+        htmlSource = HtmlSource()
+        html_context = htmlSource.get_html(url_p=nextPageUrl, type_p='rg')
+        self.textBrowser.setText(html_context)
+        time.sleep(1)
+        tree = html.fromstring(html_context)
+        result_list = tree.xpath(self.conf['body_content_xpath'])
+        if (len(result_list) > 0):
+            # 表格数据
+            rule = Rule()
+            list = rule._analysis_list(list=result_list, columns=self.conf["columns"])
+            # TODO 输出数据
+            print(list)
+
+            # 设置数据层次结构，4行4列
+            self.tableView.model = QStandardItemModel(len(list), len(self.conf['columns']))
+            # 设置水平方向四个头标签文本内容
+            self.tableView.model.setHorizontalHeaderLabels(title)
+
+            for row in range(len(list)):
+                for column in range(len(title)):
+                    item = QStandardItem(list[row][title[column]])
+                    # 设置每个位置的文本值
+                    self.tableView.model.setItem(row, column, item)
+            # 实例化表格视图，设置模型为自定义的模型
+            self.tableView.setModel(self.tableView.model)
+            # 展示表格
+            self.textBrowser.setVisible(False)
+            self.tableView.setVisible(True)
+            time.sleep(1)
+        # 下一页url
+        nextpageurl = tree.xpath(self.conf['nextpage'])
+        # 递归调用
+        if(len(nextpageurl)>0):
+            print(nextpageurl[0])
+            self.crawler(nextPageUrl=nextpageurl[0],times=times)
 
     # 预览信息
     def showTable(self):
@@ -237,6 +312,16 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         # 展示表格
         self.textBrowser.setVisible(False)
         self.tableView.setVisible(True)
+
+    # 实例化配置信息到管理中心
+    def saveConf(self):
+        # TODO 上传到服务器、保存数据到数据库提供监控查询点
+        # 弹窗输入配置的名称，配置执行控制的条件、定时配置等等信息录入到数据库
+        filename = "testxuexi111.json"
+        # 保存配置
+        file = File_file()
+        file.save_source(path="./configs",file=filename,all_the_text=str(self.conf))
+
 
 
 

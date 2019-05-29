@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>745</width>
+    <width>926</width>
     <height>705</height>
    </rect>
   </property>
@@ -22,6 +22,23 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="3" column="0">
+     <widget class="QTableView" name="tableView">
+      <property name="showGrid">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="minimumSize">
+       <size>
+        <width>1</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -254,67 +271,6 @@
         </item>
        </widget>
       </item>
-      <item row="5" column="3">
-       <widget class="QComboBox" name="comboBox_2">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <item>
-         <property name="text">
-          <string>文本</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>连接</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>数组</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>数组转文本</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>文本拼接</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>文本截取</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>数组截取</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>二值转换</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>二值逆转换</string>
-         </property>
-        </item>
-       </widget>
-      </item>
       <item row="7" column="5">
        <widget class="QPushButton" name="saveConf">
         <property name="minimumSize">
@@ -334,46 +290,8 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="5">
-       <widget class="QTableWidget" name="tableWidget"/>
-      </item>
-      <item row="7" column="4">
-       <widget class="QPushButton" name="saveConfButton">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>保存配置</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_4"/>
-      </item>
-      <item row="5" column="3">
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="minimumSize">
-         <size>
-          <width>400</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>xpath</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="4">
-       <widget class="QPushButton" name="pushButton_5">
+      <item row="5" column="5">
+       <widget class="QPushButton" name="nextPage">
         <property name="minimumSize">
          <size>
           <width>60</width>
@@ -391,24 +309,54 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>xpath</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_4"/>
+      </item>
+      <item row="5" column="3">
+       <widget class="QComboBox" name="comboBox_2">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <item>
+         <property name="text">
+          <string>连接</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>文本拼接</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>文本截取</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
-    </item>
-    <item row="1" column="0">
-     <widget class="QTextBrowser" name="textBrowser">
-      <property name="minimumSize">
-       <size>
-        <width>1</width>
-        <height>0</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QTableView" name="tableView">
-      <property name="showGrid">
-       <bool>false</bool>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
@@ -418,7 +366,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>745</width>
+     <width>926</width>
      <height>23</height>
     </rect>
    </property>

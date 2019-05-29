@@ -49,6 +49,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             self.pushButton_4.clicked.connect(self.testNextPage)
             # 测试爬虫
             self.pushButton_5.clicked.connect(self.testCrawler)
+
             # 保存配置
             self.saveConfButton.clicked.connect(self.saveConf)
             #self.saveConf.setVisible(False)
@@ -160,7 +161,8 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
 
     # 展示配置信息
     def showColumns(self):
-        print(self.conf["columns"])
+
+
         self.tableWidget.setVisible(True)
 
         title = ["名称","规则","类型","操作"]
@@ -184,6 +186,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
                     self.tableWidget.setItem(row, column, item)
         # 实例化表格视图，设置模型为自定义的模型
         #self.tableWidget(self.tableWidget.model)
+
 
     # 列表内添加按钮
     def buttonForRow(self, id):
@@ -214,6 +217,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         return widget
 
     def updateConfig(self,id):
+
         print("1")
 
     # 测试下一页的配置
@@ -321,6 +325,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         # 保存配置
         file = File_file()
         file.save_source(path="./configs",file=filename,all_the_text=str(self.conf))
+
 
 
 

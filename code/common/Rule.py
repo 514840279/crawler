@@ -4,6 +4,7 @@
 import hashlib
 from lxml import html
 
+import re
 
 class Rule:
     # 计算MD5值
@@ -47,7 +48,6 @@ class Rule:
             elif 'sp' == a[2]:
                 # 二次处理
                 text = tree.xpath(a[1])
-                print(text)
                 if len(text) > 0:
                     column_context.append((a[0], [(text[0].split(a[3])[a[4]]).strip()]))
                 else:
@@ -77,7 +77,7 @@ class Rule:
                     else:
                         column_context.append((a[0], text.strip()))
                 else:
-                    column_context.append((a[0], text[a[3]].strip()))
+                    column_context.append((a[0], [text[a[3]].strip()]))
             elif 'sarr' == a[2]:
                 # 二次处理 几个中的和成一个
                 text = tree.xpath(a[1])
@@ -107,7 +107,6 @@ class Rule:
                 list = []
                 column = []
                 for item in text:
-                    print(item)
                     if item.strip() == '':
                         pass
                     else:
@@ -123,7 +122,6 @@ class Rule:
                 list = []
                 column = []
                 for item in text:
-                    print(item)
                     if item.strip() == '':
                         pass
                     else:
@@ -133,6 +131,38 @@ class Rule:
                         column.append(([list[item]], list[item - 1]))
                 column_context.append((a[0], column))
                 # print(a[0]+a[1]+a[2])
+
+            elif 'sarr-reg'== a[2]:
+                # 二次处理 几个中的和成一个
+                text = tree.xpath(a[1])
+                st = ''
+                for item in text:
+                    if item.strip() == '':
+                        pass
+                    else:
+                        st = st + item.strip()
+                st = re.sub(r''+a[3],'',st.strip(),0,re.S)
+                column_context.append((a[0], [st.strip()]))
+            elif 'arr-reg' == a[2]:
+                # 二次处理 几个中的和成一个
+                text = tree.xpath(a[1])
+                list = []
+                for item in text:
+                    if item.strip() == '':
+                        pass
+                    else:
+                        list.append(re.sub(r'' + a[3], '', item.strip(), 0, re.S).strip())
+                column_context.append((a[0], list))
+            elif 'arr-replace' == a[2]:
+                # 二次处理 几个中的和成一个
+                text = tree.xpath(a[1])
+                list = []
+                for item in text:
+                    if str(item.strip()).replace(a[3],"") == '':
+                        pass
+                    else:
+                        list.append(str(item.strip()).replace(a[3],"").strip())
+                column_context.append((a[0], list))
         return column_context
 
     # 数据提取详细页的

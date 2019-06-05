@@ -2,6 +2,7 @@
 node_modules/
 __pycache__/
 /dist/
+config/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

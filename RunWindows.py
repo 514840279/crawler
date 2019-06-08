@@ -48,7 +48,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
             # 测试下一页
             self.pushButton_4.clicked.connect(self.testNextPage)
             # 测试爬虫
-            self.pushButton_5.clicked.connect(self.testCrawler)
+            self.nextPage.clicked.connect(self.testCrawler)
 
             # 保存配置
             self.saveConfButton.clicked.connect(self.saveConf)
@@ -233,7 +233,7 @@ class BtnLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
     # 测试爬虫整体配置
     def testCrawler(self):
         # 传入下一页url
-        self.crawler(self.conf['url'],times=1)
+        self.crawler(nextPageUrl=self.conf['url'],times=1)
         # 获取页面
         # 获取列表区域信息
         # 解析字段

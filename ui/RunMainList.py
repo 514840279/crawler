@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from mainList import Ui_Form
-from PyQt5 import QtGui,QtCore,QtWidgets
-from PyQt5.QtGui import QStandardItemModel,QStandardItem,QFont
-from PyQt5.QtWidgets import QHBoxLayout,QWidget,QPushButton,QTableWidgetItem,QStyle
+from ui.mainList import Ui_Form
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QStandardItemModel,QStandardItem
+from PyQt5.QtWidgets import QHBoxLayout,QWidget,QPushButton,QTableWidgetItem
 from common.HtmlSource import HtmlSource
 from common.RuleConf import Rule
 from common.inc_file import File_file
@@ -13,7 +13,7 @@ from lxml import html
 import uuid
 import time
 
-class RunMainList(Ui_Form, QtWidgets.QMainWindow):
+class RunMainList(QWidget, Ui_Form):
     html_context = ""
     conf = {
         "url": '',
@@ -46,7 +46,7 @@ class RunMainList(Ui_Form, QtWidgets.QMainWindow):
             # 测试下一页
             self.pushButton_4.clicked.connect(self.testNextPage)
             # 测试爬虫
-            self.pushButton_5.clicked.connect(self.testCrawler)
+            self.nextPage.clicked.connect(self.testCrawler)
 
             # 保存配置
             self.saveConfButton.clicked.connect(self.saveConf)

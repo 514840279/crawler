@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>920</width>
+    <height>705</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>爬虫管理</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>favicon_32x32.ico</normaloff>favicon_32x32.ico</iconset>
+  </property>
+  <property name="toolTipDuration">
+   <number>-1</number>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="stackedWidget"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>920</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>创建</string>
+    </property>
+    <addaction name="actionLiebiao"/>
+    <addaction name="actionNeirong"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>关于我们</string>
+    </property>
+    <addaction name="actionguanyu"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>分析</string>
+    </property>
+    <addaction name="actioncaiji"/>
+    <addaction name="actionjiankong"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_2"/>
+  </widget>
+  <action name="actionjiankong">
+   <property name="text">
+    <string>监控</string>
+   </property>
+  </action>
+  <action name="actionLiebiao">
+   <property name="text">
+    <string>列表</string>
+   </property>
+  </action>
+  <action name="actionNeirong">
+   <property name="text">
+    <string>内容</string>
+   </property>
+  </action>
+  <action name="actionguanyuwomen">
+   <property name="text">
+    <string>关于我们</string>
+   </property>
+  </action>
+  <action name="actionguanyu">
+   <property name="text">
+    <string>关于我们</string>
+   </property>
+  </action>
+  <action name="actioncaiji">
+   <property name="text">
+    <string>每日数据</string>
+   </property>
+  </action>
+  <action name="actionrenwu">
+   <property name="text">
+    <string>renwu</string>
+   </property>
+  </action>
+  <action name="actionshuju">
+   <property name="text">
+    <string>shuju</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

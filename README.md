@@ -155,10 +155,21 @@ if __name__ == '__main__': # 判断文件入口
 
 	https://github.com/514840279/crawler
 
-前台程序：
 
-	https://github.com/514840279/danyuan-application
-
-交qq流群： 
-
-	180307529
+## 发展 
+    crawler 开发至今不得不进行一项重大决定，基于使用人群扩大必须适用更广泛的人群设计。因此基于发展原则，需要构建ui以供更多的人使用，
+    由于技术限制，现在开发仅仅提供xpath方式手动添加规则到文件中，假如技术难题解决将使用鼠标选择方式，以适用更广泛的人群。
+    
+    ui使用pyqt5构建，采用ui与逻辑分离方式快速描写ui，使用主窗体添加方式将多个子窗体包含进窗口中。
+    
+## 打包
+    # 更新到最新的 pyinstaller
+    pip install --upgrade pyinstaller
+    # 进行打包
+    pyinstaller -F -w RunWindows.py
+    # 打包不包含图片，和配置文件以及生成文件的目录需要复制到一起
+      打包完成后 在dist 中生成RunWindows.exe 双击即可执行
+    
+    
+     
+    

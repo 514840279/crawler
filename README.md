@@ -166,7 +166,7 @@ if __name__ == '__main__': # 判断文件入口
     # 更新到最新的 pyinstaller
     pip install --upgrade pyinstaller
     # 进行打包
-    pyinstaller -F -w RunWindows.py
+    pyinstaller -F -w -i favicon_32x32.ico  RunWindows.py
     # 打包不包含图片，和配置文件以及生成文件的目录需要复制到一起
       打包完成后 在dist 中生成RunWindows.exe 双击即可执行
     

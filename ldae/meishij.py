@@ -5,16 +5,26 @@ from common.Rule import Rule
 #from common.inc_conn import Conn_mysql
 from common.inc_csv import Csv_base
 import requests
+from lxml import html
 
 htmlSource = HtmlSource()
 rule = Rule()
 csv = Csv_base()
 flag =0
+commontitle = 0
 #ldae_mysql = Conn_mysql( host='localhost', user='root', passwd='root', db='ldae', port=3306) # 生成MYSQL数据库索引数据实例
 
 # 多线程
 def read_detial(url):
     detial_html = htmlSource.get_html(url_p=url, type_p='rg')
+
+    #save_menu(url,detial_html = detial_html)
+    tree = html.fromstring(detial_html)
+    li = tree.xpath('//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li')
+    if len(li)>0:
+        save_commons(url,detial_html)
+
+def save_menu(url,detial_html):
     #print(detial_html)
     global flag
     colum = [
@@ -59,6 +69,44 @@ def read_detial(url):
     #sql="insert into cancer value('%s','%s','%s','%s','%s')"%(result[0][1][0],str(result[1][1][0]).replace('患者,图片因隐私问题无法显示','').replace("患者,","患者:").replace("医生,","医生:").replace('\'','"'),type,'春雨医生',url)
     #print(sql)
     #ldae_mysql.write_sql(sql=sql)
+
+def save_commons(url,detial_html):
+
+    colum = [
+        ('地址', url, 'n'),
+        ('昵称', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/a/h5/text()', 'l'),
+        ('用户头像', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/a/img/@src', 'l'),
+        ('用户主页', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/a/@href', 'l'),
+        ('评论内容', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/div[@class="c"]/p[@class="p1"]/text()', 'arr',1),
+        ('评论时间', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/div[@class="c"]/div[@class="info"]/span[1]/text()', 'arr-replace','来自'),
+        ('回复数', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/div[@class="c"]/div[@class="info"]/span[@class="zzzzan"]/strong/text()', 'l'),
+
+    ]
+    str_t = ''
+    global commontitle
+    if (commontitle == 0):
+        for i in range(0, len(colum)):
+            if (i > 0):
+                str_t = str_t + ','
+            str_t = str_t + "`" + str(colum[i][0]) + "`"
+        csv.write_csv_file_line(file_path="../data/meishij_common.csv", str=[str_t])
+        commontitle = 1
+
+    result = rule.html_content_analysis_list(html_text=detial_html, column=colum, url=url)
+    print(str(result))
+    str_rows=[]
+    for row in result:
+        str_t = ''
+        # 写入文件
+        for i in range(0, len(colum)):
+            if (i > 0):
+                str_t = str_t + ','
+            str_t = str_t + "`" + str(row[i][1]) + "`"
+            if (colum[i][0] == '图片'):
+                save_img(imgs=row[i][1])
+        str_rows.append(str_t)
+    csv.write_csv_file_line(file_path="../data/meishij.csv", str=str_rows)
+
 
 def save_img(imgs):
     for img_url in imgs:

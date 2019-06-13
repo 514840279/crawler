@@ -46,30 +46,28 @@ class Rule:
                 # 返回 做补位处理
                 column_context.append((a[0], [a[1]]))
             elif 'sp' == a[2]:
-                # 二次处理
+                # split 分割字符串取其中一个
                 text = tree.xpath(a[1])
                 if len(text) > 0:
                     column_context.append((a[0], [(text[0].split(a[3])[a[4]]).strip()]))
                 else:
                     column_context.append((a[0], []))
             elif 'sab' == a[2]:
-                # 二次处理 字符串前拼接
-                # 赶集网读取联系电话完整图片地址 处理过程
+                #  多个字符串 后拼接
                 text = tree.xpath(a[1])
                 list = []
                 for path in text:
                     list.append(a[3] + path.strip())
                 column_context.append((a[0], list))
             elif 'sr' == a[2]:
-                # 二次处理 字符串前拼接
-                # 赶集网读取联系电话完整图片地址 处理过程
+                # 前拼接多个地址
                 text = tree.xpath(a[1])
                 list = []
                 for path in text:
                     list.append(self.get_url_root(url) + path.strip())
                 column_context.append((a[0], list))
             elif 'arr' == a[2]:
-                # 二次处理 几个中的一个
+                # 数组中取其中一个
                 text = tree.xpath(a[1])
                 if (len(text) == 0 or len(text) < a[3]):
                     if (len(text) == 0):
@@ -78,8 +76,8 @@ class Rule:
                         column_context.append((a[0], text.strip()))
                 else:
                     column_context.append((a[0], [text[a[3]].strip()]))
-            elif 'sarr' == a[2]:
-                # 二次处理 几个中的和成一个
+            elif 'sarrsub' == a[2]:
+                # 数组拼接成字符串截取部分
                 text = tree.xpath(a[1])
                 st = ''
                 for item in text:
@@ -89,8 +87,8 @@ class Rule:
                     else:
                         st = st + item.strip()
                 column_context.append((a[0], [st.strip()]))
-            elif 'sarra' == a[2]:
-                # 二次处理 几个中的和成一个
+            elif 'sarr' == a[2]:
+                # 数组拼接成字符串
                 text = tree.xpath(a[1])
                 st = ''
                 for item in text:
@@ -98,11 +96,11 @@ class Rule:
                     if item.strip() == '':
                         pass
                     else:
-                        st = st + item.strip() + a[3]
+                        st = st + item.strip()
                 column_context.append((a[0], [st.strip()]))
             elif 'nsp' == a[2]:
                 # 二次处理 非固定列 ul处理
-                # 应届生网最后的不固定信息
+                # 集合中单数做列，双数做数据
                 text = tree.xpath(a[1])
                 list = []
                 column = []
@@ -117,7 +115,7 @@ class Rule:
                 column_context.append((a[0], column))
             elif 'nspa' == a[2]:
                 # 二次处理 非固定列 ul处理
-                # 拉钩网企业信息不固定
+                # 拉钩网企业信息不固定，集合中单数做数据，双数做列
                 text = tree.xpath(a[1])
                 list = []
                 column = []
@@ -133,7 +131,7 @@ class Rule:
                 # print(a[0]+a[1]+a[2])
 
             elif 'sarr-reg'== a[2]:
-                # 二次处理 几个中的和成一个
+                # 正则： 获取成一个字符串
                 text = tree.xpath(a[1])
                 st = ''
                 for item in text:
@@ -144,7 +142,7 @@ class Rule:
                 st = re.sub(r''+a[3],'',st.strip(),0,re.S)
                 column_context.append((a[0], [st.strip()]))
             elif 'arr-reg' == a[2]:
-                # 二次处理 几个中的和成一个
+                # 正则： 获取集合
                 text = tree.xpath(a[1])
                 list = []
                 for item in text:
@@ -154,7 +152,7 @@ class Rule:
                         list.append(re.sub(r'' + a[3], '', item.strip(), 0, re.S).strip())
                 column_context.append((a[0], list))
             elif 'arr-replace' == a[2]:
-                # 二次处理 几个中的和成一个
+                # 数组每个都替换特定字符串
                 text = tree.xpath(a[1])
                 list = []
                 for item in text:
@@ -185,13 +183,13 @@ class Rule:
                 if len(a[1]) < len(c):
                     listb.append(a)
                 else:
-                    listb.append((a[0], a[1][i]))
+                    listb.append((a[0], str(a[1][i]).strip()))
             lista.append(listb)
         return lista
 
 
     # 数据提取列表页处理方式
-    def html_content_analysis_list(self,html_text,group, column,url):
+    def html_content_analysis_list2(self,html_text,group, column,url):
         tree = html.fromstring(html_text)
         column_content =  self._analysis_(tree=tree, column=group, url=url)
         #htmlsource = HtmlSource()

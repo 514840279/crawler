@@ -12,7 +12,7 @@ pip install pyqt5-tools
 
 pip install jieba
 
-pip install 
+pip install DBUtils
 
 # echo>
 # Current stable release for CPU-only

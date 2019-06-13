@@ -14,8 +14,8 @@
    <string>爬虫管理</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>favicon_32x32.ico</normaloff>favicon_32x32.ico</iconset>
+   <iconset resource="../img.qrc">
+    <normaloff>:/／/favicon_32x32.ico</normaloff>:/／/favicon_32x32.ico</iconset>
   </property>
   <property name="toolTipDuration">
    <number>-1</number>
@@ -101,6 +101,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../img.qrc"/>
+ </resources>
  <connections/>
 </ui>

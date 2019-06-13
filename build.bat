@@ -1,0 +1,1 @@
+pyinstaller -F -w -i favicon_32x32.ico -n 爬虫管理  RunWindows.py

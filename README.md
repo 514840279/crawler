@@ -166,35 +166,44 @@ if __name__ == '__main__': # 判断文件入口
     # 更新到最新的 pyinstaller
     pip install --upgrade pyinstaller
     # 进行打包
-    pyinstaller -F -w -i favicon_32x32.ico  RunWindows.py
+    pyinstaller -F -w -i favicon_32x32.ico -n 爬虫管理  RunWindows.py
     # 打包不包含图片，和配置文件以及生成文件的目录需要复制到一起
       打包完成后 在dist 中生成RunWindows.exe 双击即可执行
+    -F 合并文件为一个
+    -w 隐藏windows命令窗口
+    -i 添加桌面图标，格式ico
+    -n 命名程序名称 不允许使用中文，报gbk错误,可以修改代码
+     C:\ProgramData\Anaconda3\Lib\site-packages\PyInstaller\utils\win32\winmanifest.py
+     line:1075 with open(filename) as f: 添加参数 with open(filename,encoding="UTF-8") as f:
+    
     
     
 # pycharm 配置pyqt工具
 
-    conda  install PyQt5
-    conda  install PyQt5-tools
-    anaconda search -t conda  PyQt5-tools
     -- QtDesigner
     Name = QtDesigner
     Description = Qt tool for designing and building GUIs with Qt Widgets
-    Program = D:\devsoft\Python\Python36\Lib\site-packages\pyqt5-tools\designer.exe    
+    Program = C:\ProgramData\Anaconda3\Library\bin\designer.exe
     Arguments =     
     Working directory = $FileDir$
     
     -- PyUiCompiler
     Name = PyUiCompiler
     Description = Python User Interface Compiler for Qt
-    Program = D:\devsoft\Python\Python36\python.exe
+    Program = C:\ProgramData\Anaconda3\python.exe
     Arguments = -m PyQt5.uic.pyuic $FileName$ -o $FileNameWithoutExtension$.py    
     Working directory = $FileDir$
     
-        -- Pyrcc
+    -- Pyrcc
     Name = pyrcc
     Description = Python User Interface Compiler for Qt
-    Program = D:\devsoft\Python\Python36\python.exe
-    Arguments = -m PyQt5.uic.pyuic $FileName$ -o $FileNameWithoutExtension$.py    
+    Program = C:\ProgramData\Anaconda3\Scripts\pyrcc5.exe
+    Arguments = $FileName$ -o $FileNameWithoutExtension$_rc.py    
     Working directory = $FileDir$
+    
+
+    pip install pyqt=5.9.2
+    pip install pyqt5=5.11.3
+    pip install pyqt5-tools=5.11.3.1.4	
     
     

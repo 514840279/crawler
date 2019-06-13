@@ -6,93 +6,115 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>920</width>
-    <height>814</height>
+    <width>638</width>
+    <height>734</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>720</y>
-     <width>321</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>官网：http://danyuan.wang/</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::RichText</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>320</y>
-     <width>741</width>
-     <height>251</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>ｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａ</string>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>270</y>
-     <width>54</width>
-     <height>12</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>初学者</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>80</y>
-     <width>231</width>
-     <height>161</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">image: url(:/／/uugai_94x194.png)</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>760</y>
-     <width>291</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>开源：https://github.com/514840279/crawler</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>65</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>22</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/／/uugai_94x194.png)</string>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+       <stylestrategy>PreferAntialias</stylestrategy>
+      </font>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>初学者</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>ｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａｂａ</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>官网：http://danyuan.wang/</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>开源：https://github.com/514840279/crawler</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="../img.qrc"/>

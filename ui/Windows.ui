@@ -38,7 +38,7 @@
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>创建</string>
+     <string>新建</string>
     </property>
     <addaction name="actionLiebiao"/>
     <addaction name="actionNeirong"/>
@@ -48,31 +48,32 @@
      <string>关于我们</string>
     </property>
     <addaction name="actionguanyu"/>
+    <addaction name="actionfankui"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
-     <string>分析</string>
+     <string>监控状态</string>
     </property>
-    <addaction name="actioncaiji"/>
-    <addaction name="actionjiankong"/>
+    <addaction name="actionShuju"/>
+    <addaction name="actionTask"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_3"/>
    <addaction name="menu_2"/>
   </widget>
-  <action name="actionjiankong">
+  <action name="actionTask">
    <property name="text">
-    <string>监控</string>
+    <string>任务状态</string>
    </property>
   </action>
   <action name="actionLiebiao">
    <property name="text">
-    <string>列表</string>
+    <string>列表配置</string>
    </property>
   </action>
   <action name="actionNeirong">
    <property name="text">
-    <string>内容</string>
+    <string>内容配置</string>
    </property>
   </action>
   <action name="actionguanyuwomen">
@@ -85,19 +86,14 @@
     <string>关于我们</string>
    </property>
   </action>
-  <action name="actioncaiji">
+  <action name="actionShuju">
    <property name="text">
-    <string>每日数据</string>
+    <string>数据报告</string>
    </property>
   </action>
-  <action name="actionrenwu">
+  <action name="actionfankui">
    <property name="text">
-    <string>renwu</string>
-   </property>
-  </action>
-  <action name="actionshuju">
-   <property name="text">
-    <string>shuju</string>
+    <string>反馈意见</string>
    </property>
   </action>
  </widget>

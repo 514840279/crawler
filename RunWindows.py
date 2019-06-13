@@ -6,6 +6,10 @@ from PyQt5 import QtWidgets
 from ui.RunAbout import RunAbout
 from ui.RunMainList import RunMainList
 from ui.RunMainContext import RunMainContext
+from ui.RunTaskListen import RunTaskListen
+from ui.RunDataListen import RunDataListen
+from ui.RunFeedback import RunFeedback
+
 from PyQt5 import QtCore,QtGui
 from PyQt5.QtGui import QFont
 
@@ -27,11 +31,20 @@ class MenuLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         self.stackedWidget.addWidget(mainList)
         mainContext = RunMainContext()
         self.stackedWidget.addWidget(mainContext)
+        runTaskListen = RunTaskListen()
+        self.stackedWidget.addWidget(runTaskListen)
+        runDataListen = RunDataListen()
+        self.stackedWidget.addWidget(runDataListen)
+        runFeedback = RunFeedback()
+        self.stackedWidget.addWidget(runFeedback)
 
         # menu 与 布局绑定
-        self.actionLiebiao.triggered.connect(lambda: self.showPage(1))
         self.actionguanyu.triggered.connect(lambda: self.showPage(0))
+        self.actionLiebiao.triggered.connect(lambda: self.showPage(1))
         self.actionNeirong.triggered.connect(lambda: self.showPage(2))
+        self.actionTask.triggered.connect(lambda: self.showPage(3))
+        self.actionShuju.triggered.connect(lambda: self.showPage(4))
+        self.actionfankui.triggered.connect(lambda: self.showPage(5))
 
         self.showPage(1)
 

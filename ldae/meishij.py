@@ -4,7 +4,7 @@ from common.HtmlSource import HtmlSource
 from common.Rule import Rule
 #from common.inc_conn import Conn_mysql
 from common.inc_csv import Csv_base
-
+import requests
 
 htmlSource = HtmlSource()
 rule = Rule()
@@ -52,17 +52,23 @@ def read_detial(url):
         if(i>0):
             str_t = str_t+','
         str_t = str_t+"`"+str(result[i][1])+"`"
+        if(colum[i][0]=='图片'):
+            save_img(imgs=result[i][1])
     csv.write_csv_file_line(file_path="../data/meishij.csv",str=[str_t])
     #print(result)
     #sql="insert into cancer value('%s','%s','%s','%s','%s')"%(result[0][1][0],str(result[1][1][0]).replace('患者,图片因隐私问题无法显示','').replace("患者,","患者:").replace("医生,","医生:").replace('\'','"'),type,'春雨医生',url)
     #print(sql)
     #ldae_mysql.write_sql(sql=sql)
 
+def save_img(imgs):
+    for img_url in imgs:
+        img_content = requests.get(img_url).content
+        with open('../data/meishij/%s' % img_url.split('/')[-1], 'wb') as f:
+            f.write(img_content)
+
 # 多页
 def main():
     start_url = "https://www.meishij.net/chufang/diy/zaocan/?&page=%d"
-
-
 
     for i in range(1,57):
         url = start_url%(i)
@@ -77,9 +83,6 @@ def main():
             read_detial(a)
             #th = threading.Thread(target=read_detial, args=(a,str))
             #th.start()  # 启动线程
-
-
-
 
 
 if __name__ == '__main__': # 判断文件入口

@@ -171,5 +171,30 @@ if __name__ == '__main__': # 判断文件入口
       打包完成后 在dist 中生成RunWindows.exe 双击即可执行
     
     
-     
+# pycharm 配置pyqt工具
+
+    conda  install PyQt5
+    conda  install PyQt5-tools
+    anaconda search -t conda  PyQt5-tools
+    -- QtDesigner
+    Name = QtDesigner
+    Description = Qt tool for designing and building GUIs with Qt Widgets
+    Program = D:\devsoft\Python\Python36\Lib\site-packages\pyqt5-tools\designer.exe    
+    Arguments =     
+    Working directory = $FileDir$
+    
+    -- PyUiCompiler
+    Name = PyUiCompiler
+    Description = Python User Interface Compiler for Qt
+    Program = D:\devsoft\Python\Python36\python.exe
+    Arguments = -m PyQt5.uic.pyuic $FileName$ -o $FileNameWithoutExtension$.py    
+    Working directory = $FileDir$
+    
+        -- Pyrcc
+    Name = pyrcc
+    Description = Python User Interface Compiler for Qt
+    Program = D:\devsoft\Python\Python36\python.exe
+    Arguments = -m PyQt5.uic.pyuic $FileName$ -o $FileNameWithoutExtension$.py    
+    Working directory = $FileDir$
+    
     

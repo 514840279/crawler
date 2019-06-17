@@ -46,7 +46,7 @@ class MenuLinsenWindow(Ui_MainWindow,QtWidgets.QMainWindow):
         self.actionShuju.triggered.connect(lambda: self.showPage(4))
         self.actionfankui.triggered.connect(lambda: self.showPage(5))
 
-        self.showPage(1)
+        self.showPage(2)
 
     def showPage(self,index):
         self.stackedWidget.setCurrentIndex(index)

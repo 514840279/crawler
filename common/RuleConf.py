@@ -28,6 +28,13 @@ class Rule:
         if '连接' == column["类型"]:
             # 进行lxml方式解析
             column_context = tree.xpath(column["规则"])[0]
+        if '图片' == column["类型"]:
+            # 进行lxml方式解析
+            column_context = tree.xpath(column["规则"])[0]
+        if '源代码' == column["类型"]:
+            # 进行lxml方式解析
+            html = tree.xpath(column["规则"])[0]
+            column_context = etree.tostring(html, print_pretty=True, method='html')  # 转为字符串
         return column_context
 
 

@@ -131,7 +131,7 @@ class Rule:
                 # print(a[0]+a[1]+a[2])
 
             elif 'sarr-reg'== a[2]:
-                # 正则： 获取成一个字符串
+                # 正则： 拼接后截取
                 text = tree.xpath(a[1])
                 st = ''
                 for item in text:
@@ -142,7 +142,7 @@ class Rule:
                 st = re.sub(r''+a[3],'',st.strip(),0,re.S)
                 column_context.append((a[0], [st.strip()]))
             elif 'arr-reg' == a[2]:
-                # 正则： 获取集合
+                # 正则： 获取集合每个分别截取
                 text = tree.xpath(a[1])
                 list = []
                 for item in text:
@@ -151,6 +151,18 @@ class Rule:
                     else:
                         list.append(re.sub(r'' + a[3], '', item.strip(), 0, re.S).strip())
                 column_context.append((a[0], list))
+            elif 'reg' == a[2]:
+                # 正则： 获取
+                text = tree.xpath(a[1])
+                st = ''
+                for item in text:
+                    if item.strip() == '':
+                        pass
+                    else:
+                        st = st + item.strip()
+                pattern = re.compile(r'' + a[3])  # 查找数字
+                result1 = pattern.findall(st)
+                column_context.append((a[0], result1))
             elif 'arr-replace' == a[2]:
                 # 数组每个都替换特定字符串
                 text = tree.xpath(a[1])

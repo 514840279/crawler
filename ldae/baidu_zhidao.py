@@ -2,12 +2,12 @@
 
 from common.HtmlSource import HtmlSource
 from common.Rule import Rule
-from common.inc_file import File_file
+from common.inc_file import File_file,File_floder
 from common.inc_csv import Csv_base
 import requests
 from lxml import html
 
-
+floder = File_floder()
 file =File_file()
 htmlSource = HtmlSource()
 rule = Rule()
@@ -23,6 +23,10 @@ def main():
     # 读取文件
     lines =csv.read_csv_file(file_path='菜名_命名实体_仍需细致清理标注.csv')
     print(lines)
+    # 创建文件夹
+    path = '../data/zhidao'
+    floder.add(path_p=path)
+
     cont = True
     for line in range(1,len(lines)):
         if(lines[line][0] == '毛豆'):
@@ -61,7 +65,7 @@ def main():
                 for i in range(0, len(colum)):
                     str_t.append("`"+colum[i][0]+"`")
                 str_t.append("`本地路径`")
-                csv.write_csv_file_line(file_path="../data/zhidao.csv", str=str_t)
+                csv.write_csv_file_line(file_path=path+".csv", str=str_t)
                 flag = 1
 
             tree = html.fromstring(html_text)
@@ -91,10 +95,10 @@ def main():
                                 url = row[i][1][0]
                                 html_text = htmlSource.get_html(url_p=url, type_p='rg')
                                 file_name = str(url).replace("http://www.baidu.com/link?url=", '')
-                                file.save_source(path='../data/zhidao', file=file_name, all_the_text=html_text)
-                                file_path = '../data/zhidao/%s'%file_name
+                                file.save_source(path=path, file=file_name, all_the_text=html_text)
+                                file_path = path+'/%s'%file_name
                         str_t.append("`"+ file_path+"`")
-                        csv.write_csv_file_line(file_path="../data/zhidao.csv", str=str_t)
+                        csv.write_csv_file_line(file_path=path+".csv", str=str_t)
                 except Exception:
                     print(row[2][1],lines[line][0],False)
 

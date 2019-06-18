@@ -4,6 +4,7 @@ __pycache__/
 /dist/
 /configs/
 /build/
+/data/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -18,3 +19,4 @@ yarn-error.log*
 *.pcy
 *.pyc
 *.spec
+

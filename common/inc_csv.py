@@ -72,7 +72,7 @@ class Csv_base(inc_sys.String_what):
                     
         return csv_list
 
-    # CSV 文件读取
+    # CSV 文件写入取
     def write_csv_file_line(self, file_path='',mode='a+',str=[]):
         # 打开文件，追加a
         out = open(file_path,mode=mode, newline='', encoding="utf-8")
@@ -81,6 +81,14 @@ class Csv_base(inc_sys.String_what):
         # 写入具体内容
         csv_write.writerow(str)
 
+    # CSV 文件写入取
+    def write_csv_file_dictLine(self, file_path='',mode='a+',str=[],fieldnames=[]):
+        # 打开文件，追加a
+        out = open(file_path,mode=mode, newline='', encoding="utf-8")
+        # 设定写入模式
+        csv_write = csv.DictWriter(out,fieldnames = fieldnames, dialect='excel')
+        # 写入具体内容
+        csv_write.writerow(str)
 
 #--------- 内部模块处理<<结束>> ---------#
 

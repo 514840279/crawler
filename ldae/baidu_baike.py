@@ -58,14 +58,12 @@ def main():
                     ('来源', './/div[class="c-span18 c-span-last"]/span[1]/text()', 'l'),
                     ('快照', '', 'n'),
                    ]
-            str_t = ''
+            str_t = []
             if (flag == 0):
                 for i in range(0, len(colum)):
-                    if (i > 0):
-                        str_t = str_t + ','
-                    str_t = str_t + "`" + str(colum[i][0]) + "`"
-                str_t = str_t+',`本地路径`'
-                csv.write_csv_file_line(file_path="../data/baike.csv", str=[str_t])
+                    str_t.append("`"+colum[i][0]+"`")
+                str_t.append("`本地路径`")
+                csv.write_csv_file_line(file_path="../data/baike.csv", str=str_t)
                 flag = 1
 
             tree = html.fromstring(html_text)
@@ -85,25 +83,23 @@ def main():
                     print("no srcid")
             for row in lista:
                 try:
-
                     if row[2][1].index(lines[line][0])>-1:
-                        str_t = ''
+                        str_t = []
                         # 写入文件
                         file_path =''
                         for i in range(0, len(colum)):
-                            if (i > 0):
-                                str_t = str_t + ','
-                            str_t = str_t + "`" + str(row[i][1]) + "`"
+                            str_t.append("`"+"".join(row[i][1])+"`")
                             if (colum[i][0] == '网址'):
                                 url = row[i][1][0]
                                 html_text = htmlSource.get_html(url_p=url, type_p='rg')
                                 file_name = str(url).replace("http://www.baidu.com/link?url=", '')
                                 file.save_source(path='../data/baike', file=file_name, all_the_text=html_text)
                                 file_path = '../data/baike/%s'%file_name
-                        str_t =str_t+",`["+ file_path+']`'
-                        csv.write_csv_file_line(file_path="../data/baike.csv", str=[str_t])
+                        str_t.append("`"+ file_path+"`")
+                        csv.write_csv_file_line(file_path="../data/baike.csv", str=str_t)
                 except Exception:
                     print(row[2][1],lines[line][0],False)
+
                 #th = threading.Thread(target=read_detial, args=(a,str))
                 #th.start()  # 启动线程
 

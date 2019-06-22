@@ -4,9 +4,11 @@ from common.HtmlSource import HtmlSource
 from common.Rule import Rule
 #from common.inc_conn import Conn_mysql
 from common.inc_csv import Csv_base
+from common.inc_file import File_file,File_floder
 import requests
 from lxml import html
 
+floder = File_floder()
 htmlSource = HtmlSource()
 rule = Rule()
 csv = Csv_base()
@@ -15,16 +17,16 @@ commontitle = 0
 #ldae_mysql = Conn_mysql( host='localhost', user='root', passwd='root', db='ldae', port=3306) # 生成MYSQL数据库索引数据实例
 
 # 多线程
-def read_detial(url):
+def read_detial(url,path):
     detial_html = htmlSource.get_html(url_p=url, type_p='rg')
 
-    #save_menu(url,detial_html = detial_html)
+    #save_menu(url,detial_html = detial_html,path)
     tree = html.fromstring(detial_html)
     li = tree.xpath('//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li')
     if len(li)>0:
-        save_commons(url,detial_html)
+        save_commons(url,detial_html,path)
 
-def save_menu(url,detial_html):
+def save_menu(url,detial_html,path):
     #print(detial_html)
     global flag
     colum = [
@@ -45,32 +47,28 @@ def save_menu(url,detial_html):
         ('图片', '//div[@class="editnew edit"]//img//@src', 'sab', ''),
 
     ]
-    str_t = ''
+    str_t = []
     if(flag == 0):
         for i in range(0, len(colum)):
-            if (i > 0):
-                str_t = str_t + ','
-            str_t = str_t + "`" + str(colum[i][0]) + "`"
-        csv.write_csv_file_line(file_path="../data/meishij.csv", str=[str_t])
+            str_t = str_t.append(str(colum[i][0]))
+        csv.write_csv_file_line(file_path=path+".csv", str=str_t)
         flag = 1
 
     result = rule.html_content_analysis_detial(html_text=detial_html, column=colum, url=url)
     print(str(result))
-    str_t = ''
+    str_t = []
     # 写入文件
     for i in range(0,len(colum)):
-        if(i>0):
-            str_t = str_t+','
-        str_t = str_t+"`"+str(result[i][1])+"`"
+        str_t = str_t.append(str(result[i][1]))
         if(colum[i][0]=='图片'):
             save_img(imgs=result[i][1])
-    csv.write_csv_file_line(file_path="../data/meishij.csv",str=[str_t])
+    csv.write_csv_file_line(file_path=path+".csv",str=str_t)
     #print(result)
     #sql="insert into cancer value('%s','%s','%s','%s','%s')"%(result[0][1][0],str(result[1][1][0]).replace('患者,图片因隐私问题无法显示','').replace("患者,","患者:").replace("医生,","医生:").replace('\'','"'),type,'春雨医生',url)
     #print(sql)
     #ldae_mysql.write_sql(sql=sql)
 
-def save_commons(url,detial_html):
+def save_commons(url,detial_html,path):
 
     colum = [
         ('地址', url, 'n'),
@@ -82,41 +80,39 @@ def save_commons(url,detial_html):
         ('回复数', '//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li/div[@class="c"]/div[@class="info"]/span[@class="zzzzan"]/strong/text()', 'l'),
 
     ]
-    str_t = ''
+
     global commontitle
     if (commontitle == 0):
-        for i in range(0, len(colum)):
-            if (i > 0):
-                str_t = str_t + ','
-            str_t = str_t + "`" + str(colum[i][0]) + "`"
-        csv.write_csv_file_line(file_path="../data/meishij_common.csv", str=[str_t])
+        str_t = []
         commontitle = 1
+        for i in range(0, len(colum)):
+            str_t.append(colum[i][0])
+        csv.write_csv_file_line(file_path=path+"_common.csv", str=str_t)
+
 
     result = rule.html_content_analysis_list(html_text=detial_html, column=colum, url=url)
     print(str(result))
-    str_rows=[]
     for row in result:
-        str_t = ''
+        str_t = []
         # 写入文件
         for i in range(0, len(colum)):
-            if (i > 0):
-                str_t = str_t + ','
-            str_t = str_t + "`" + str(row[i][1]) + "`"
-            if (colum[i][0] == '图片'):
-                save_img(imgs=row[i][1])
-        str_rows.append(str_t)
-    csv.write_csv_file_line(file_path="../data/meishij.csv", str=str_rows)
+            str_t.append(str(row[i][1]))
+        csv.write_csv_file_line(file_path=path+"_common.csv", str=str_t)
 
 
-def save_img(imgs):
+def save_img(imgs,path):
     for img_url in imgs:
         img_content = requests.get(img_url).content
-        with open('../data/meishij/%s' % img_url.split('/')[-1], 'wb') as f:
+        with open(path+'/%s' % img_url.split('/')[-1], 'wb') as f:
             f.write(img_content)
 
 # 多页
 def main():
     start_url = "https://www.meishij.net/chufang/diy/zaocan/?&page=%d"
+
+    # 创建文件夹
+    path = '../data/meishij'
+    floder.add(path_p=path)
 
     for i in range(1,57):
         url = start_url%(i)
@@ -128,7 +124,7 @@ def main():
         list = rule.html_content_analysis_detial(html_text=list_html,column=colum,url=url)
         print(list)
         for a in list[0][1]:
-            read_detial(a)
+            read_detial(a,path)
             #th = threading.Thread(target=read_detial, args=(a,str))
             #th.start()  # 启动线程
 

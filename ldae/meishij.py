@@ -108,25 +108,31 @@ def save_img(imgs,path):
 
 # 多页
 def main():
-    start_url = "https://www.meishij.net/chufang/diy/zaocan/?&page=%d"
 
-    # 创建文件夹
     path = '../data/meishij'
+
+    list_menu =csv.read_csv_file(path+"_menu.csv")
+    print(list_menu)
+    # 创建文件夹
+
     floder.add(path_p=path)
+    for i in range(0,len(list_menu)):
+        print(list_menu[i])
+        if(i>0):
+            start_url = list_menu[i][0]+"?&page=%d"
+            for i in range(1,int(list_menu[i][2])+1):
+                url = start_url%(i)
+                print(url)
+                list_html = htmlSource.get_html(url_p=url,type_p='rg')
 
-    for i in range(1,57):
-        url = start_url%(i)
-        print(url)
-        list_html = htmlSource.get_html(url_p=url,type_p='rg')
-
-        #print(list_html)
-        colum=[('a','//div[@class="listtyle1_w"]//div[@class="listtyle1_list clearfix"]//div[@class="listtyle1"]//a//@href','l')]
-        list = rule.html_content_analysis_detial(html_text=list_html,column=colum,url=url)
-        print(list)
-        for a in list[0][1]:
-            read_detial(a,path)
-            #th = threading.Thread(target=read_detial, args=(a,str))
-            #th.start()  # 启动线程
+                #print(list_html)
+                colum=[('a','//div[@class="listtyle1_w"]//div[@class="listtyle1_list clearfix"]//div[@class="listtyle1"]//a//@href','l')]
+                list = rule.html_content_analysis_detial(html_text=list_html,column=colum,url=url)
+                print(list)
+                for a in list[0][1]:
+                    read_detial(a,path)
+                    #th = threading.Thread(target=read_detial, args=(a,str))
+                    #th.start()  # 启动线程
 
 
 if __name__ == '__main__': # 判断文件入口

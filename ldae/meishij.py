@@ -13,18 +13,20 @@ htmlSource = HtmlSource()
 rule = Rule()
 csv = Csv_base()
 flag =0
-commontitle = 0
+commontitle = 1
 #ldae_mysql = Conn_mysql( host='localhost', user='root', passwd='root', db='ldae', port=3306) # 生成MYSQL数据库索引数据实例
 
 # 多线程
 def read_detial(url,path):
-    detial_html = htmlSource.get_html(url_p=url, type_p='rg')
+    if(str(url).startswith("http")):
+        detial_html = htmlSource.get_html(url_p=url, type_p='rg')
 
-    #save_menu(url,detial_html = detial_html,path)
-    tree = html.fromstring(detial_html)
-    li = tree.xpath('//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li')
-    if len(li)>0:
-        save_commons(url,detial_html,path)
+        #save_menu(url,detial_html = detial_html,path)
+        tree = html.fromstring(detial_html)
+
+        li = tree.xpath('//div[@class="cp_comlist_w"]/ul[@class="clearfix"]/li')
+        if len(li)>0:
+            save_commons(url,detial_html,path)
 
 def save_menu(url,detial_html,path):
     #print(detial_html)
@@ -118,7 +120,7 @@ def main():
     floder.add(path_p=path)
     for i in range(0,len(list_menu)):
         print(list_menu[i])
-        if(i>0):
+        if(i>113):
             start_url = list_menu[i][0]+"?&page=%d"
             for i in range(1,int(list_menu[i][2])+1):
                 url = start_url%(i)
@@ -126,7 +128,7 @@ def main():
                 list_html = htmlSource.get_html(url_p=url,type_p='rg')
 
                 #print(list_html)
-                colum=[('a','//div[@class="listtyle1_w"]//div[@class="listtyle1_list clearfix"]//div[@class="listtyle1"]//a//@href','l')]
+                colum=[('a','//div[@id="listtyle1_w"]/div[@class="listtyle1_list clearfix"]/div/div/a/@href','l')]
                 list = rule.html_content_analysis_detial(html_text=list_html,column=colum,url=url)
                 print(list)
                 for a in list[0][1]:

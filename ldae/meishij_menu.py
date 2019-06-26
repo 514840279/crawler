@@ -18,7 +18,7 @@ def main():
 
     start_menu=['/chufang/diy/','/jiankang/']
     start_url = "https://www.meishij.net%s"
-    str_t = ['地址', '文本', '页数']
+    str_t = ['地址', '文本', '页数','当前页']
     csv.write_csv_file_line(file_path=path + "_menu.csv", str=str_t)
 
     for menu in start_menu:
@@ -76,7 +76,7 @@ def add_list(sub_url,sub_text):
         text = text[0]
         pageSize = str(text).replace('共', '').replace('页，到第 ', '')
         menu_list.append({"url": sub_url, "title": sub_text, "maxPageSize": pageSize})
-        str_t=[sub_url,sub_text,pageSize]
+        str_t=[sub_url,sub_text,pageSize,1]
         csv.write_csv_file_line(file_path=path + "_menu.csv", str=str_t)
 
 

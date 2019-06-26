@@ -120,15 +120,18 @@ def main():
     floder.add(path_p=path)
     for i in range(0,len(list_menu)):
         print(list_menu[i])
-        if(i>113):
+        if(i== 139-1):
             start_url = list_menu[i][0]+"?&page=%d"
-            for i in range(1,int(list_menu[i][2])+1):
+            maxPage = int(list_menu[i][2])+1
+            if(maxPage>57):
+                maxPage=57
+            for i in range(int(list_menu[i][3]),maxPage):
                 url = start_url%(i)
                 print(url)
                 list_html = htmlSource.get_html(url_p=url,type_p='rg')
 
                 #print(list_html)
-                colum=[('a','//div[@id="listtyle1_w"]/div[@class="listtyle1_list clearfix"]/div/div/a/@href','l')]
+                colum=[('a','//div[@id="listtyle1_w"]/div[@class="listtyle1_list clearfix"]/div//a/@href','l')]
                 list = rule.html_content_analysis_detial(html_text=list_html,column=colum,url=url)
                 print(list)
                 for a in list[0][1]:

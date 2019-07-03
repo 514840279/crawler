@@ -57,14 +57,8 @@ class Rule:
                 text = tree.xpath(a[1])
                 list = []
                 for path in text:
-                    list.append(a[3] + path.strip())
-                column_context.append((a[0], list))
-            elif 'sr' == a[2]:
-                # 前拼接多个地址
-                text = tree.xpath(a[1])
-                list = []
-                for path in text:
-                    list.append(self.get_url_root(url) + path.strip())
+                    if(len(path.strip())>0):
+                        list.append(a[3] + path.strip())
                 column_context.append((a[0], list))
             elif 'arr' == a[2]:
                 # 数组中取其中一个
@@ -82,9 +76,7 @@ class Rule:
                 st = ''
                 for item in text:
                     # print(item)
-                    if item.strip() == '':
-                        pass
-                    else:
+                    if item.strip() != '':
                         st = st + item.strip()
                 column_context.append((a[0], [st.strip()]))
             elif 'sarr' == a[2]:
@@ -93,9 +85,7 @@ class Rule:
                 st = ''
                 for item in text:
                     # print(item)
-                    if item.strip() == '':
-                        pass
-                    else:
+                    if item.strip() != '':
                         st = st + item.strip()
                 column_context.append((a[0], [st.strip()]))
             elif 'nsp' == a[2]:
@@ -184,7 +174,6 @@ class Rule:
     # 数据提取列表页处理方式
     def html_content_analysis_list(self,html_text, column,url):
         column_content = self.html_content_analysis_detial(html_text, column, url)
-        le = len(column_content)
         c = column_content[0][1]
         lista = []
         for i in range(len(c)):

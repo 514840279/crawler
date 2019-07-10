@@ -85,7 +85,7 @@ def main():
     path = '../data/xinshipu'
     # 创建文件夹
     floder.add(path_p=path)
-    start_url = "https://www.xinshipu.com/question"
+    start_url = "https://www.xinshipu.com/question?page=469"
 
     # 问题结构
     question_colum = [('网友/ip', '*//div[@class="bpannel"]//a[@class="cb"]/span/text()', 'l'),

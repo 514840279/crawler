@@ -7,6 +7,7 @@ from common.inc_csv import Csv_base
 from common.inc_file import File_file,File_floder
 import requests
 from lxml import html
+import time
 
 floder = File_floder()
 htmlSource = HtmlSource()
@@ -82,6 +83,9 @@ def save_img(imgs,path):
         if (img_url.find(".gif") > -1):
             img_name = img_url[0:img_url.find(".gif")]
             img_name = img_name.split('/')[-1] + ".gif"
+        if (img_url.find(".bmp") > -1):
+            img_name = img_url[0:img_url.find(".bmp")]
+            img_name = img_name.split('/')[-1] + ".bmp"
         print(img_name)
         with open(path+'/%s' % img_name, 'wb') as f:
             f.write(img_content)
@@ -99,10 +103,14 @@ def main():
              ('name', '//div[@class="block-bg p40 font16"]//div[@class="cates-list-all clearfix hidden"]//a/text()', 'l')]
     list = rule.html_content_analysis_list(html_text=list_html, column=colum, url=url)
 
-
+    flag = False
     for i in range(0,len(list)):
         #print(list[i])
-        read_detial(list[i],path)
+        if(list[i][1][1]=='下酒菜'):
+            flag = True
+        if(flag):
+            read_detial(list[i],path)
+            time.sleep(5000)
 
 
 

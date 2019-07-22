@@ -325,8 +325,12 @@ class File_floder(File_base):
 class File_file(File_floder):
 
     # 打开编辑源码
-    def open_source(self,path,file,encoding_='utf-8'):
-        file_object = open(path + "/" + file,"r",encoding=encoding_)
+    def open_source1(self,path,file,encoding_='utf-8'):
+        return self.open_source2(file_path=path+"/"+file,encoding=encoding_)
+
+    # 打开编辑源码
+    def open_source2(self,file_path,encoding_='utf-8'):
+        file_object = open(file_path  ,"r",encoding=encoding_)
         try:
             all_the_text = file_object.read()
         finally:

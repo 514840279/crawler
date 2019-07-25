@@ -57,22 +57,34 @@ class Csv_base(inc_sys.String_what):
         return list
 
     # CSV 文件读取
-    def read_csv_file_line(self,file_path='../data/test/one.csv',line=0):
+    def read_csv_file_dict(self,file_path='../data/test/one.csv',fieldnames=''):
+        with open(file_path, 'r', encoding="utf-8") as f:
+            #reader = csv.reader(f)
+            #fieldnames = next(reader)  # 获取数据的第一列，作为后续要转为字典的键名 生成器，next方法获取
+            # print(fieldnames)
+            csv_reader = csv.DictReader(f, fieldnames=fieldnames)
+            list = []
+            for row in csv_reader:
+                d = {}
+                for k, v in row.items():
+                    d[k] = v
+                list.append(d)
+                print(d)
+        return list
+
+    # CSV 文件读取 从start行读取读取到end行
+    def read_csv_file_line(self,file_path='../data/test/one.csv',end=999999,start=0):
         #打开文件，用with打开可以不用去特意关闭file了，python3不支持file()打开文件，只能用open()
         csv_list = []
         with open(file_path,"r",encoding="utf-8") as csvfile:
             #读取csv文件，返回的是迭代类型
             read = csv.reader(csvfile)
             for i,rows in enumerate(read):
-                
-                if (i > line):
-                    break
-                else:
+                if i < end and i >= start :
                     csv_list.append(rows)
-                    
         return csv_list
 
-    # CSV 文件写入取
+    # CSV 文件写入
     def write_csv_file_line(self, file_path='',mode='a+',str=[]):
         # 打开文件，追加a
         out = open(file_path,mode=mode, newline='', encoding="utf-8")
@@ -81,7 +93,16 @@ class Csv_base(inc_sys.String_what):
         # 写入具体内容
         csv_write.writerow(str)
 
-    # CSV 文件写入取
+    # CSV 文件写入多行
+    def write_csv_file_lines(self, file_path='', mode='a+', strs=[]):
+        # 打开文件，追加a
+        out = open(file_path, mode=mode, newline='', encoding="utf-8")
+        # 设定写入模式
+        csv_write = csv.writer(out, dialect='excel')
+        # 写入具体内容
+        csv_write.writerows(strs)
+
+    # CSV 文件写入
     def write_csv_file_dictLine(self, file_path='',mode='a+',str=[],fieldnames=[]):
         # 打开文件，追加a
         out = open(file_path,mode=mode, newline='', encoding="utf-8")
@@ -89,6 +110,15 @@ class Csv_base(inc_sys.String_what):
         csv_write = csv.DictWriter(out,fieldnames = fieldnames, dialect='excel')
         # 写入具体内容
         csv_write.writerow(str)
+
+    # CSV 文件写入多行
+    def write_csv_file_dictLines(self, file_path='', mode='a+', strs=[], fieldnames=[]):
+        # 打开文件，追加a
+        out = open(file_path, mode=mode, newline='', encoding="utf-8")
+        # 设定写入模式
+        csv_write = csv.DictWriter(out, fieldnames=fieldnames, dialect='excel')
+        # 写入具体内容
+        csv_write.writerows(strs)
 
 #--------- 内部模块处理<<结束>> ---------#
 

@@ -1,42 +1,99 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-from lxml import etree
+from lxml import etree,html
+from common.HtmlSource import HtmlSource
+from urllib import parse
+
+import hashlib
+import uuid
+import time
+
 
 class Rule:
 
+    # 采集列表页面
+    def crawler_list(self,url,conf):
+        htmlSource = HtmlSource()
+        # 获取网页原文
+        html_context = htmlSource.get_html(url_p=url)
+        # 解析原文
+        tree = html.fromstring(html_context)
+        result_list = tree.xpath(conf['group'])
+        result_list_context = self._analysis_list(list=result_list, columns=conf['columns'],url=url)
+        if(conf['nextPage']):
+            next_page = tree.xpath(conf['nextPage'])
+            return result_list_context,next_page[0]
+        else:
+            return result_list_context
+
     # 解析列表页面
-    def _analysis_list(self, list, columns):
+    def _analysis_list(self, list, columns,url=""):
         list_context=[]
         for tree in list:
-            list_context.append(self._analysis_context(tree=tree,columns=columns))
+            list_context.append(self._analysis_context(tree=tree,columns=columns,url=url))
         return list_context
 
     # 解析页面
-    def _analysis_context(self, tree, columns):
+    def _analysis_context(self, tree, columns ,url=""):
         columns_context ={}
+        id_flag= False
         for column in columns:
-            columns_context[column["名称"]] = self._analysis_(tree=tree,column=column)
+            if('主键' == column["类型"]):
+                column_id = column
+                id_flag = True
+            else:
+                # 除主键其他数据解析
+                columns_context[column["名称"]] = self._analysis_(tree=tree,column=column,url=url)
+        # 主键解析
+        if(id_flag):
+            if ('md5' == column_id["规则"]):
+                column_id["url"] = columns_context[column_id["连接"]]
+            columns_context[column_id["名称"]] = self._analysis_(tree=tree, column=column_id, url=url)
         return columns_context
 
     # 解析页面
-    def _analysis_(self, tree, column):
+    def _analysis_(self, tree, column,url=""):
         column_context=''
+        if '主键' == column["类型"]:
+            # 不同的主键策略 默认使用uuid
+            if('uuid' == column["规则"]):
+                column_context = str(uuid.uuid4()).replace("-",'')
+            elif ('md5' == column["规则"]):
+                myMd5 = hashlib.md5()
+                myMd5.update(column["url"].encode("utf8"))
+                myMd5_Digest = myMd5.hexdigest()
+                column_context = myMd5_Digest
+            else:
+                column_context = uuid.uuid4()
+        if '不解析' == column["类型"]:
+            # 返回填写的规则原文
+            column_context = column["规则"]
         if '文本' == column["类型"]:
             # 进行lxml方式解析
-            column_context= tree.xpath(column["规则"])[0]
+            text=''
+            for a in tree.xpath(column["规则"]):
+                text=text+str(a).strip()
+            column_context = text
         if '连接' == column["类型"]:
             # 进行lxml方式解析
-            column_context = tree.xpath(column["规则"])[0]
+            column_context = parse.urljoin(url, tree.xpath(column["规则"])[0])
         if '图片' == column["类型"]:
             # 进行lxml方式解析
             column_context = tree.xpath(column["规则"])[0]
+        if '采集时间' == column["类型"]:
+            # 系统当前时间
+            rg = '%Y.%m.%d %H:%M:%S'
+            if column["规则"]!='':
+                rg = column["规则"]
+            column_context = time.strftime(rg,time.localtime(time.time()))
         if '源代码' == column["类型"]:
             # 进行lxml方式解析
-            html = tree.xpath(column["规则"])[0]
-            column_context = etree.tostring(html, print_pretty=True, method='html')  # 转为字符串
+            html_context = tree.xpath(column["规则"])[0]
+            column_context = etree.tostring(html_context, print_pretty=True, method='html')  # 转为字符串
         return column_context
 
 
 
-
+if __name__ == '__main__':
+    pass

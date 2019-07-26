@@ -7,6 +7,7 @@ import requests
 import re #正则处理
 import urllib
 import chardet
+from urllib import parse
 from bs4 import BeautifulSoup as bs_4
 from selenium import webdriver # 浏览器引擎webdriver模块
 from lxml import etree
@@ -111,7 +112,6 @@ class HtmlSource:
 
     # 获取html原码的地址列表信息1
     def get_url_list(self, html=''):
-
         all_a_url = re.findall("href=[\"'](.*?)[\"']", html)
         return all_a_url
 
@@ -162,56 +162,13 @@ class HtmlSource:
 
     # 计算完整的路径
     def addr_reckon(self, url, url_root):
-        first_charate = url[0:1]
-        second_charate = url[1:2]
-        # print(first_charate)
-        if first_charate == '/':
-            # 根路径拼接
-            url_root_temp = self.get_url_root(url=url_root)
-            url = url_root_temp + url
-            if second_charate == '/':
-                url = url
-        elif first_charate == '.':
-            if second_charate == '/':
-                # 当前路径下拼接
-                url = url_root + url[1:]
-            elif second_charate == '.':
-                # 递归上层路径
-                url = url[3:]
-                # print(url)
-                current_url = self.current_url_get(url_p=url_root)
-                # print(url_root)
-                url = self.addr_reckon(url=url, url_root=current_url)
-        elif '//' in url:
-            url = '//' + url.split('//')[1]
-        elif ':' in url:
-            url = '//' + url.split(':')[1]
-        elif url[0:1] in ['?', '~', '+']:
-            url = url
-        if (url[0:5] == "http:" and url[0:7] != "http://"):
-            url = url[0:5] + "//" + url[6:len(url)]
-        elif(url[0:5] == "https:" and url[0:7] != "https://"):
-            url = url[0:6] + "//" + url[7:len(url)]
-        elif(url[0:2] =="//"):
-            url = "http:"+url
-
+        url = parse.urljoin(url_root,url)
         return url
 
     # 读取网站域名
     def get_url_root(self, url):
-        http = ''
-        https = ''
-        url_root = ''
-        if 'http://' in url or 'http:/' in url:
-            http = 'http://'
-            url = url.replace('http://', '').replace('http:/', '').strip()
-        elif 'https://' in url or 'https:/' in url:
-            https = 'https://'
-            url = url.replace('https://', '').replace('httpss:/', '').strip()
-        else:
-            pass
-        url_root = url.split('/')[0]
-        return (http + https + url_root)
+        urlparse_pase =  parse.urlparse(url)
+        return  urlparse_pase['scheme']+"://"+urlparse_pase['netloc']
 
     # 补全完整路径/
     def addr_whole(self, all_a_url, url_root, url_key=""):

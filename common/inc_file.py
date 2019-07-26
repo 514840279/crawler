@@ -338,8 +338,8 @@ class File_file(File_floder):
         return all_the_text
 
     # 保存源码
-    def save_source(self,path,file,all_the_text,encoding_='utf-8'):
-        with open(path + "/" + file,mode='w+',encoding=encoding_) as file_object:
+    def save_source(self,path,file,all_the_text,encoding_='utf-8',mode='a+'):
+        with open(path + "/" + file,mode=mode,encoding=encoding_) as file_object:
             file_object.write(all_the_text)
             file_object.close()
             return True

@@ -69,7 +69,6 @@ class Csv_base(inc_sys.String_what):
                 for k, v in row.items():
                     d[k] = v
                 list.append(d)
-                print(d)
         return list
 
     # CSV 文件读取 从start行读取读取到end行

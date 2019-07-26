@@ -34,6 +34,22 @@ class Rule:
             list_context.append(self._analysis_context(tree=tree,columns=columns,url=url))
         return list_context
 
+    def crawler_detail(self, confs, url=''):
+        htmlSource = HtmlSource()
+        # 获取网页原文
+        html_context = htmlSource.get_html(url_p=url)
+        # 解析原文
+        tree = html.fromstring(html_context)
+        result = {}
+        for conf in confs['group']:
+            if (conf['groupType'] == 'detail'):
+                detailTree = tree.xpath(conf["group"])[0]
+                result[conf['groupName']] = self._analysis_context(tree=detailTree,columns=conf['columns'],url=url)
+            elif (conf['groupType'] == 'list'):
+                listTree = tree.xpath(conf["group"])
+                result[conf['groupName']] = self._analysis_list(list=listTree,columns=conf['columns'],url=url)
+        return result
+
     # 解析页面
     def _analysis_context(self, tree, columns ,url=""):
         columns_context ={}
@@ -77,10 +93,25 @@ class Rule:
             column_context = text
         if '连接' == column["类型"]:
             # 进行lxml方式解析
-            column_context = parse.urljoin(url, tree.xpath(column["规则"])[0])
+            imgurl =tree.xpath(column["规则"])
+            if len(imgurl) > 1:
+                imgs =[]
+                for img in imgurl:
+                    imgs.append(parse.urljoin(url, img))
+                column_context = imgs
+            elif (len(imgurl) == 1):
+                column_context = parse.urljoin(url, imgurl[0])
+            else:
+                column_context = ''
         if '图片' == column["类型"]:
             # 进行lxml方式解析
-            column_context = tree.xpath(column["规则"])[0]
+            imgs = tree.xpath(column["规则"])
+            if len(imgs)>1:
+                column_context =  imgs
+            elif(len(imgs)==1):
+                column_context = imgs[0]
+            else:
+                column_context=''
         if '采集时间' == column["类型"]:
             # 系统当前时间
             rg = '%Y.%m.%d %H:%M:%S'
@@ -89,8 +120,15 @@ class Rule:
             column_context = time.strftime(rg,time.localtime(time.time()))
         if '源代码' == column["类型"]:
             # 进行lxml方式解析
-            html_context = tree.xpath(column["规则"])[0]
-            column_context = etree.tostring(html_context, print_pretty=True, method='html')  # 转为字符串
+            html_context = tree.xpath(column["规则"])
+            html_str=''
+            for content in html_context:
+                strs = etree.tostring(content,encoding = "utf-8", pretty_print = True, method = "html").decode("utf-8")  # 转为字符串
+                html_str = html_str+ strs
+            column_context = html_str
+        if '本地连接' == column["类型"]:
+            # 进行lxml方式解析
+            column_context = url
         return column_context
 
 

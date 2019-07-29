@@ -78,7 +78,7 @@ class MyPymysqlPool(BasePymysqlPool):
                               user=self.user,
                               passwd=self.password,
                               db=self.db,
-                              use_unicode=False,
+                              use_unicode=True,
                               charset="utf8",
                               cursorclass=DictCursor)
         return __pool.connection()

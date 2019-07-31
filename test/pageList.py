@@ -15,15 +15,17 @@ class PageList():
 
     def runList(self):
         # 数据读取
-        dict = self.readOne(db_pool=self.db_pool, table='xuexi111_dict')
-        self.updateStatue2(db_pool=self.db_pool, table='xuexi111_dict', uuid=dict['uuid'], statue=2)
-        # 数据写入
-        # for dict in dictList:
-        for conf in self.confs:
-            url = dict['地址']
-            if dict['current_url'] is not None:
-                url = dict['current_url']
-            self.crawlerNext(conf, url=url, uuid=dict['uuid'])
+        # dict = self.readOne(db_pool=self.db_pool, table='xuexi111_dict')
+        dictList = self.readAll(db_pool=self.db_pool, table='xuexi111_dict')
+        if dictList  is not False:
+            # 数据写入
+            for dict in dictList:
+                self.updateStatue2(db_pool=self.db_pool, table='xuexi111_dict', uuid=dict['uuid'], statue=2)
+                for conf in self.confs:
+                    url = dict['地址']
+                    if dict['current_url'] is not None:
+                        url = dict['current_url']
+                    self.crawlerNext(conf, url=url, uuid=dict['uuid'])
 
     def crawlerNext(self, conf, url='', uuid=''):
         print(url, uuid)
@@ -31,23 +33,34 @@ class PageList():
         list_list = []
         for row in conf['columns']:
             list_list.append(row['名称'])
-        result, next_page = rule.crawler_list(url, conf)
-        if len(result) > 0:
+        try:
+            result, next_page = rule.crawler_list(url, conf)
+            if len(result) > 0:
 
-            self.insertList(result=result, table='xuexi111_list', column_names=list_list)
-            if next_page:
+                self.insertList(result=result, table='xuexi111_list', column_names=list_list)
+                if next_page:
 
-                self.updateCurrent(db_pool=self.db_pool, table='xuexi111_dict', uuid=uuid, current=next_page)
+                    self.updateCurrent(db_pool=self.db_pool, table='xuexi111_dict', uuid=uuid, current=next_page)
+                    self.db_pool._conn.commit();
+                    self.crawlerNext(conf, url=next_page, uuid=uuid)
+                else:
+
+                    self.updateStatue(db_pool=self.db_pool, table='xuexi111_dict', uuid=uuid, statue=1)
+                    self.db_pool._conn.commit();
+        except Exception as e:
+            if '网页访问失败，无内容！' == e.args[0]:
+                self.updateStatue2(db_pool=self.db_pool, table='xuexi111_dict', uuid=uuid, statue=-1)
                 self.db_pool._conn.commit();
-                self.crawlerNext(conf, url=next_page, uuid=uuid)
-            else:
 
-                self.updateStatue(db_pool=self.db_pool, table='xuexi111_dict', uuid=uuid, statue=1)
-                self.db_pool._conn.commit();
+
 
     def readOne(self, db_pool, table=''):
         sql = """ select * from %s where statue  is null or statue =0 for update  """ % table
         return db_pool.getOne(sql)
+
+    def readAll(self, db_pool, table=''):
+        sql = """ select * from %s where statue  is null or statue =0 for update  """ % table
+        return db_pool.getAll(sql)
 
     def updateStatue(self, db_pool, table='', uuid='', statue=1):
         sql = """ update %s set statue = %d,current_url=null where uuid='%s' """ % (table, statue, uuid)
@@ -143,12 +156,15 @@ def runList():
         "nextPage": '*//div[@class="show-page"]/a[@class="next"]/@href'
     }]
     updateAllStatue(table='xuexi111_dict', statue=2)
-    for i in range(0,10):
-        pageDict = PageList(confs)
-        th = threading.Thread(target=pageDict.runList)
-        th.start()  # 启动线程
-        time.sleep(1)
-        # pageDict.runList(confs=confs)
+    #for i in range(0,12):
+    pageDict = PageList(confs)
+
+
+    pageDict.runList()
+    #th = threading.Thread(target=pageDict.runList)
+    #th.start()  # 启动线程
+    time.sleep(1)
+    # pageDict.runList(confs=confs)
 
 
 def updateAllStatue(table='', statue=2):

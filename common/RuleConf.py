@@ -17,6 +17,12 @@ class Rule:
         htmlSource = HtmlSource()
         # 获取网页原文
         html_context = htmlSource.get_html(url_p=url)
+        index =0
+        while(len(html_context)<128 and index<2):
+            html_context = htmlSource.get_html(url_p=url)
+            index+=1
+        if(len(html_context)<128):
+            raise Exception('网页访问失败，无内容！')
         # 解析原文
         tree = html.fromstring(html_context)
         result_list = tree.xpath(conf['group'])

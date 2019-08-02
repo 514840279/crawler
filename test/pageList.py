@@ -163,18 +163,18 @@ class PageList():
                 values += "'" + str(row[column_name]).replace("\'", "’").replace("\\", "") + "'"
                 index += 1
 
-            sql = "insert into " + table + " (" + columns + ") values(" + values + ")"
+            sql = "insert into `" + table + "` (" + columns + ") values(" + values + ")"
             print(sql)
             try:
                 self.db_pool.insert(sql=sql)
                 self.db_pool._conn.commit();
             except pymysql.err.ProgrammingError as pye:
                 if 1146 == pye.args[0]:
-                    createsql = """create table """ + table + """ (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
+                    createsql = """create table `""" + table + """` (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
                     print(createsql)
                     self.db_pool.update(createsql)
                     for column_name in column_names:
-                        altersql = " alter table "+table +" add column `"+column_name+"` varchar(255);"
+                        altersql = " alter table `"+table +"` add column `"+column_name+"` varchar(255);"
                         try:
                             self.db_pool.update(altersql)
                         except Exception as e:

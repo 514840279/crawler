@@ -9,9 +9,10 @@ from common.Mysql_Utils import MyPymysqlPool
 class PageDict():
     db_pool = MyPymysqlPool("default")
     def runDict(self,url,conf):
+
         rule = Rule()
         result,nextPage =rule.crawler_list(url,conf)
-        print(result,nextPage)
+        print(nextPage)
         # 数据入库 TODO
         dic_list=[]
         for row in conf['columns']:
@@ -38,7 +39,7 @@ class PageDict():
                 values += "'" + str(row[column_name]).replace("\'", "’").replace("\\", "") + "'"
                 index += 1
 
-            sql = "insert into " + table + " (" + columns + ") values(" + values + ")"
+            sql = "insert into `" + table + "` (" + columns + ") values(" + values + ")"
             print(sql)
             try:
                 self.db_pool.insert(sql=sql)
@@ -122,7 +123,7 @@ def pdfrunDict():
 # 测试字典采集
 def runWanhe():
     pageDict = PageDict()
-    start_url="http://www.hejizhan.com/bbs/?page=1"
+    start_url="http://www.hejizhan.com/bbs/?page=1017"
     conf={
         "group":'*//ul[@class="forum-list forum-topic-list"]/li',
         "tablename": '万千合集站_list',

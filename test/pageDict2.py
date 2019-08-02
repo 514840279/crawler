@@ -11,13 +11,14 @@ class PageDict():
     def runDict(self,url,conf):
         rule = Rule()
         result,nextPage =rule.crawler_list(url,conf)
-
-        print(result)
+        print(result,nextPage)
         # 数据入库 TODO
         dic_list=[]
         for row in conf['columns']:
             dic_list.append(row['名称'])
         self.insertList(result=result,table=conf['tablename'],column_names=dic_list)
+        if nextPage is not None and url != nextPage:
+            self.runDict(url=nextPage,conf=conf)
 
     def insertList(self, result='', table='', column_names=[]):
         columns = ''
@@ -118,9 +119,33 @@ def pdfrunDict():
     pageDict.runDict(url=start_url,conf=conf)
 
 
-
+# 测试字典采集
+def runWanhe():
+    pageDict = PageDict()
+    start_url="http://www.hejizhan.com/bbs/?page=1"
+    conf={
+        "group":'*//ul[@class="forum-list forum-topic-list"]/li',
+        "tablename": '万千合集站_list',
+        "columns":[
+            {"名称": "主键", "规则": "md5", "类型": "主键","连接": "地址"},
+            {"名称": "网站", "规则": "万千合集站", "类型": "不解析"},
+            {"名称": "头像", "规则": './div[@class="media"]/a/img/@src', "类型": "图片"},
+            {"名称": "个人主页", "规则": './div[@class="media"]/a/@href', "类型": "连接"},
+            {"名称": "地址", "规则": './div[@class="info-container"]/div/p/a/@href', "类型": "连接"},
+            {"名称": "资料名称", "规则": './div[@class="info-container"]/div/p[@class="title"]/a/text()', "类型": "文本"},
+            {"名称": "标签", "规则": './div[@class="info-container"]/div/p[@class="title"]/span[1]/text()', "类型": "文本"},
+            {"名称": "分享人", "规则": './div[@class="info-container"]/div/ul[@class="info-start-end"]/li/a[1]/text()', "类型": "文本"},
+            {"名称": "分享时间", "规则": './div[@class="info-container"]/div/ul[@class="info-start-end"]/li/text()',"类型": "文本"},
+            {"名称": "分类", "规则": './div[@class="info-container"]/div/ul[@class="info-start-end"]/li/a[2]/text()',
+             "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage":'*//ul[@class="pagination"]//li/a[contains(text(),"»")]/@href'
+    }
+    pageDict.runDict(url=start_url,conf=conf)
 
 if __name__ == '__main__':
     #runDict()
-    pdfrunDict()
+    #pdfrunDict()
+    runWanhe()
 

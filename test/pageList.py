@@ -18,6 +18,7 @@ class PageList():
         # 数据读取
         # dict = self.readOne(db_pool=self.db_pool, table='xuexi111_dict')
         try:
+            self.updateAllStatue(table=confs[0]['urltable'], statue=2)
             dictList = self.readAll(db_pool=self.db_pool, table=dictable)
             if dictList  is not False:
                 # 数据写入
@@ -29,10 +30,10 @@ class PageList():
                             url = dict['current_url']
                         self.crawlerNext(conf, url=url, uuid=dict['主键'])
         except Exception as e:
-            print(e.args)
+            print(e.args,"runList")
             if(e.args[0] == 1054):
                 try:
-                    altersql = " alter table " + dictable + " add column `statue` int(2)"
+                    altersql = " alter table `" + dictable + "` add column `statue` int(2)"
                     self.db_pool.update(altersql)
                 except Exception as e:
                     if e.args[0] == 1060:
@@ -40,7 +41,7 @@ class PageList():
                     else:
                         print(e.args, "更新表字段")
                 try:
-                    altersql = " alter table " + dictable + " add column `更新时间` timestamp on update current_timestamp"
+                    altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
                     self.db_pool.update(altersql)
                 except Exception as e:
                     if e.args[0] == 1060:
@@ -48,16 +49,32 @@ class PageList():
                     else:
                         print(e.args, "更新表字段")
                 try:
-                    altersql = " alter table " + dictable + " add column `current_url` varchar(500)"
+                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
                     self.db_pool.update(altersql)
                 except Exception as e:
                     if e.args[0] == 1060:
                         print(dictable,  "current_url 字段已经存在！")
                     else:
                         print(e.args, "更新表字段")
-                self.runList(confs)
-
-
+            if(e.args[0] == "更新时间"):
+                try:
+                    altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable,  "更新时间 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+            if('current_url' == e.args[0] ):
+                try:
+                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable,  "current_url 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+            self.runList(confs)
     def crawlerNext(self, conf, url='', uuid=''):
         print(url, uuid)
         try:
@@ -82,6 +99,24 @@ class PageList():
                 self.updateStatue2(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=-1)
                 self.db_pool._conn.commit();
 
+            if e.args[0] == 1054:
+                try:
+                    altersql = " alter table `" + conf['urltable'] + "` add column `更新时间` timestamp on update current_timestamp"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(conf['urltable'], "更新时间 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                try:
+                    altersql = " alter table `" + conf['urltable'] + "` add column `current_url` varchar(500)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(conf['urltable'], "current_url 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                self.crawlerNext(conf, url, uuid)
 
 
     def readOne(self, db_pool, table=''):
@@ -247,6 +282,34 @@ def runListXuexiku():
     # pageDict.runList(confs=confs)
 
 
+def runListPdf():
+    confs = [{
+        "urltable":"pdf电子书下载_dict",
+        "urlname": '地址',
+        "tablename":"pdf电子书下载_list",
+        "group": '*//div[@class="rightBlock"]/div[@class="bookinfo"]',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "pdf电子书下载", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './h2/a/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './h2/a/@href', "类型": "连接"},
+            {"名称": "星", "规则": './h2/span/img/@src', "类型": "图片"},
+            {"名称": "简介", "规则": './div[@class="bookdesc"]//text()', "类型": "文本"},
+            {"名称": "关键字", "规则": './div[@class="booktags"]/a//text()', "类型": "数组"},
+            {"名称": "类别", "规则": './div[@class="bookmore"]/span[1]/text()', "类型": "文本"},
+            {"名称": "格式", "规则": './div[@class="bookmore"]/span[2]/text()', "类型": "文本"},
+            {"名称": "下载", "规则": './div[@class="bookmore"]/span[3]/text()', "类型": "文本"},
+            {"名称": "大小", "规则": './div[@class="bookmore"]/span[4]/text()', "类型": "文本"},
+            {"名称": "时间", "规则": './div[@class="bookmore"]/span[5]/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="pageBar"]/a[contains(text(),"下一页")]/@href'
+    }]
+    pageDict = PageList()
+    pageDict.runList(confs)
+
+
 if __name__ == '__main__':
     #runList()
-    runListXuexiku()
+    #runListXuexiku()
+    runListPdf()

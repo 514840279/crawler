@@ -100,7 +100,27 @@ def runDict():
     }
     pageDict.runDict(url=start_url,conf=conf)
 
+# 测试字典采集
+def pdfrunDict():
+    pageDict = PageDict()
+    start_url="http://www.anysafer.com/jisuanji/"
+    conf={
+        "group":'*//div[@class="contentLayout"]//a',
+        "tablename": 'pdf电子书下载_dict',
+        "columns":[
+            {"名称": "主键", "规则": "md5", "类型": "主键","连接": "地址"},
+            {"名称": "网站", "规则": "pdf电子书下载", "类型": "不解析"},
+            {"名称": "类别", "规则": ".//text()", "类型": "文本"},
+            {"名称": "地址", "规则": "./@href", "类型": "连接"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+    }
+    pageDict.runDict(url=start_url,conf=conf)
+
+
+
 
 if __name__ == '__main__':
-    runDict()
+    #runDict()
+    pdfrunDict()
 

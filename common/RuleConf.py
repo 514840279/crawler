@@ -17,20 +17,20 @@ class Rule:
         htmlSource = HtmlSource()
         # 获取网页原文
         html_context = htmlSource.get_html(url_p=url)
-        index =0
-        while(len(html_context)<128 and index<2):
+        index = 0
+        while len(html_context) < 128 and index < 2:
             html_context = htmlSource.get_html(url_p=url)
             index+=1
-        if(len(html_context)<128):
-            raise Exception('网页访问失败，无内容！')
+        if len(html_context) < 128:
+            raise Exception(1001,'网页访问失败，无内容！')
         # 解析原文
         tree = html.fromstring(html_context)
         result_list = tree.xpath(conf['group'])
         result_list_context = self._analysis_list(list=result_list, columns=conf['columns'],url=url)
-        if(conf['nextPage']):
+        if 'nextPage' in conf.keys():
             next_page = tree.xpath(conf['nextPage'])
-            if(len(next_page)>0):
-                return result_list_context,next_page[0]
+            if len(next_page) > 0:
+                return result_list_context,parse.urljoin(url, next_page[0])
             else:
                 return result_list_context,None
         else:
@@ -38,7 +38,7 @@ class Rule:
 
     # 解析列表页面
     def _analysis_list(self, list, columns,url=""):
-        list_context=[]
+        list_context = []
         for tree in list:
             list_context.append(self._analysis_context(tree=tree,columns=columns,url=url))
         return list_context
@@ -47,20 +47,26 @@ class Rule:
         htmlSource = HtmlSource()
         # 获取网页原文
         html_context = htmlSource.get_html(url_p=url)
+        index = 0
+        while len(html_context) < 128 and index < 2:
+            html_context = htmlSource.get_html(url_p=url)
+            index += 1
+        if len(html_context) < 128:
+            raise Exception(1001, '网页访问失败，无内容！')
         # 解析原文
         tree = html.fromstring(html_context)
         result = {}
         for conf in confs['group']:
-            if (conf['groupType'] == 'detail'):
+            if conf['groupType'] == 'detail':
                 detailTree = tree.xpath(conf["group"])[0]
                 result[conf['groupName']] = self._analysis_context(tree=detailTree,columns=conf['columns'],url=url)
-            elif (conf['groupType'] == 'list'):
+            elif conf['groupType'] == 'list':
                 listTree = tree.xpath(conf["group"])
                 result[conf['groupName']] = self._analysis_list(list=listTree,columns=conf['columns'],url=url)
         return result
 
     # 解析页面
-    def _analysis_context(self, tree, columns ,url=""):
+    def _analysis_context(self, tree, columns , url=""):
         columns_context ={}
         id_flag= False
         for column in columns:
@@ -114,11 +120,14 @@ class Rule:
                 column_context = ''
         if column["类型"] == '图片':
             # 进行lxml方式解析
-            imgs = tree.xpath(column["规则"])
-            if len(imgs)>1:
-                column_context =  imgs
-            elif(len(imgs)==1):
-                column_context = imgs[0]
+            imgurl = tree.xpath(column["规则"])
+            if len(imgurl)>1:
+                imgs = []
+                for img in imgurl:
+                    imgs.append(parse.urljoin(url, img))
+                column_context = imgs
+            elif (len(imgurl) == 1):
+                column_context = parse.urljoin(url, imgurl[0])
             else:
                 column_context=''
         if column["类型"] == '采集时间':
@@ -138,6 +147,10 @@ class Rule:
         if column["类型"] == '本地连接':
             # 进行lxml方式解析
             column_context = url
+        if column["类型"] == '数组':
+            # 进行lxml方式解析
+            column_context = tree.xpath(column["规则"])
+
         return column_context
 
 

@@ -1,46 +1,50 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-from lxml import etree,html
+from lxml import etree, html
 from common.HtmlSource import HtmlSource
 from urllib import parse
 
 import hashlib
 import uuid
 import time
+import pymysql
+from common.Mysql_Utils import MyPymysqlPool
 
 
+# 网页解析
 class Rule:
 
     # 采集列表页面
     def crawler_list(self,url,conf,type_p='rp'):
+
         htmlSource = HtmlSource()
         # 获取网页原文
         html_context = htmlSource.get_html(url_p=url,type_p=type_p)
         index = 0
         while len(html_context) < 128 and index < 2:
             html_context = htmlSource.get_html(url_p=url)
-            index+=1
+            index += 1
         if len(html_context) < 128:
-            raise Exception(1001,'网页访问失败，无内容！')
+            raise Exception(1001, '网页访问失败，无内容！')
         # 解析原文
         tree = html.fromstring(html_context)
         result_list = tree.xpath(conf['group'])
-        result_list_context = self._analysis_list(list=result_list, columns=conf['columns'],url=url)
+        result_list_context = self._analysis_list(list=result_list, columns=conf['columns'], url=url)
         if 'nextPage' in conf.keys():
             next_page = tree.xpath(conf['nextPage'])
             if len(next_page) > 0:
-                return result_list_context,parse.urljoin(url, next_page[0])
+                return result_list_context, parse.urljoin(url, next_page[0])
             else:
-                return result_list_context,None
+                return result_list_context, None
         else:
-            return result_list_context,None
+            return result_list_context, None
 
     # 解析列表页面
-    def _analysis_list(self, list, columns,url=""):
+    def _analysis_list(self, list, columns, url=""):
         list_context = []
         for tree in list:
-            list_context.append(self._analysis_context(tree=tree,columns=columns,url=url))
+            list_context.append(self._analysis_context(tree=tree, columns=columns, url=url))
         return list_context
 
     def crawler_detail(self, confs, url=''):
@@ -59,25 +63,25 @@ class Rule:
         for conf in confs['group']:
             if conf['groupType'] == 'detail':
                 detailTree = tree.xpath(conf["group"])[0]
-                result[conf['groupName']] = self._analysis_context(tree=detailTree,columns=conf['columns'],url=url)
+                result[conf['groupName']] = self._analysis_context(tree=detailTree, columns=conf['columns'], url=url)
             elif conf['groupType'] == 'list':
                 listTree = tree.xpath(conf["group"])
-                result[conf['groupName']] = self._analysis_list(list=listTree,columns=conf['columns'],url=url)
+                result[conf['groupName']] = self._analysis_list(list=listTree, columns=conf['columns'], url=url)
         return result
 
     # 解析页面
-    def _analysis_context(self, tree, columns , url=""):
-        columns_context ={}
-        id_flag= False
+    def _analysis_context(self, tree, columns, url=""):
+        columns_context = {}
+        id_flag = False
         for column in columns:
-            if('主键' == column["类型"]):
+            if ('主键' == column["类型"]):
                 column_id = column
                 id_flag = True
             else:
                 # 除主键其他数据解析
-                columns_context[column["名称"]] = self._analysis_(tree=tree,column=column,url=url)
+                columns_context[column["名称"]] = self._analysis_(tree=tree, column=column, url=url)
         # 主键解析
-        if(id_flag):
+        if (id_flag):
             if ('md5' == column_id["规则"]):
                 column_id["url"] = columns_context[column_id["连接"]]
             columns_context[column_id["名称"]] = self._analysis_(tree=tree, column=column_id, url=url)
@@ -157,8 +161,235 @@ class Rule:
                 column_context = self._analysis_list(list=tree, columns=column['columns'], url=url)
         except Exception as e:
             e.args
+            
         return column_context
 
+
+# 数据入库
+class DatabaseInsertList:
+
+    # 插入数据库
+    def insertList(self, result='', table='', column_names=[], db_pool=None):
+        columns = ''
+        index = 0
+        for column_name in column_names:
+            if index > 0:
+                columns += ","
+            columns += '`' + column_name + '`'
+            index += 1
+
+        for row in result:
+            index = 0
+            values = ''
+            for column_name in column_names:
+                if index > 0:
+                    values += ","
+                values += "'" + str(row[column_name]).replace("\'", "\\\'").replace("\\", "\\\\") + "'"
+                index += 1
+
+            sql = "insert into `" + table + "` (" + columns + ") values(" + values + ")"
+            print(sql)
+            try:
+                db_pool.insert(sql=sql)
+                db_pool._conn.commit();
+            except pymysql.err.ProgrammingError as pye:
+                if 1146 == pye.args[0]:
+                    createsql = """create table """ + table + """ (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
+                    print(createsql)
+                    db_pool.update(createsql)
+                    for column_name in column_names:
+                        altersql = " alter table " + table + " add column `" + column_name + "` varchar(255);"
+                        try:
+                            db_pool.update(altersql)
+                        except Exception as e:
+                            if e.args[0] == 1060:
+                                print(table, column_name, "字段已经存在！")
+                            else:
+                                print(e.args, "更新表字段")
+                    db_pool.insert(sql)
+                    db_pool._conn.commit();
+                else:
+                    pye.with_traceback()
+            except pymysql.err.IntegrityError as pye:
+                if 1062 == pye.args[0]:
+                    updatesql = "update " + table + " set "
+                    index = 0
+                    for column_name in column_names:
+                        if index > 0:
+                            updatesql += ","
+                        updatesql += "`" + column_name + "` = '" + str(row[column_name]).replace("\'", "\\\'").replace(
+                            "\\", "\\\\") + "'"
+                        index += 1
+                    updatesql += " where `主键` = '" + row['主键'] + "'"
+                    print(updatesql)
+                    db_pool.update(updatesql)
+                    db_pool._conn.commit();
+                    print("主键重复", pye.args[1])
+                else:
+                    pye.with_traceback()
+            except Exception as e:
+                e.with_traceback()
+
+
+# 字典或者单列表页面从配置startUrl启动任务的
+class PageDict:
+    # 创建全局数据连接
+    db_pool = MyPymysqlPool("default")
+    databaseInsertList = DatabaseInsertList()
+
+    # 采集字典
+    def runDict(self, url, conf):
+        rule = Rule()
+        result, nextPage = rule.crawler_list(url, conf)
+        print(nextPage)
+        # 数据入库 TODO
+        dic_list = []
+        for row in conf['columns']:
+            dic_list.append(row['名称'])
+
+        self.databaseInsertList.insertList(result=result, table=conf['tablename'], column_names=dic_list,
+                                           db_pool=self.db_pool)
+        if nextPage is not None and url != nextPage:
+            self.runDict(url=nextPage, conf=conf)
+
+
+# 多列表页面从数据中取任务的
+class PageList:
+    db_pool = MyPymysqlPool("default")
+    databaseInsertList = DatabaseInsertList()
+
+    def runList(self, confs):
+        dictable = confs[0]['urltable']
+        print(dictable)
+        try:
+            self.updateAllStatue(table=confs[0]['urltable'], statue=2)
+            dictList = self.readAll(db_pool=self.db_pool, table=dictable)
+            if dictList is not False:
+                # 数据写入
+                for dict in dictList:
+                    self.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=dict['主键'], statue=2)
+                    for conf in confs:
+                        url = dict[conf['urlname']]
+                        if dict['current_url'] is not None:
+                            url = dict['current_url']
+                        self.crawlerNext(conf, url=url, uuid=dict['主键'])
+        except Exception as e:
+            print(e.args, "runList")
+            if (e.args[0] == 1054):
+                try:
+                    altersql = " alter table `" + dictable + "` add column `statue` int(2)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, " statue 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                try:
+                    altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, "更新时间 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                try:
+                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, "current_url 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+            if (e.args[0] == "更新时间"):
+                try:
+                    altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, "更新时间 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+            if ('current_url' == e.args[0]):
+                try:
+                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, "current_url 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+            self.runList(confs)
+
+    def crawlerNext(self, conf, url='', uuid=''):
+        print(url, uuid)
+        try:
+            rule = Rule()
+            result, next_page = rule.crawler_list(url, conf)
+            print(next_page)
+            if len(result) > 0:
+                list_list = []
+                for row in conf['columns']:
+                    list_list.append(row['名称'])
+                self.databaseInsertList.insertList(result=result, table=conf['tablename'], column_names=list_list,
+                                                   db_pool=self.db_pool)
+                if next_page is not None and url != next_page:
+                    self.updateCurrent(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, current=next_page)
+                    self.db_pool._conn.commit();
+                    self.crawlerNext(conf, url=next_page, uuid=uuid)
+                else:
+                    self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=1)
+                    self.db_pool._conn.commit();
+        except Exception as e:
+            print(e.args)
+            if 1001 == e.args[0]:
+                self.updateStatue2(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=-1)
+                self.db_pool._conn.commit();
+
+            if e.args[0] == 1054:
+                try:
+                    altersql = " alter table `" + conf[
+                        'urltable'] + "` add column `更新时间` timestamp on update current_timestamp"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(conf['urltable'], "更新时间 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                try:
+                    altersql = " alter table `" + conf['urltable'] + "` add column `current_url` varchar(500)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(conf['urltable'], "current_url 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                self.crawlerNext(conf, url, uuid)
+
+    def readOne(self, db_pool, table=''):
+        sql = """ select * from %s where statue  is null or statue =0 for update  """ % table
+        return db_pool.getOne(sql)
+
+    def readAll(self, db_pool, table=''):
+        sql = """ select * from %s where statue  is null or statue =0  """ % table
+        return db_pool.getAll(sql)
+
+    def updateStatue(self, db_pool, table='', uuid='', statue=1):
+        sql = """ update %s set statue = %d,current_url=null where 主键='%s' """ % (table, statue, uuid)
+        return db_pool.update(sql)
+
+    def updateAllStatue(self, table='', statue=2):
+        db_pool = MyPymysqlPool("default")
+        sql = """ update %s set statue = null where statue = %d """ % (table, statue)
+        db_pool.update(sql)
+        db_pool.dispose()
+
+    def updateStatue2(self, db_pool, table='', uuid='', statue=2):
+        sql = """ update %s set statue = %d where 主键='%s' """ % (table, statue, uuid)
+        return db_pool.update(sql)
+
+    def updateCurrent(self, db_pool, table='', uuid='', current=''):
+        sql = """ update %s set current_url='%s' where 主键='%s' """ % (table, current, uuid)
+        return db_pool.update(sql)
 
 
 if __name__ == '__main__':

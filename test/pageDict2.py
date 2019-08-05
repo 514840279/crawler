@@ -148,5 +148,6 @@ def runWanhe():
 if __name__ == '__main__':
     #runDict()
     #pdfrunDict()
-    runWanhe()
+    #runWanhe()
+    pass
 

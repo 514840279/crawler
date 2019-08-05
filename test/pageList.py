@@ -10,7 +10,6 @@ import threading, time
 class PageList():
     db_pool = MyPymysqlPool("default")
 
-
     def runList(self,confs):
         dictable = confs[0]['urltable']
         print(dictable)
@@ -28,7 +27,10 @@ class PageList():
                         url = dict[conf['urlname']]
                         if dict['current_url'] is not None:
                             url = dict['current_url']
-                        self.crawlerNext(conf, url=url, uuid=dict['主键'])
+                        type_p='rg'
+                        if 'readtype' in conf.keys():
+                            type_p = conf['readtype']
+                        self.crawlerNext(conf, url=url, uuid=dict['主键'],type_p=type_p)
         except Exception as e:
             print(e.args,"runList")
             if(e.args[0] == 1054):
@@ -75,11 +77,11 @@ class PageList():
                     else:
                         print(e.args, "更新表字段")
             self.runList(confs)
-    def crawlerNext(self, conf, url='', uuid=''):
+    def crawlerNext(self, conf, url='', uuid='',type_p='rg'):
         print(url, uuid)
         try:
             rule = Rule()
-            result, next_page = rule.crawler_list(url, conf)
+            result, next_page = rule.crawler_list(url, conf,type_p=type_p)
             print(next_page)
             if len(result) > 0:
                 list_list = []
@@ -89,16 +91,15 @@ class PageList():
                 if next_page is not None and url != next_page:
                     self.updateCurrent(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, current=next_page)
                     self.db_pool._conn.commit();
-                    self.crawlerNext(conf, url=next_page, uuid=uuid)
+                    self.crawlerNext(conf, url=next_page, uuid=uuid,type_p=type_p)
                 else:
                     self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=1)
                     self.db_pool._conn.commit();
         except Exception as e:
-            print(e.args)
+            print(e.args,'crawlerNext')
             if 1001 == e.args[0]:
                 self.updateStatue2(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=-1)
                 self.db_pool._conn.commit();
-
             if e.args[0] == 1054:
                 try:
                     altersql = " alter table `" + conf['urltable'] + "` add column `更新时间` timestamp on update current_timestamp"
@@ -170,7 +171,7 @@ class PageList():
                 self.db_pool._conn.commit();
             except pymysql.err.ProgrammingError as pye:
                 if 1146 == pye.args[0]:
-                    createsql = """create table `""" + table + """` (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
+                    createsql = """create table `""" + table + """` (`采集时间` varchar(20),`主键` varchar(32) primary key)  DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci"""
                     print(createsql)
                     self.db_pool.update(createsql)
                     for column_name in column_names:
@@ -203,7 +204,14 @@ class PageList():
                 else:
                     pye.with_traceback()
             except Exception as e:
-                print(e.args)
+                print(e.args,"insertList")
+                if e.args[0] == 1406:
+                    column = e.args[1]
+                    column = column[column.index("'")+1:column.rindex("'")]
+                    altersql = "alter table "+table+" modify column "+column+" varchar(2000)"
+                    self.db_pool.update(sql=altersql)
+                    self.insertList(result,table,column_names)
+
 
 
 def runList():
@@ -308,8 +316,110 @@ def runListPdf():
     pageDict = PageList()
     pageDict.runList(confs)
 
+def runListPdf():
+    confs = [{
+        "urltable":"xiaoshuo530_dict",
+        "urlname": '地址',
+        "tablename":"xiaoshuo530_list",
+        "group": '*//div[@class="l"]/ul/li]',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "xiaoshuo530", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './span[@class="s2"]/a/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './span[@class="s2"]/a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './span[@class="s1"]/text()', "类型": "文本"},
+            {"名称": "最新章节", "规则": './span[@class="s3"]/a/text()', "类型": "文本"},
+            {"名称": "章节地址", "规则": './span[@class="s3"]/a/@href', "类型": "连接"},
+            {"名称": "作者", "规则": './span[@class="s4"]/a/text()', "类型": "文本"},
+            {"名称": "作者地址", "规则": './span[@class="s4"]/a/@href', "类型": "连接"},
+            {"名称": "文章更新时间", "规则": './span[@class="s5"]/a/@href', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="pageBar"]/a[contains(text(),"下一页")]/@href'
+    }]
+    pageDict = PageList()
+    pageDict.runList(confs)
+
+def runxxbqg5200():
+    confs = [{
+        "urltable": "xxbqg5200_dict",
+        "urlname": '地址',
+        "tablename": "xxbqg5200_list",
+        "group": '*//div[@class="l"]/ul/li',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "xxbqg5200", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './span[@class="s2"]/a/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './span[@class="s2"]/a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './span[@class="s1"]/text()', "类型": "文本"},
+            {"名称": "最新章节", "规则": './span[@class="s3"]/a/text()', "类型": "文本"},
+            {"名称": "章节地址", "规则": './span[@class="s3"]/a/@href', "类型": "连接"},
+            {"名称": "作者", "规则": './span[@class="s4"]/a/text()', "类型": "文本"},
+            {"名称": "作者地址", "规则": './span[@class="s4"]/a/@href', "类型": "连接"},
+            {"名称": "文章更新时间", "规则": './span[@class="s5"]/a/@href', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="page_b"]//a[@class="next"]/@href'
+    }]
+    pageDict = PageList()
+    pageDict.runList(confs)
+
+
+def runvodxc():
+    confs = [{
+        "urltable": "星辰影院_dict",
+        "urlname": '地址',
+        "tablename": "星辰影院_list",
+        "group": '*//ul[@class="show-list grid-mode fn-clear"]/li',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "星辰影院", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './h5/a/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './h5/a/@href', "类型": "连接"},
+            {"名称": "演员", "规则": './p[@class="actor"]/a', "类型": "group",'columns':[
+                {"名称": "演员名称", "规则": './text()', "类型": "文本"},
+                {"名称": "演员地址", "规则": './@href', "类型": "连接"},
+            ]},
+            {"名称": "图片", "规则": './a/img/@src', "类型": "图片"},
+            {"名称": "画质", "规则": './a/em/@id', "类型": "文本"},
+            {"名称": "分类1", "规则": './a/div[@class="tagmv"]/em/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="pages long-page"]//a[@class="next pagegbk"]/@href'
+    }]
+    pageDict = PageList()
+    pageDict.runList(confs)
+
+def kisssub():
+    confs = [{
+        "urltable": "爱恋动漫BT下载_dict",
+        "urlname": '地址',
+        "tablename": "爱恋动漫BT下载_list",
+        "group": '*//table[@id="listTable"]/tbody/tr',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "爱恋动漫BT下载", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './td[3]/a[1]/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './td[3]/a[1]/@href', "类型": "连接"},
+            {"名称": "发表时间", "规则": './td[1]/text()', "类型": "文本"},
+            {"名称": "类别", "规则": './td[2]//text()', "类型": "文本"},
+            {"名称": "大小", "规则": './td[4]//text()', "类型": "文本"},
+            {"名称": "种子", "规则": './td[5]//text()', "类型": "文本"},
+            {"名称": "下载", "规则": './td[6]//text()', "类型": "文本"},
+            {"名称": "完成", "规则": './td[7]//text()', "类型": "文本"},
+            {"名称": "UP主_代号", "规则": './td[8]//text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="pages clear"]//a[contains(text(),"〉")]/@href'
+    }]
+    pageDict = PageList()
+    pageDict.runList(confs)
+
 
 if __name__ == '__main__':
     #runList()
     #runListXuexiku()
-    runListPdf()
+    #runListPdf()
+    #runxxbqg5200()
+    #runvodxc()
+    kisssub()

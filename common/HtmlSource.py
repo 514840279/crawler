@@ -72,12 +72,8 @@ class HtmlSource:
                     txt = html.text
                     html.close()
 
-        except(Exception):
-            html = requests.get(url=url_p, headers=headers_p)
-            txt = html.text
-            chartset_p = self.get_encodings_from_content(txt)
-            txt = str(html.text.encode(html.encoding,errors='ignore'), encoding=chartset_p,errors='ignore')
-            html.close()
+        except Exception as e:
+           print(e.args)
         return txt
 
     #  获取网页原文 （ulib）
@@ -110,92 +106,8 @@ class HtmlSource:
                     charset = ['utf-8']
         return charset[0]
 
-    # 获取html原码的地址列表信息1
-    def get_url_list(self, html=''):
-        all_a_url = re.findall("href=[\"'](.*?)[\"']", html)
-        return all_a_url
-
-    # 获取html原码的地址列表信息2
-    def get_url_list_xpath(self, html=''):
-        # print(html)
-        # 取得列表块
-        doc = etree.HTML(html)
-        # 网页上所有a标签的href地址
-        all_a_url = doc.xpath('//a/@href')
-        # all_img_url = doc.xpath('//img/@src')[0]
-
-        # 地址
-        return all_a_url
-
-    # 获取超链接内容
-    def get_a_text(self, html=""):
-        a_text_p = ()
-        try:
-            a_text_p = re.findall("href=[\"'](.*?)[\"'](.*?)>(.*?)</a>", html)
-        except:
-            pass
-        return a_text_p
-
-    # 去除噪点
-    def addr_clear(self, all_a_url_p):
-        list_url = []
-        for url in all_a_url_p:
-            # 先去除 噪点
-            if "javascript" not in url and url.replace('#', '') != "":
-                # 去除重复
-                if url not in list_url:
-                    list_url.append(url.strip())
-        return list_url
-
-    # 截取相对路径
-    def current_url_get(self, url_p=""):
-        url_t = ""
-        if ("://" in url_p):
-            url_t = url_p.split('://')[0]
-            url_p = url_p.replace(url_t + "://", "")
-            # 如果存在二级及以上的虚拟目录
-            if ("/" in url_p):
-                url_p = url_p.replace('/' + url_p.split('/')[-1], '/')
-        else:
-            return url_t
-        return url_p
-
-    # 计算完整的路径
-    def addr_reckon(self, url, url_root):
-        url = parse.urljoin(url_root,url)
-        return url
-
-    # 读取网站域名
-    def get_url_root(self, url):
-        urlparse_pase =  parse.urlparse(url)
-        return  urlparse_pase['scheme']+"://"+urlparse_pase['netloc']
-
-    # 补全完整路径/
-    def addr_whole(self, all_a_url, url_root, url_key=""):
-        url_temp = []
-        current_url = self.current_url_get(url_p=url_root)
-        for url in all_a_url:
-            if "http" not in url:
-                # 计算完整路径
-                url = self.addr_reckon(url, url_root=current_url)
-            # 简单验证地址的正确性
-            if self.addr_validate(url=url):
-                url_temp.append(url.strip())
-        all_a_url = url_temp
-        return all_a_url
 
 
-    # 简单验证地址的正确性
-    def addr_validate(self,url=''):
-        url_head = url.split(':')[0]
-        if url_head not in ['http','https','ftp']:
-            if url[0:2] == '//':
-                return True
-            if url[0:1] == '/':
-                return True
-            return False
-        else:
-            return True
 
     def main(self):
         print("")

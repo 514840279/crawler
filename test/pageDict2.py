@@ -11,7 +11,7 @@ class PageDict():
     def runDict(self,url,conf):
 
         rule = Rule()
-        result,nextPage =rule.crawler_list(url,conf)
+        result,nextPage =rule.crawler_list(url,conf,type_p='rg')
         print(nextPage)
         # 数据入库 TODO
         dic_list=[]
@@ -46,11 +46,11 @@ class PageDict():
                 self.db_pool._conn.commit();
             except pymysql.err.ProgrammingError as pye:
                 if 1146 == pye.args[0]:
-                    createsql = """create table """ + table + """ (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
+                    createsql = """create table """ + table + """ (`采集时间` varchar(20),`主键` varchar(32) primary key) DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci """
                     print(createsql)
                     self.db_pool.update(createsql)
                     for column_name in column_names:
-                        altersql = " alter table " + table + " add column `" + column_name + "` varchar(255);"
+                        altersql = " alter table " + table + " add column `" + column_name + "` varchar(255) ;"
                         try:
                             self.db_pool.update(altersql)
                         except Exception as e:
@@ -145,8 +145,96 @@ def runWanhe():
     }
     pageDict.runDict(url=start_url,conf=conf)
 
+
+# xiaoshuo530
+def runxiaoshuo530():
+    pageDict = PageDict()
+    start_url="https://www.xiaoshuo530.com/xiaoshuosort1/0/1.html"
+    conf={
+        "group":'*//div[@class="nav"]/ul/li',
+        "tablename": 'xiaoshuo530_dict',
+        "columns":[
+            {"名称": "主键", "规则": "md5", "类型": "主键","连接": "地址"},
+            {"名称": "网站", "规则": "xiaoshuo530", "类型": "不解析"},
+            {"名称": "地址", "规则": './a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './a/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ]
+    }
+    pageDict.runDict(url=start_url,conf=conf)
+
+# xxbqg5200
+def runxxbqg5200():
+    pageDict = PageDict()
+    start_url = "http://www.xxbqg5200.com/sort/1_1/"
+    conf = {
+        "group": '*//div[@class="nav"]/ul/li',
+        "tablename": 'xxbqg5200_dict',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "xxbqg5200", "类型": "不解析"},
+            {"名称": "地址", "规则": './a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './a/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ]
+    }
+    pageDict.runDict(url=start_url, conf=conf)
+
+# vodxc
+def runvodxc():
+    pageDict = PageDict()
+    start_url = "http://www.vodxc.com/sitemap.html"
+    conf = {
+        "group": '*//div[@class="hot"]/div/ul/dd/li',
+        "tablename": '星辰影院_dict',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "星辰影院", "类型": "不解析"},
+            {"名称": "地址", "规则": './a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './a/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ]
+    }
+    pageDict.runDict(url=start_url, conf=conf)
+
+# kisssub
+def kisssub():
+    pageDict = PageDict()
+    start_url = "http://www.kisssub.org/"
+    conf = {
+        "group": '*//div[@class="nav"]/ul/li',
+        "tablename": '爱恋动漫BT下载_dict',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "爱恋动漫BT下载", "类型": "不解析"},
+            {"名称": "地址", "规则": './a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './a/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ]
+    }
+    pageDict.runDict(url=start_url, conf=conf)
+
+# kisssub2
+def kisssub2():
+    pageDict = PageDict()
+    start_url = "http://www.kisssub.org/addon.php?r=tagcloud"
+    conf = {
+        "group": '*//table[@class="list_style"]//span[@class="tag word size0"]',
+        "tablename": '爱恋动漫BT下载_dict',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "爱恋动漫BT下载", "类型": "不解析"},
+            {"名称": "地址", "规则": './a/@href', "类型": "连接"},
+            {"名称": "标签", "规则": './a/text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ]
+    }
+    pageDict.runDict(url=start_url, conf=conf)
+
 if __name__ == '__main__':
     #runDict()
     #pdfrunDict()
-    runWanhe()
-
+    #runWanhe()
+    #runxiaoshuo530()
+    #runvodxc()
+    kisssub2()

@@ -58,20 +58,6 @@ class HtmlSource:
                     self.driver.implicitly_wait(30)  # 据说此方法是智能等待，看效果还不错，数据加载完就返回了 30 代表等待秒
                     txt = self.driver.page_source
 
-            # login的方法 待完善
-            if (type_p == 'lg'):
-
-                try:
-                    pass
-                except:
-                    pass
-
-            # 最后默认的方法
-            if (type_p == 'df'):
-                    html = requests.get(url=url_p, timeout=timeout_p, headers=headers_p)
-                    txt = html.text
-                    html.close()
-
         except Exception as e:
            print(e.args)
         return txt
@@ -106,11 +92,6 @@ class HtmlSource:
                     charset = ['utf-8']
         return charset[0]
 
-
-
-
-    def main(self):
-        print("")
 
 if __name__ == '__main__':
     print("")

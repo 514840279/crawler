@@ -87,6 +87,7 @@ def test():
         "group": '*/div[@class="content"]',  # 数据在网页中展示的范围 xpath
         "readtype": 'rg',
         # 网页请求数据方式方法，默认是 rg，可选 rg （request get），rp （request post），se （Selenium  开发中），ul （urlllib） 后开发多种方式执行自动选择
+        "pagetype": 'detail', #  区分网页的类型属于 dict（网站地图），list（数据列表），detail（详细信息）
         # "chartset":"gb2312", # 默认是 utf8
         "columns": [  # 数据表配置项，对应结果表的字段
             {"类型": "主键",  # 系统默认类型包括 主键，不解析，本地连接，采集时间，文本，连接，图片，数组，context，list
@@ -137,8 +138,13 @@ def test():
         ],
         "nextPage": '' # PageList 使用翻页配置 值用xpath配置 例如 '*//div[@class='pegebar']/a[@class='next']/@href'
     }
-    pageDetail = PageDetail() # 使用 from  common.RuleConf import * 导入，根据判读要采集页面的类型使用那个 PageDict（采集网站地图和列表数据使用）PageList（采集列表数据使用） PageDetail（采集详细信息页面）
-    pageDetail.run(conf)      # 使用run方法即可执行采集任务，
+
+    pageCrawler = PageCrawler()
+    pageCrawler.run(conf=conf)  # 使用run方法即可执行采集任务，
+
+    # 使用 from  common.RuleConf import * 导入，根据判读要采集页面的类型使用那个 PageDict（采集网站地图和列表数据使用）PageList（采集列表数据使用） PageDetail（采集详细信息页面）
+    #pageDetail = PageDetail()
+    #pageDetail.run(conf)
 
     #pageList = PageList()
     #pageList.run(conf)

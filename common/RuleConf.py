@@ -263,10 +263,12 @@ class DatabaseInsertList:
                 columns += ","
 
                 values += ","
-            if isinstance(result[column_name],dict):
-                values += "'" + str(json.dumps(result[column_name],ensure_ascii=False)).replace("\\", "\\\\").replace("\'", "\\\'")+ "'"
-            if isinstance(result[column_name],list):
-                values += "'" + str(json.dumps(result[column_name],ensure_ascii=False)).replace("\\", "\\\\").replace("\'", "\\\'") + "'"
+            if isinstance(result[column_name], dict):
+                values += "'" + str(json.dumps(result[column_name], ensure_ascii=False)).replace("\\", "\\\\").replace(
+                    "\'", "\\\'") + "'"
+            if isinstance(result[column_name], list):
+                values += "'" + str(json.dumps(result[column_name], ensure_ascii=False)).replace("\\", "\\\\").replace(
+                    "\'", "\\\'") + "'"
             else:
                 values += "'" + str(result[column_name]).replace("\\", "\\\\").replace("\'", "\\\'") + "'"
             columns += '`' + column_name + '`'
@@ -328,7 +330,6 @@ class PageDict:
     # 创建全局数据连接
     db_pool = MyPymysqlPool("default")
     databaseInsertList = DatabaseInsertList()
-
 
     # 采集字典
     def run(self, url, conf):
@@ -462,10 +463,10 @@ class PageList:
         return db_pool.update(sql)
 
 
+# 送数据库中去任务采集详细页面
 class PageDetail:
     db_pool = MyPymysqlPool("default")
     databaseInsertList = DatabaseInsertList()
-
 
     def run(self, conf):
         columnNames = []
@@ -484,9 +485,25 @@ class PageDetail:
         for list in listList:
             self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=2)
             result = rule.crawler_detail(conf=conf, url=list[conf['urlname']], type_p=type_p, chartset=chartset)
-            self.databaseInsertList.insertDetail(result=result, table=conf['tablename'],column_names=columnNames, db_pool=self.db_pool)
+            self.databaseInsertList.insertDetail(result=result, table=conf['tablename'], column_names=columnNames,
+                                                 db_pool=self.db_pool)
             self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=1)
             #
+
+
+# 通过配置项 pageType 控制采集
+class PageCrawler:
+
+    def run(self, conf, start_url=''):
+        if conf['pagetype'] == 'dict':
+            pageDict = PageDict()
+            pageDict.run(url=conf['url'], conf=conf)
+        elif conf['pagetype'] == 'detail':
+            pageDetail = PageDetail()  # 使用 from  common.RuleConf import * 导入，根据判读要采集页面的类型使用那个 PageDict（采集网站地图和列表数据使用）PageList（采集列表数据使用） PageDetail（采集详细信息页面）
+            pageDetail.run(conf)  # 使用run方法即可执行采集任务，
+        elif conf['pagetype'] == 'list':
+            pageList = PageList()
+            pageList.run(conf)
 
 
 if __name__ == '__main__':

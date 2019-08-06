@@ -10,14 +10,12 @@
 
 from test import *
 
-
 # http://www.6vhao.tv/mj/
 # 6v电影网
 from common.RuleConf import *
 
 
 def run6vhao():
-    pageDict = PageDict()
     start_url = "http://www.6vhao.tv/mj/"
     conf = {
         "group": '*//div[@class="menutv"]//a',
@@ -30,15 +28,17 @@ def run6vhao():
             {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
         ],
     }
-    pageDict.runDict(url=start_url, conf=conf)
+    pageDict = PageDict()
+    pageDict.run(url=start_url, conf=conf)
+
 
 def runList6vhao():
     confs = [{
-        "urltable":"6v电影网_dict",
+        "urltable": "6v电影网_dict",
         "urlname": '地址',
-        "tablename":"6v电影网_list",
+        "tablename": "6v电影网_list",
         "group": '*//div[@class="listBox"]/ul/li',
-        #"chartset":"gb2312",
+        # "chartset":"gb2312",
         "columns": [
             {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
             {"名称": "网站", "规则": "6v电影网", "类型": "不解析"},
@@ -51,19 +51,50 @@ def runList6vhao():
         ],
         "nextPage": '*//div[@class="pagebox"]/a[contains(text(),"下一页")]/@href'
     }]
-    pageDict = PageList()
-    pageDict.runList(confs)
+    pageList = PageList()
+    pageList.runMulity(confs)
 
+
+def runList6vhao():
+    conf = {
+        "urltable": "6v电影网_dict",
+        "urlname": '地址',
+        "tablename": "6v电影网_list",
+        "group": '*//div[@class="listBox"]/ul/li',
+        # "chartset":"gb2312",
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "6v电影网", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './div[@class="listInfo"]/h3/a/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './div[@class="listInfo"]/h3/a/@href', "类型": "连接"},
+            {"名称": "图片", "规则": './div[@class="listimg"]/a/img/@src', "类型": "图片"},
+            {"名称": "分类", "规则": './div[@class="listInfo"]/p[2]//text()', "类型": "文本"},
+            {"名称": "时间", "规则": './div[@class="listInfo"]/p[3]//text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="pagebox"]/a[contains(text(),"下一页")]/@href'
+    }
+    pageList = PageList()
+    pageList.run(conf)
+    # pageList.runMulity(confs)
 
 
 def test():
     conf = {
-        "urltable": "xuexi111_list",
-        "urlname": '地址',
-        "tablename": "xuexi111_detail",
-        "group": '*/div[@class="content"]',
-        "columns": [
-            {"类型": "主键", "名称": "主键", "规则": "md5", "连接": "地址"},
+        "urltable": "xuexi111_list",  # 地址来源表
+        "urlname": '地址',  # 来源表的字段
+        "tablename": "xuexi111_detail",  # 结果数据存入数据表
+        "group": '*/div[@class="content"]',  # 数据在网页中展示的范围 xpath
+        "readtype": 'rg',
+        # 网页请求数据方式方法，默认是 rg，可选 rg （request get），rp （request post），se （Selenium  开发中），ul （urlllib） 后开发多种方式执行自动选择
+        # "chartset":"gb2312", # 默认是 utf8
+        "columns": [  # 数据表配置项，对应结果表的字段
+            {"类型": "主键",  # 系统默认类型包括 主键，不解析，本地连接，采集时间，文本，连接，图片，数组，context，list
+             "名称": "主键",  # 当类型为主键时，规则 可选uuid （随机生成），md5（必须有 连接 属性） 两种
+             "规则": "md5",  # 规则一般使用 xpath 规则，极个别系统配置不采用xpath 比如主键，本地连接，采集时间，不解析（规则原文本返回），
+             "连接": "地址"  # 除 类型，名称，规则 三个必须的属性外，其他会有额外的一些属性辅助，
+                             # 例如  主键的md5必须有链接属性（属性值对应其他字段的名称），congtext 和 list代表包含更复杂的columns
+             },
             {"类型": "不解析", "名称": "网站", "规则": "学习资料库"},
             {"类型": "本地连接", "名称": "地址", "规则": "", },
             {"类型": "采集时间", "名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", },
@@ -104,12 +135,18 @@ def test():
                 ]
             }
         ],
-        "nextPage": ''
-
+        "nextPage": '' # PageList 使用翻页配置 值用xpath配置 例如 '*//div[@class='pegebar']/a[@class='next']/@href'
     }
-    pageDetail = PageDetail()
-    pageDetail.run(conf)
+    pageDetail = PageDetail() # 使用 from  common.RuleConf import * 导入，根据判读要采集页面的类型使用那个 PageDict（采集网站地图和列表数据使用）PageList（采集列表数据使用） PageDetail（采集详细信息页面）
+    pageDetail.run(conf)      # 使用run方法即可执行采集任务，
+
+    #pageList = PageList()
+    #pageList.run(conf)
+
+    #pageDict = PageDict()
+    #pageDict.run(url=start_url, conf=conf)
+
 if __name__ == '__main__':
-    #run6vhao()
-    #runList6vhao()
-    test()
+    # run6vhao()
+    runList6vhao()
+    # test()

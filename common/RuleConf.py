@@ -186,7 +186,7 @@ class DatabaseInsertList:
             for column_name in column_names:
                 if index > 0:
                     values += ","
-                values += "'" + str(row[column_name]).replace("\'", "\\\'").replace("\\", "\\\\") + "'"
+                values += "'" + str(row[column_name]).replace("\\", "\\\\").replace("\'", "\\\'") + "'"
                 index += 1
 
             sql = "insert into `" + table + "` (" + columns + ") values(" + values + ")"
@@ -219,8 +219,8 @@ class DatabaseInsertList:
                     for column_name in column_names:
                         if index > 0:
                             updatesql += ","
-                        updatesql += "`" + column_name + "` = '" + str(row[column_name]).replace("\'", "\\\'").replace(
-                            "\\", "\\\\") + "'"
+                        updatesql += "`" + column_name + "` = '" + str(row[column_name]).replace(
+                            "\\", "\\\\").replace("\'", "\\\'") + "'"
                         index += 1
                     updatesql += " where `主键` = '" + row['主键'] + "'"
                     print(updatesql)
@@ -279,7 +279,7 @@ class DatabaseInsertList:
             db_pool._conn.commit();
         except pymysql.err.ProgrammingError as pye:
             if 1146 == pye.args[0]:
-                createsql = """create table """ + table + """ (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
+                createsql = """create table """ + table + """ (`采集时间` varchar(20) ,`主键` varchar(32) primary key)"""
                 print(createsql)
                 db_pool.update(createsql)
                 for column_name in column_names:
@@ -302,8 +302,8 @@ class DatabaseInsertList:
                 for column_name in column_names:
                     if index > 0:
                         updatesql += ","
-                    updatesql += "`" + column_name + "` = '" + str(result[column_name]).replace("\'", "\\\'").replace(
-                        "\\", "\\\\") + "'"
+                    updatesql += "`" + column_name + "` = '" + str(result[column_name]).replace(
+                        "\\", "\\\\").replace("\'", "\\\'") + "'"
                     index += 1
                 updatesql += " where `主键` = '" + result['主键'] + "'"
                 print(updatesql)
@@ -328,6 +328,7 @@ class PageDict:
     # 创建全局数据连接
     db_pool = MyPymysqlPool("default")
     databaseInsertList = DatabaseInsertList()
+
 
     # 采集字典
     def run(self, url, conf):
@@ -355,8 +356,12 @@ class PageList:
     db_pool = MyPymysqlPool("default")
     databaseInsertList = DatabaseInsertList()
 
-    def run(self, confs):
-        dictable = confs[0]['urltable']
+    def runMulity(self, confs):
+        for conf in confs:
+            self.run(conf)
+
+    def run(self, conf):
+        dictable = conf['urltable']
         print(dictable)
         try:
             self.databaseInsertList.updateAllStatue(db_pool=self.db_pool, table=dictable, statue=2)
@@ -366,28 +371,20 @@ class PageList:
                 for dict in dictList:
                     self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=dict['主键'],
                                                           statue=2)
-                    for conf in confs:
-                        url = dict[conf['urlname']]
-                        if dict['current_url'] is not None:
-                            url = dict['current_url']
-                        type_p = 'rg'
-                        if 'readtype' in conf.keys():
-                            type_p = conf['readtype']
-                        chartset = "utf8"
-                        if 'chartset' in conf.keys():
-                            chartset = conf['chartset']
-                        self.crawlerNext(conf, url=url, uuid=dict['主键'], type_p=type_p, chartset=chartset)
+
+                    url = dict[conf['urlname']]
+                    if dict['current_url'] is not None:
+                        url = dict['current_url']
+                    type_p = 'rg'
+                    if 'readtype' in conf.keys():
+                        type_p = conf['readtype']
+                    chartset = "utf8"
+                    if 'chartset' in conf.keys():
+                        chartset = conf['chartset']
+                    self.crawlerNext(conf, url=url, uuid=dict['主键'], type_p=type_p, chartset=chartset)
         except Exception as e:
             print(e.args, "runList")
-            if (e.args[0] == 1054):
-                try:
-                    altersql = " alter table `" + dictable + "` add column `statue` int(2)"
-                    self.db_pool.update(altersql)
-                except Exception as e:
-                    if e.args[0] == 1060:
-                        print(dictable, " statue 字段已经存在！")
-                    else:
-                        print(e.args, "更新表字段")
+            if e.args[0] == "更新时间" or 'current_url' == e.args[0]:
                 try:
                     altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
                     self.db_pool.update(altersql)
@@ -404,25 +401,7 @@ class PageList:
                         print(dictable, "current_url 字段已经存在！")
                     else:
                         print(e.args, "更新表字段")
-            if (e.args[0] == "更新时间"):
-                try:
-                    altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
-                    self.db_pool.update(altersql)
-                except Exception as e:
-                    if e.args[0] == 1060:
-                        print(dictable, "更新时间 字段已经存在！")
-                    else:
-                        print(e.args, "更新表字段")
-            if ('current_url' == e.args[0]):
-                try:
-                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
-                    self.db_pool.update(altersql)
-                except Exception as e:
-                    if e.args[0] == 1060:
-                        print(dictable, "current_url 字段已经存在！")
-                    else:
-                        print(e.args, "更新表字段")
-            self.run(confs)
+            self.run(conf)
 
     def crawlerNext(self, conf, url='', uuid='', type_p='rg', chartset='utf8'):
         print(url, uuid, type_p, chartset)
@@ -486,6 +465,7 @@ class PageList:
 class PageDetail:
     db_pool = MyPymysqlPool("default")
     databaseInsertList = DatabaseInsertList()
+
 
     def run(self, conf):
         columnNames = []

@@ -16,11 +16,11 @@ from common.Mysql_Utils import MyPymysqlPool
 class Rule:
 
     # 采集列表页面
-    def crawler_list(self,url,conf,type_p='rp'):
+    def crawler_list(self,url,conf,type_p='rp',chartset='utf8'):
 
         htmlSource = HtmlSource()
         # 获取网页原文
-        html_context = htmlSource.get_html(url_p=url,type_p=type_p)
+        html_context = htmlSource.get_html(url_p=url,type_p=type_p,chartset_p=chartset)
         index = 0
         while len(html_context) < 128 and index < 2:
             html_context = htmlSource.get_html(url_p=url)
@@ -155,10 +155,15 @@ class Rule:
             if column["类型"] == '数组':
                 # 进行lxml方式解析
                 column_context = tree.xpath(column["规则"])
-            if column["类型"] == 'group':
+            if column["类型"] == 'list':
                 # 进行lxml方式解析
                 tree= tree.xpath(column["规则"])
                 column_context = self._analysis_list(list=tree, columns=column['columns'], url=url)
+            if column["类型"] == 'context':
+                # 进行lxml方式解析
+                tree = tree.xpath(column["规则"])
+                column_context = self._analysis_context(list=tree, columns=column['columns'], url=url)
+
         except Exception as e:
             e.args
             
@@ -240,7 +245,13 @@ class PageDict:
     # 采集字典
     def runDict(self, url, conf):
         rule = Rule()
-        result, nextPage = rule.crawler_list(url, conf)
+        type_p = 'rg'
+        if 'readtype' in conf.keys():
+            type_p = conf['readtype']
+        chartset = "utf8"
+        if 'chartset' in conf.keys():
+            chartset = conf['chartset']
+        result, nextPage = rule.crawler_list(url, conf,type_p,chartset)
         print(nextPage)
         # 数据入库 TODO
         dic_list = []
@@ -272,7 +283,13 @@ class PageList:
                         url = dict[conf['urlname']]
                         if dict['current_url'] is not None:
                             url = dict['current_url']
-                        self.crawlerNext(conf, url=url, uuid=dict['主键'])
+                        type_p = 'rg'
+                        if 'readtype' in conf.keys():
+                            type_p = conf['readtype']
+                        chartset="utf8"
+                        if 'chartset' in conf.keys():
+                            chartset = conf['chartset']
+                        self.crawlerNext(conf, url=url, uuid=dict['主键'],type_p=type_p,chartset=chartset)
         except Exception as e:
             print(e.args, "runList")
             if (e.args[0] == 1054):
@@ -320,11 +337,11 @@ class PageList:
                         print(e.args, "更新表字段")
             self.runList(confs)
 
-    def crawlerNext(self, conf, url='', uuid=''):
-        print(url, uuid)
+    def crawlerNext(self, conf, url='', uuid='',type_p='rg',chartset='utf8'):
+        print(url, uuid,type_p,chartset)
         try:
             rule = Rule()
-            result, next_page = rule.crawler_list(url, conf)
+            result, next_page = rule.crawler_list(url, conf,type_p,chartset)
             print(next_page)
             if len(result) > 0:
                 list_list = []
@@ -335,7 +352,7 @@ class PageList:
                 if next_page is not None and url != next_page:
                     self.updateCurrent(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, current=next_page)
                     self.db_pool._conn.commit();
-                    self.crawlerNext(conf, url=next_page, uuid=uuid)
+                    self.crawlerNext(conf, url=next_page, uuid=uuid,type_p=type_p,chartset=chartset)
                 else:
                     self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=1)
                     self.db_pool._conn.commit();

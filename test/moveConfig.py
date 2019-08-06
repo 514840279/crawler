@@ -38,6 +38,7 @@ def runList6vhao():
         "urlname": '地址',
         "tablename":"6v电影网_list",
         "group": '*//div[@class="listBox"]/ul/li',
+        #"chartset":"gb2312",
         "columns": [
             {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
             {"名称": "网站", "规则": "6v电影网", "类型": "不解析"},

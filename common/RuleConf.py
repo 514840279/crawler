@@ -229,6 +229,19 @@ class DatabaseInsertList:
                     print("主键重复", pye.args[1])
                 else:
                     pye.with_traceback()
+            except pymysql.err.InternalError as pye:
+                column_name = pye.args[1]
+                column = column_name[column_name.index("'")+1:]
+                column = column[:column.index("'")]
+                altersql = " alter table " + table + " add column `" + column + "` varchar(255);"
+                try:
+                    db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(table, column_name, "字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                self.insertList(result,table,column_names,db_pool)
             except Exception as e:
                 e.with_traceback()
 
@@ -319,6 +332,7 @@ class DatabaseInsertList:
                 column = pye.args[1]
                 column = column[column.index("'") + 1:column.rindex("'")]
                 altersql = "alter table " + table + " modify column " + column + " varchar(2000)"
+                print(altersql)
                 db_pool.update(sql=altersql)
                 self.insertDetail(result, table, column_names)
         except Exception as e:
@@ -341,7 +355,6 @@ class PageDict:
         if 'chartset' in conf.keys():
             chartset = conf['chartset']
         result, nextPage = rule.crawler_list(url, conf, type_p, chartset)
-        print(nextPage)
         dic_list = []
         for row in conf['columns']:
             dic_list.append(row['名称'])

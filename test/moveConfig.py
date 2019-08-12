@@ -152,7 +152,35 @@ def test():
     #pageDict = PageDict()
     #pageDict.run(url=start_url, conf=conf)
 
+def ailian():
+    confs = {
+        "urltable": "爱恋动漫BT下载_dict",
+        "urlname": '地址',
+        "tablename": "爱恋动漫BT下载_list",
+        "group": '*//table[@id="listTable"]/tbody/tr',
+        "columns": [
+            {"名称": "主键", "规则": "md5", "类型": "主键", "连接": "地址"},
+            {"名称": "网站", "规则": "爱恋动漫BT下载", "类型": "不解析"},
+            {"名称": "资料名称", "规则": './td[3]/a[1]/text()', "类型": "文本"},
+            {"名称": "地址", "规则": './td[3]/a[1]/@href', "类型": "连接"},
+            {"名称": "发表时间", "规则": './td[1]/text()', "类型": "文本"},
+            {"名称": "类别", "规则": './td[2]//text()', "类型": "文本"},
+            {"名称": "大小", "规则": './td[4]//text()', "类型": "文本"},
+            {"名称": "种子", "规则": './td[5]//text()', "类型": "文本"},
+            {"名称": "下载", "规则": './td[6]//text()', "类型": "文本"},
+            {"名称": "完成", "规则": './td[7]//text()', "类型": "文本"},
+            {"名称": "UP主_代号", "规则": './td[8]//text()', "类型": "文本"},
+            {"名称": "采集时间", "规则": "%Y.%m.%d %H:%M:%S", "类型": "采集时间"},
+        ],
+        "nextPage": '*//div[@class="pages clear"]//a[contains(text(),"〉")]/@href'
+    }
+    pageDict = PageList()
+    pageDict.runProcess(confs)
+
+
+
 if __name__ == '__main__':
     # run6vhao()
-    runList6vhao()
+    #runList6vhao()
     # test()
+    ailian()

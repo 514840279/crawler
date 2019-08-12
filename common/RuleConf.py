@@ -4,15 +4,10 @@
 from lxml import etree, html
 from common.HtmlSource import HtmlSource
 from urllib import parse
-
-import json
-import hashlib
-import uuid
-import time
-import types
-import pymysql
 from common.Mysql_Utils import MyPymysqlPool
+from multiprocessing import Process
 
+import json,hashlib,uuid,time,pymysql
 
 # 网页解析
 class Rule:
@@ -338,6 +333,25 @@ class DatabaseInsertList:
         except Exception as e:
             e.with_traceback()
 
+    def readOne(self, db_pool, table=''):
+        sql = """ select * from %s where statue  is null or statue =0 """ % table
+        return db_pool.getOne(sql)
+
+    def readTop(self, db_pool, table='',top=10):
+        sql = """ select * from %s where statue  is null or statue =0 limit 0,%d """ % (table,top)
+        return db_pool.getAll(sql)
+
+    def readExsistTop(self,db_pool, table,top=10):
+        exsitsql = "select * from %s where statue=2 " % table
+        dataList = db_pool.getAll(exsitsql)
+        if dataList is not  False:
+            if len(dataList) < top:
+                sql = """ select * from %s where statue  is null or statue =0 limit 0,%d """ % (table, top - len(dataList))
+                return db_pool.getAll(sql)
+            else:
+                return self.readExsistTop(db_pool, table,top=top)
+        else:
+            return False
 
 # 字典或者单列表页面从配置startUrl启动任务的
 class PageDict:
@@ -417,6 +431,34 @@ class PageList:
                         print(e.args, "更新表字段")
             self.run(conf)
 
+    def runProcess(self,conf):
+        dictable = conf['urltable']
+        top=10
+        try:
+            self.databaseInsertList.updateAllStatue(db_pool=self.db_pool, table=dictable, statue=2)
+            dictList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=dictable,top=top)
+            while dictList is not False:
+                # 数据写入
+                for dict in dictList:
+                    self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=dict['主键'],
+                                                          statue=2)
+                    url = dict[conf['urlname']]
+                    if dict['current_url'] is not None:
+                        url = dict['current_url']
+                    type_p = 'rg'
+                    if 'readtype' in conf.keys():
+                        type_p = conf['readtype']
+                    chartset = "utf8"
+                    if 'chartset' in conf.keys():
+                        chartset = conf['chartset']
+                    p = Process(target=self.crawlerNext, name="crawlerNext" + dict['主键'], args=(conf, url, dict['主键'], type_p, chartset))
+                    p.start()
+                dictList = self.databaseInsertList.readExsistTop(db_pool=self.db_pool, table=dictable,top=top)
+
+
+        except Exception as e:
+            print(e)
+
     def crawlerNext(self, conf, url='', uuid='', type_p='rg', chartset='utf8'):
         print(url, uuid, type_p, chartset)
         try:
@@ -463,9 +505,6 @@ class PageList:
                         print(e.args, "更新表字段")
                 self.crawlerNext(conf, url, uuid)
 
-    def readOne(self, db_pool, table=''):
-        sql = """ select * from %s where statue  is null or statue =0 for update  """ % table
-        return db_pool.getOne(sql)
 
     def updateStatue(self, db_pool, table='', uuid='', statue=1):
         sql = """ update %s set statue = %d,current_url=null where 主键='%s' """ % (table, statue, uuid)
@@ -518,6 +557,10 @@ class PageCrawler:
             pageList = PageList()
             pageList.run(conf)
 
+    def runProcess(self,conf,start_url=''):
+        if conf['pagetype'] == 'list':
 
+            pageList = PageList()
+            pageList.run(conf)
 if __name__ == '__main__':
     pass

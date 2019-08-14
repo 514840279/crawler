@@ -338,18 +338,22 @@ class DatabaseInsertList:
         return db_pool.getOne(sql)
 
     def readTop(self, db_pool, table='',top=10):
-        sql = """ select * from %s where statue  is null or statue =0 limit 0,%d """ % (table,top)
+        sql = """ select * from %s where statue  is null or statue =0 order by 采集时间  limit 0,%d """ % (table,top)
         return db_pool.getAll(sql)
 
-    def readExsistTop(self,db_pool, table,top=10):
+    def readExsistTop(self,table,top=10):
+        db_pool=MyPymysqlPool("default")
         exsitsql = "select * from %s where statue=2 " % table
         dataList = db_pool.getAll(exsitsql)
         if dataList is not  False:
             if len(dataList) < top:
-                sql = """ select * from %s where statue  is null or statue =0 limit 0,%d """ % (table, top - len(dataList))
+                sql = """ select * from %s where statue  is null or statue =0  order by 采集时间 limit 0,%d """ % (table, top - len(dataList))
                 return db_pool.getAll(sql)
             else:
-                return self.readExsistTop(db_pool, table,top=top)
+                db_pool.dispose()
+                time.sleep(5)
+
+                return self.readExsistTop(table,top=top)
         else:
             return False
 
@@ -453,7 +457,8 @@ class PageList:
                         chartset = conf['chartset']
                     p = Process(target=self.crawlerNext, name="crawlerNext" + dict['主键'], args=(conf, url, dict['主键'], type_p, chartset))
                     p.start()
-                dictList = self.databaseInsertList.readExsistTop(db_pool=self.db_pool, table=dictable,top=top)
+                time.sleep(5)
+                dictList = self.databaseInsertList.readExsistTop( table=dictable,top=top)
 
 
         except Exception as e:
@@ -478,6 +483,8 @@ class PageList:
                 else:
                     self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=1)
                     self.db_pool._conn.commit();
+            else:
+                self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=-2)
         except Exception as e:
             print(e.args)
             if 1001 == e.args[0]:

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>813</width>
+    <height>631</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="5" column="1">
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="minimumSize">
+      <size>
+       <width>60</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>关闭</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="6">
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="minimumSize">
+      <size>
+       <width>60</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>测试</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="5">
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>保存</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="6">
+    <widget class="QPlainTextEdit" name="plainTextEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="plainText">
+      <string>{
+        &quot;urltable&quot;: &quot;&quot;,  # 地址来源表
+        &quot;urlname&quot;: '地址',  # 来源表的字段
+        &quot;tablename&quot;: &quot;&quot;,  # 结果数据存入数据表
+        &quot;group&quot;: '*/div[@class=&quot;content&quot;]',  # 数据在网页中展示的范围 xpath
+        &quot;readtype&quot;: 'rg',
+        # 网页请求数据方式方法，默认是 rg，可选 rg （request get），rp （request post），se （Selenium  开发中），ul （urlllib） 后开发多种方式执行自动选择
+        &quot;pagetype&quot;: 'detail', #  区分网页的类型属于 dict（网站地图），list（数据列表），detail（详细信息）
+        # &quot;chartset&quot;:&quot;gb2312&quot;, # 默认是 utf8
+        &quot;columns&quot;: [  # 数据表配置项，对应结果表的字段
+            {&quot;类型&quot;: &quot;主键&quot;,  # 系统默认类型包括 主键，不解析，本地连接，采集时间，文本，连接，图片，数组，context，list
+             &quot;名称&quot;: &quot;主键&quot;,  # 当类型为主键时，规则 可选uuid （随机生成），md5（必须有 连接 属性） 两种
+             &quot;规则&quot;: &quot;md5&quot;,  # 规则一般使用 xpath 规则，极个别系统配置不采用xpath 比如主键，本地连接，采集时间，不解析（规则原文本返回），
+             &quot;连接&quot;: &quot;地址&quot;  # 除 类型，名称，规则 三个必须的属性外，其他会有额外的一些属性辅助，
+                             # 例如  主键的md5必须有链接属性（属性值对应其他字段的名称），congtext 和 list代表包含更复杂的columns
+             },
+            {&quot;类型&quot;: &quot;不解析&quot;, &quot;名称&quot;: &quot;网站&quot;, &quot;规则&quot;: &quot;学习资料库&quot;},
+            {&quot;类型&quot;: &quot;本地连接&quot;, &quot;名称&quot;: &quot;地址&quot;, &quot;规则&quot;: &quot;&quot;, },
+            {&quot;类型&quot;: &quot;采集时间&quot;, &quot;名称&quot;: &quot;采集时间&quot;, &quot;规则&quot;: &quot;%Y.%m.%d %H:%M:%S&quot;, },
+            {&quot;类型&quot;: &quot;文本&quot;, &quot;名称&quot;: &quot;标题&quot;, &quot;规则&quot;: &quot;./h1/text()&quot;},
+            {&quot;类型&quot;: &quot;图片&quot;, &quot;名称&quot;: &quot;图片&quot;, &quot;规则&quot;: './/div[@class=&quot;cont_l&quot;]/div[@class=&quot;cont_lt&quot;]/img/@src'},
+            
+            {
+                &quot;名称&quot;: '资料介绍',
+                &quot;类型&quot;: 'context',
+                &quot;规则&quot;: './/div[@class=&quot;download&quot;]/div[@class=&quot;download-left&quot;]',
+                &quot;columns&quot;: [
+                    {&quot;名称&quot;: &quot;资料介绍&quot;, &quot;规则&quot;: './/div[@class=&quot;info-content&quot;]', &quot;类型&quot;: &quot;源代码&quot;},
+                ]
+            }, {
+                &quot;名称&quot;: '下载文件',
+                &quot;类型&quot;: 'list',
+                &quot;规则&quot;: './/div[@id=&quot;download&quot;]/table//tr',
+                &quot;columns&quot;: [
+                    {&quot;名称&quot;: &quot;文件名&quot;, &quot;规则&quot;: './td[1]/a/text()', &quot;类型&quot;: &quot;文本&quot;},
+                    {&quot;名称&quot;: &quot;下载地址&quot;, &quot;规则&quot;: './td[1]/a/@href', &quot;类型&quot;: &quot;连接&quot;},
+                    {&quot;名称&quot;: &quot;离线地址&quot;, &quot;规则&quot;: './td[1]/div[@class=&quot;lixian-jpg&quot;]/a/@href', &quot;类型&quot;: &quot;连接&quot;},
+                    {&quot;名称&quot;: &quot;文件大小&quot;, &quot;规则&quot;: './td[@align=&quot;center&quot;]/text()', &quot;类型&quot;: &quot;文本&quot;},
+                ]
+            }
+        ],
+        &quot;nextPage&quot;: '' # PageList 使用翻页配置 值用xpath配置 例如 '*//div[@class='pegebar']/a[@class='next']/@href'
+    }</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="6">
+    <widget class="QTextBrowser" name="textBrowser">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>300</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

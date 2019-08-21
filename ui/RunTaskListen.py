@@ -25,11 +25,11 @@ class RunTaskListen(QWidget, Ui_Form):
             title = ['操作','图标','task_name',
                      #'url',
                      'url_type','url_name','discription',
-                     'charset','request_data','request_type','start_time',
-                     'excute_batch',
-                     'create_time','create_user',
-                     'update_time','update_user',
-                     'excute_flag','home_statue','dict_conf','list_conf','detail_conf'
+                     'charset','request_data','request_type',
+                     'excute_batch','excute_flag',
+                     #'create_time','create_user',
+                     'update_time','update_user'
+                     #,'start_time','home_statue','dict_conf','list_conf','detail_conf'
                      ]
 
             # 设置数据层次结构，4行4列

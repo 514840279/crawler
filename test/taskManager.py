@@ -48,19 +48,19 @@ def test():
     task = manager.get_task_queue()
     result = manager.get_result_queue()
     # 放几个任务进去
-    for i in range(100):
+    for i in range(10):
         n = random.randint(0, 10000)
         print('put task %d...' % n)
         task.put(n)
     # 从result队列读取结果
     print('try get results...')
-    for i in range(100):
-        r = result.get(timeout=10)
+    for i in range(110):
+        r = result.get()
         print('result:%s' % r)
 
     # 关闭
-    manager.shutdown()
-    print('master exit')
+    #manager.shutdown()
+    #print('master exit')
 
 
 if __name__ == '__main__':

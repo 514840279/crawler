@@ -4,6 +4,26 @@
 import json
 from flask import Flask, Response, render_template, request
 from common.RuleConf import *
+from multiprocessing.managers import BaseManager
+
+
+# 创建类似的QueueManager
+class QueueManager(BaseManager):
+    pass
+# 由于这个QueueManager只从网络上获取Queue，所以注册时只提供名字即可
+QueueManager.register('get_task_queue')
+QueueManager.register('get_result_queue')
+
+# 连接到服务器，也就是运行task_master.py的机器
+server_addr = '192.168.0.16' # '127.0.0.1'
+print('connect to server %s...' % server_addr)
+# 端口和验证码注意要保持完全一致
+m = QueueManager(address=(server_addr, 5000), authkey=b'abc')
+# 从网络连接
+m.connect()
+# 获取Queue的对象
+task = m.get_task_queue()
+result = m.get_result_queue()
 
 # 引入 模块
 
@@ -45,10 +65,17 @@ def getUser():
 @app.route("/crawler", methods=['POST'])
 def crawler():
     params = request.json
-    pageCrawler = PageCrawler()
-    pageCrawler.run(conf=json.loads(params['dictConf'],encoding='utf8')) # 采集字典（网站地图）
-    pageCrawler.run(conf=json.loads(params['listConf'], encoding='utf8')) # 采集列表
-    pageCrawler.run(conf=json.loads(params['detailConf'], encoding='utf8')) # 采集详细信息
+    print(params)
+    if(params['delete'] == '0' or params['delete'] is None or params['delete'] =='null'):
+        if params['statue'] == "1":
+            # pageCrawler = PageCrawler()
+            # pageCrawler.run(conf=json.loads(params['dictConf'],encoding='utf8')) # 采集字典（网站地图）
+            # pageCrawler.run(conf=json.loads(params['listConf'], encoding='utf8')) # 采集列表
+            # pageCrawler.run(conf=json.loads(params['detailConf'], encoding='utf8')) # 采集详细信息
+            n = task.get()
+            r = '%d * %d = %d' % (n, n, n * n)
+            time.sleep(1)
+            result.put(r)
     return Response(json.dumps(params), mimetype='application/json')
 
 

@@ -4,7 +4,7 @@
 # 多进程分布式例子
 # 非服务端：worker
 
-import time, sys, queue
+import random, time, sys, queue,multiprocessing
 from multiprocessing.managers import BaseManager
 
 
@@ -30,7 +30,8 @@ result = m.get_result_queue()
 # 从task队列获取任务，并把结果写入result队列
 for i in range(100):
     try:
-        n = task.get(timeout=1)
+        n = task.get()
+        task.put(random.randint(0, 10000))
         print('run task %d * %d...' % (n, n))
         r = '%d * %d = %d' % (n, n, n * n)
         time.sleep(1)

@@ -72,10 +72,7 @@ def crawler():
             # pageCrawler.run(conf=json.loads(params['dictConf'],encoding='utf8')) # 采集字典（网站地图）
             # pageCrawler.run(conf=json.loads(params['listConf'], encoding='utf8')) # 采集列表
             # pageCrawler.run(conf=json.loads(params['detailConf'], encoding='utf8')) # 采集详细信息
-            n = task.get()
-            r = '%d * %d = %d' % (n, n, n * n)
-            time.sleep(1)
-            result.put(r)
+            task.put(params)
     return Response(json.dumps(params), mimetype='application/json')
 
 

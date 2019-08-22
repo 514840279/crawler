@@ -7,7 +7,8 @@ from urllib import parse
 from common.Mysql_Utils import MyPymysqlPool
 from multiprocessing import Process
 
-import json,hashlib,uuid,time,pymysql
+import json, hashlib, uuid, time, pymysql
+
 
 # 网页解析
 class Rule:
@@ -226,7 +227,7 @@ class DatabaseInsertList:
                     pye.with_traceback()
             except pymysql.err.InternalError as pye:
                 column_name = pye.args[1]
-                column = column_name[column_name.index("'")+1:]
+                column = column_name[column_name.index("'") + 1:]
                 column = column[:column.index("'")]
                 altersql = " alter table " + table + " add column `" + column + "` varchar(255);"
                 try:
@@ -236,7 +237,7 @@ class DatabaseInsertList:
                         print(table, column_name, "字段已经存在！")
                     else:
                         print(e.args, "更新表字段")
-                self.insertList(result,table,column_names,db_pool)
+                self.insertList(result, table, column_names, db_pool)
             except Exception as e:
                 e.with_traceback()
 
@@ -337,25 +338,27 @@ class DatabaseInsertList:
         sql = """ select * from %s where statue  is null or statue =0 """ % table
         return db_pool.getOne(sql)
 
-    def readTop(self, db_pool, table='',top=10):
-        sql = """ select * from %s where statue  is null or statue =0 order by 采集时间  limit 0,%d """ % (table,top)
+    def readTop(self, db_pool, table='', top=10):
+        sql = """ select * from %s where statue  is null or statue =0 order by 采集时间  limit 0,%d """ % (table, top)
         return db_pool.getAll(sql)
 
-    def readExsistTop(self,table,top=10):
-        db_pool=MyPymysqlPool("default")
+    def readExsistTop(self, table, top=10):
+        db_pool = MyPymysqlPool("default")
         exsitsql = "select * from %s where statue=2 " % table
         dataList = db_pool.getAll(exsitsql)
-        if dataList is not  False:
+        if dataList is not False:
             if len(dataList) < top:
-                sql = """ select * from %s where statue  is null or statue =0  order by 采集时间 limit 0,%d """ % (table, top - len(dataList))
+                sql = """ select * from %s where statue  is null or statue =0  order by 采集时间 limit 0,%d """ % (
+                table, top - len(dataList))
                 return db_pool.getAll(sql)
             else:
                 db_pool.dispose()
                 time.sleep(5)
 
-                return self.readExsistTop(table,top=top)
+                return self.readExsistTop(table, top=top)
         else:
             return False
+
 
 # 字典或者单列表页面从配置startUrl启动任务的
 class PageDict:
@@ -435,12 +438,12 @@ class PageList:
                         print(e.args, "更新表字段")
             self.run(conf)
 
-    def runProcess(self,conf):
+    def runProcess(self, conf):
         dictable = conf['urltable']
-        top=10
+        top = 10
         try:
             self.databaseInsertList.updateAllStatue(db_pool=self.db_pool, table=dictable, statue=2)
-            dictList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=dictable,top=top)
+            dictList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=dictable, top=top)
             while dictList is not False:
                 # 数据写入
                 for dict in dictList:
@@ -455,10 +458,11 @@ class PageList:
                     chartset = "utf8"
                     if 'chartset' in conf.keys():
                         chartset = conf['chartset']
-                    p = Process(target=self.crawlerNext, name="crawlerNext" + dict['主键'], args=(conf, url, dict['主键'], type_p, chartset))
+                    p = Process(target=self.crawlerNext, name="crawlerNext" + dict['主键'],
+                                args=(conf, url, dict['主键'], type_p, chartset))
                     p.start()
                 time.sleep(5)
-                dictList = self.databaseInsertList.readExsistTop( table=dictable,top=top)
+                dictList = self.databaseInsertList.readExsistTop(table=dictable, top=top)
 
 
         except Exception as e:
@@ -512,7 +516,6 @@ class PageList:
                         print(e.args, "更新表字段")
                 self.crawlerNext(conf, url, uuid)
 
-
     def updateStatue(self, db_pool, table='', uuid='', statue=1):
         sql = """ update %s set statue = %d,current_url=null where 主键='%s' """ % (table, statue, uuid)
         return db_pool.update(sql)
@@ -527,12 +530,12 @@ class PageDetail:
     db_pool = MyPymysqlPool("default")
     databaseInsertList = DatabaseInsertList()
 
+    # 单进程 采集
     def run(self, conf):
         columnNames = []
         for row in conf['columns']:
             columnNames.append(row['名称'])
         listtable = conf['urltable']
-        rule = Rule()
         type_p = 'rg'
         if 'readtype' in conf.keys():
             type_p = conf['readtype']
@@ -540,20 +543,47 @@ class PageDetail:
         if 'chartset' in conf.keys():
             chartset = conf['chartset']
         self.databaseInsertList.updateAllStatue(self.db_pool, table=listtable, statue=2)
-        listList = self.databaseInsertList.readAll(db_pool=self.db_pool, table=listtable)
-        for list in listList:
-            self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=2)
-            result = rule.crawler_detail(conf=conf, url=list[conf['urlname']], type_p=type_p, chartset=chartset)
-            self.databaseInsertList.insertDetail(result=result, table=conf['tablename'], column_names=columnNames,
-                                                 db_pool=self.db_pool)
-            self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=1)
-            #
+        listList = self.databaseInsertList.readExsistTop(db_pool=self.db_pool, table=listtable)
+        while listList is not False:
+            for list in listList:
+                self.crawlerDetail(conf, listtable, type_p, chartset, columnNames)
+            listList = self.databaseInsertList.readExsistTop(db_pool=self.db_pool, table=listtable)
+
+    # 多进程采集
+    def runProcess(self, conf):
+        columnNames = []
+        for row in conf['columns']:
+            columnNames.append(row['名称'])
+        listtable = conf['urltable']
+        type_p = 'rg'
+        if 'readtype' in conf.keys():
+            type_p = conf['readtype']
+        chartset = "utf8"
+        if 'chartset' in conf.keys():
+            chartset = conf['chartset']
+        self.databaseInsertList.updateAllStatue(self.db_pool, table=listtable, statue=2)
+        listList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=listtable, top=10)
+        while listList is not False:
+            for list in listList:
+                p = Process(target=self.crawlerDetail, name="crawlerDetail" + dict['主键'],
+                            args=(conf, listtable, type_p, chartset, columnNames))
+                p.start()
+            listList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=listtable, top=10)
+
+    # 采集入库
+    def crawlerDetail(self, conf, listtable, type_p, chartset, columnNames):
+        rule = Rule()
+        self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=2)
+        result = rule.crawler_detail(conf=conf, url=list[conf['urlname']], type_p=type_p, chartset=chartset)
+        self.databaseInsertList.insertDetail(result=result, table=conf['tablename'], column_names=columnNames,
+                                             db_pool=self.db_pool)
+        self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=1)
 
 
 # 通过配置项 pageType 控制采集
 class PageCrawler:
 
-    def run(self, conf, start_url=''):
+    def run(self, conf):
         if conf['pagetype'] == 'dict':
             pageDict = PageDict()
             pageDict.run(url=conf['url'], conf=conf)
@@ -564,10 +594,17 @@ class PageCrawler:
             pageList = PageList()
             pageList.run(conf)
 
-    def runProcess(self,conf,start_url=''):
-        if conf['pagetype'] == 'list':
-
+    def runProcess(self, conf):
+        if conf['pagetype'] == 'dict':
+            pageDict = PageDict()
+            pageDict.run(url=conf['url'], conf=conf)
+        elif conf['pagetype'] == 'detail':
+            pageDetail = PageDetail()  # 使用 from  common.RuleConf import * 导入，根据判读要采集页面的类型使用那个 PageDict（采集网站地图和列表数据使用）PageList（采集列表数据使用） PageDetail（采集详细信息页面）
+            pageDetail.runProcess(conf)  # 使用run方法即可执行采集任务，
+        elif conf['pagetype'] == 'list':
             pageList = PageList()
-            pageList.run(conf)
+            pageList.runProcess(conf)
+
+
 if __name__ == '__main__':
     pass

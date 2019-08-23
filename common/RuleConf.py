@@ -195,7 +195,7 @@ class DatabaseInsertList:
             print(sql)
             try:
                 db_pool.insert(sql=sql)
-                db_pool._conn.commit();
+                db_pool.end("commit");
             except pymysql.err.ProgrammingError as pye:
                 if 1146 == pye.args[0]:
                     createsql = """create table """ + table + """ (`采集时间` varchar(20),`主键` varchar(32) primary key)"""
@@ -211,7 +211,7 @@ class DatabaseInsertList:
                             else:
                                 print(e.args, "更新表字段")
                     db_pool.insert(sql)
-                    db_pool._conn.commit();
+                    db_pool.end("commit");
                 else:
                     pye.with_traceback()
             except pymysql.err.IntegrityError as pye:
@@ -227,7 +227,7 @@ class DatabaseInsertList:
                     updatesql += " where `主键` = '" + row['主键'] + "'"
                     print(updatesql)
                     db_pool.update(updatesql)
-                    db_pool._conn.commit();
+                    db_pool.end("commit");
                     print("主键重复", pye.args[1])
                 else:
                     pye.with_traceback()
@@ -262,7 +262,7 @@ class DatabaseInsertList:
         try:
             sql = """ update %s set statue = null where statue = %d """ % (table, statue)
             db_pool.update(sql)
-            db_pool._conn.commit();
+            db_pool.end("commit");
         except pymysql.err.InternalError:
             altersql = " alter table `" + table + "` add column `statue` int(2)"
             db_pool.update(altersql)
@@ -271,7 +271,7 @@ class DatabaseInsertList:
     def updateStatue2(self, db_pool, table='', uuid='', statue=2):
         sql = """ update %s set statue = %d where 主键='%s' """ % (table, statue, uuid)
         db_pool.update(sql)
-        db_pool._conn.commit();
+        db_pool.end("commit");
 
     # 插入数据库
     def insertDetail(self, result='', table='', column_names=[], db_pool=None):
@@ -299,7 +299,7 @@ class DatabaseInsertList:
             print(sql)
             try:
                 db_pool.insert(sql=sql)
-                db_pool._conn.commit();
+                db_pool.end("commit");
             except pymysql.err.ProgrammingError as pye:
                 if 1146 == pye.args[0]:
                     createsql = """create table """ + table + """ (`采集时间` varchar(20) ,`主键` varchar(32) primary key)"""
@@ -315,7 +315,7 @@ class DatabaseInsertList:
                             else:
                                 print(e.args, "更新表字段")
                     db_pool.insert(sql)
-                    db_pool._conn.commit();
+                    db_pool.end("commit");
                 else:
                     pye.with_traceback()
             except pymysql.err.IntegrityError as pye:
@@ -331,7 +331,7 @@ class DatabaseInsertList:
                     updatesql += " where `主键` = '" + result['主键'] + "'"
                     print(updatesql)
                     db_pool.update(updatesql)
-                    db_pool._conn.commit();
+                    db_pool.end("commit");
                     print("主键重复", pye.args[1])
                 else:
                     pye.with_traceback()
@@ -521,11 +521,11 @@ class PageList:
                                                    db_pool=self.db_pool)
                 if next_page is not None and url != next_page:
                     self.updateCurrent(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, current=next_page)
-                    self.db_pool._conn.commit();
+                    self.db_pool.end("commit");
                     self.crawlerNext(conf, url=next_page, uuid=uuid, type_p=type_p, chartset=chartset)
                 else:
                     self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=1)
-                    self.db_pool._conn.commit();
+                    self.db_pool.end("commit");
             else:
                 self.updateStatue(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid, statue=-2)
         except Exception as e:
@@ -533,7 +533,7 @@ class PageList:
             if 1001 == e.args[0]:
                 self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=conf['urltable'], uuid=uuid,
                                                       statue=-1)
-                self.db_pool._conn.commit();
+                self.db_pool.end("commit");
 
             if e.args[0] == 1054:
                 try:

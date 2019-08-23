@@ -36,13 +36,16 @@ def worker():
     n = task.get()
     while n:
         time.sleep(1)
-        result.put({"data": n, "code": 1})
 
         crawler = PageCrawler()
         conf = json.loads(n['contentInfo'])
         print(conf)
         crawler.runProcess(conf=conf)
+        # 全部采集完后交给manager处理
+        result.put(n)
+        # 等待下一个任务
         n = task.get()
+
 
 if __name__ == '__main__':
     worker()

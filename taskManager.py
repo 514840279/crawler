@@ -7,12 +7,13 @@
 from multiprocessing.managers import BaseManager
 from multiprocessing import freeze_support  # server启动报错，提示需要引用此包
 import random, time, queue
+from common.Mysql_Utils import MyPymysqlPool
 
 # 发送任务的队列
 task_queue = queue.Queue()
 # 接收结果的队列
 result_queue = queue.Queue()
-
+dbpool = MyPymysqlPool('default')
 
 # 从BaseManager继承的QueueManager
 class QueueManager(BaseManager):
@@ -62,7 +63,11 @@ def task():
     r = result.get()
     while r:
         print(r)
+        sql = "update sys_crawler_ruler_info set satue=0 where uuid='%s'" % r['uuid']
+        dbpool.update(sql)
+        dbpool.end("commit")
         r= result.get()
+
 
     # 关闭
     #manager.shutdown()

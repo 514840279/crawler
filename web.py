@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import json
 from flask import Flask, Response, render_template, request
 from common.RuleConf import *
 from multiprocessing.managers import BaseManager
+
 
 
 # 创建类似的QueueManager

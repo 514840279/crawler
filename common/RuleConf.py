@@ -15,28 +15,30 @@ class Rule:
 
     # 采集列表页面
     def crawler_list(self, url, conf, type_p='rp', chartset='utf8'):
-
-        htmlSource = HtmlSource()
-        # 获取网页原文
-        html_context = htmlSource.get_html(url_p=url, type_p=type_p, chartset_p=chartset)
-        index = 0
-        while len(html_context) < 128 and index < 2:
-            html_context = htmlSource.get_html(url_p=url)
-            index += 1
-        if len(html_context) < 128:
-            raise Exception(1001, '网页访问失败，无内容！')
-        # 解析原文
-        tree = html.fromstring(html_context)
-        result_list = tree.xpath(conf['group'])
-        result_list_context = self._analysis_list(list=result_list, columns=conf['columns'], url=url)
-        if 'nextPage' in conf.keys():
-            next_page = tree.xpath(conf['nextPage'])
-            if len(next_page) > 0:
-                return result_list_context, parse.urljoin(url, next_page[0])
+        try:
+            htmlSource = HtmlSource()
+            # 获取网页原文
+            html_context = htmlSource.get_html(url_p=url, type_p=type_p, chartset_p=chartset)
+            index = 0
+            while len(html_context) < 128 and index < 2:
+                html_context = htmlSource.get_html(url_p=url)
+                index += 1
+            if len(html_context) < 128:
+                raise Exception(1001, '网页访问失败，无内容！')
+            # 解析原文
+            tree = html.fromstring(html_context)
+            result_list = tree.xpath(conf['group'])
+            result_list_context = self._analysis_list(list=result_list, columns=conf['columns'], url=url)
+            if 'nextPage' in conf.keys():
+                next_page = tree.xpath(conf['nextPage'])
+                if len(next_page) > 0:
+                    return result_list_context, parse.urljoin(url, next_page[0])
+                else:
+                    return result_list_context, None
             else:
                 return result_list_context, None
-        else:
-            return result_list_context, None
+        except Exception as e:
+            raise e
 
     # 解析列表页面
     def _analysis_list(self, list, columns, url=""):
@@ -58,12 +60,16 @@ class Rule:
         # 解析原文
         tree = html.fromstring(html_context)
         result_list = tree.xpath(conf['group'])
-        result_list_context = self._analysis_context(tree=result_list[0], columns=conf['columns'], url=url)
-        return result_list_context
+        if result_list is not None and len(result_list) > 0:
+            result_list_context = self._analysis_context(tree=result_list[0], columns=conf['columns'], url=url)
+            return result_list_context
+        else:
+            return None
 
     # 解析页面
     def _analysis_context(self, tree, columns, url=""):
         columns_context = {}
+        column_id = {}
         id_flag = False
         for column in columns:
             if '主键' == column["类型"]:
@@ -253,9 +259,14 @@ class DatabaseInsertList:
         return result
 
     def updateAllStatue(self, db_pool, table='', statue=2):
-        sql = """ update %s set statue = null where statue = %d """ % (table, statue)
-        db_pool.update(sql)
-        db_pool._conn.commit();
+        try:
+            sql = """ update %s set statue = null where statue = %d """ % (table, statue)
+            db_pool.update(sql)
+            db_pool._conn.commit();
+        except pymysql.err.InternalError:
+            altersql = " alter table `" + table + "` add column `statue` int(2)"
+            db_pool.update(altersql)
+
 
     def updateStatue2(self, db_pool, table='', uuid='', statue=2):
         sql = """ update %s set statue = %d where 主键='%s' """ % (table, statue, uuid)
@@ -264,83 +275,89 @@ class DatabaseInsertList:
 
     # 插入数据库
     def insertDetail(self, result='', table='', column_names=[], db_pool=None):
-        columns = ''
-        values = ''
-        index = 0
-        for column_name in column_names:
-            if index > 0:
-                columns += ","
+        if result is not None and len(result) > 0:
+            columns = ''
+            values = ''
+            index = 0
+            for column_name in column_names:
+                if index > 0:
+                    columns += ","
 
-                values += ","
-            if isinstance(result[column_name], dict):
-                values += "'" + str(json.dumps(result[column_name], ensure_ascii=False)).replace("\\", "\\\\").replace(
-                    "\'", "\\\'") + "'"
-            if isinstance(result[column_name], list):
-                values += "'" + str(json.dumps(result[column_name], ensure_ascii=False)).replace("\\", "\\\\").replace(
-                    "\'", "\\\'") + "'"
-            else:
-                values += "'" + str(result[column_name]).replace("\\", "\\\\").replace("\'", "\\\'") + "'"
-            columns += '`' + column_name + '`'
-            index += 1
+                    values += ","
+                if isinstance(result[column_name], dict):
+                    values += "'" + str(json.dumps(result[column_name], ensure_ascii=False)).replace("\\", "\\\\").replace(
+                        "\'", "\\\'") + "'"
+                if isinstance(result[column_name], list):
+                    values += "'" + str(json.dumps(result[column_name], ensure_ascii=False)).replace("\\", "\\\\").replace(
+                        "\'", "\\\'") + "'"
+                else:
+                    values += "'" + str(result[column_name]).replace("\\", "\\\\").replace("\'", "\\\'") + "'"
+                columns += '`' + column_name + '`'
+                index += 1
 
-        sql = "insert into `" + table + "` (" + columns + ") values(" + values + ")"
-        print(sql)
-        try:
-            db_pool.insert(sql=sql)
-            db_pool._conn.commit();
-        except pymysql.err.ProgrammingError as pye:
-            if 1146 == pye.args[0]:
-                createsql = """create table """ + table + """ (`采集时间` varchar(20) ,`主键` varchar(32) primary key)"""
-                print(createsql)
-                db_pool.update(createsql)
-                for column_name in column_names:
-                    altersql = " alter table " + table + " add column `" + column_name + "` varchar(255);"
-                    try:
-                        db_pool.update(altersql)
-                    except Exception as e:
-                        if e.args[0] == 1060:
-                            print(table, column_name, "字段已经存在！")
-                        else:
-                            print(e.args, "更新表字段")
-                db_pool.insert(sql)
+            sql = "insert into `" + table + "` (" + columns + ") values(" + values + ")"
+            print(sql)
+            try:
+                db_pool.insert(sql=sql)
                 db_pool._conn.commit();
-            else:
-                pye.with_traceback()
-        except pymysql.err.IntegrityError as pye:
-            if 1062 == pye.args[0]:
-                updatesql = "update " + table + " set "
-                index = 0
-                for column_name in column_names:
-                    if index > 0:
-                        updatesql += ","
-                    updatesql += "`" + column_name + "` = '" + str(result[column_name]).replace(
-                        "\\", "\\\\").replace("\'", "\\\'") + "'"
-                    index += 1
-                updatesql += " where `主键` = '" + result['主键'] + "'"
-                print(updatesql)
-                db_pool.update(updatesql)
-                db_pool._conn.commit();
-                print("主键重复", pye.args[1])
-            else:
-                pye.with_traceback()
-        except pymysql.err.DataError as pye:
-            if pye.args[0] == 1406:
-                column = pye.args[1]
-                column = column[column.index("'") + 1:column.rindex("'")]
-                altersql = "alter table " + table + " modify column " + column + " varchar(2000)"
-                print(altersql)
-                db_pool.update(sql=altersql)
-                self.insertDetail(result, table, column_names)
-        except Exception as e:
-            e.with_traceback()
+            except pymysql.err.ProgrammingError as pye:
+                if 1146 == pye.args[0]:
+                    createsql = """create table """ + table + """ (`采集时间` varchar(20) ,`主键` varchar(32) primary key)"""
+                    print(createsql)
+                    db_pool.update(createsql)
+                    for column_name in column_names:
+                        altersql = " alter table " + table + " add column `" + column_name + "` varchar(255);"
+                        try:
+                            db_pool.update(altersql)
+                        except Exception as e:
+                            if e.args[0] == 1060:
+                                print(table, column_name, "字段已经存在！")
+                            else:
+                                print(e.args, "更新表字段")
+                    db_pool.insert(sql)
+                    db_pool._conn.commit();
+                else:
+                    pye.with_traceback()
+            except pymysql.err.IntegrityError as pye:
+                if 1062 == pye.args[0]:
+                    updatesql = "update " + table + " set "
+                    index = 0
+                    for column_name in column_names:
+                        if index > 0:
+                            updatesql += ","
+                        updatesql += "`" + column_name + "` = '" + str(result[column_name]).replace(
+                            "\\", "\\\\").replace("\'", "\\\'") + "'"
+                        index += 1
+                    updatesql += " where `主键` = '" + result['主键'] + "'"
+                    print(updatesql)
+                    db_pool.update(updatesql)
+                    db_pool._conn.commit();
+                    print("主键重复", pye.args[1])
+                else:
+                    pye.with_traceback()
+            except pymysql.err.DataError as pye:
+                if pye.args[0] == 1406:
+                    column = pye.args[1]
+                    column = column[column.index("'") + 1:column.rindex("'")]
+                    altersql = "alter table " + table + " modify column " + column + " varchar(2000)"
+                    print(altersql)
+                    db_pool.update(sql=altersql)
+                    self.insertDetail(result, table, column_names, db_pool)
+            except Exception as e:
+                e.with_traceback()
 
     def readOne(self, db_pool, table=''):
         sql = """ select * from %s where statue  is null or statue =0 """ % table
         return db_pool.getOne(sql)
 
     def readTop(self, db_pool, table='', top=10):
-        sql = """ select * from %s where statue  is null or statue =0 order by 采集时间  limit 0,%d """ % (table, top)
-        return db_pool.getAll(sql)
+        try:
+            sql = """ select * from %s where statue  is null or statue =0 order by 采集时间  limit 0,%d """ % (table, top)
+            return db_pool.getAll(sql)
+        except pymysql.err.InternalError:
+            altersql = " alter table `" + table + "` add column `statue` int(2)"
+            db_pool.update(altersql)
+            return self.readTop(db_pool=db_pool, table=table,top=top)
 
     def readExsistTop(self, table, top=10):
         db_pool = MyPymysqlPool("default")
@@ -354,10 +371,11 @@ class DatabaseInsertList:
             else:
                 db_pool.dispose()
                 time.sleep(5)
-
                 return self.readExsistTop(table, top=top)
         else:
-            return False
+            sql = """ select * from %s where statue  is null or statue =0  order by 采集时间 limit 0,%d """ % (
+                table, top)
+            return db_pool.getAll(sql)
 
 
 # 字典或者单列表页面从配置startUrl启动任务的
@@ -397,26 +415,26 @@ class PageList:
 
     def run(self, conf):
         dictable = conf['urltable']
+        type_p = 'rg'
+        if 'readtype' in conf.keys():
+            type_p = conf['readtype']
+        chartset = "utf8"
+        if 'chartset' in conf.keys():
+            chartset = conf['chartset']
         print(dictable)
         try:
             self.databaseInsertList.updateAllStatue(db_pool=self.db_pool, table=dictable, statue=2)
             dictList = self.databaseInsertList.readAll(db_pool=self.db_pool, table=dictable)
             if dictList is not False:
                 # 数据写入
-                for dict in dictList:
-                    self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=dict['主键'],
+                for row in dictList:
+                    self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=row['主键'],
                                                           statue=2)
+                    url = row[conf['urlname']]
+                    if row['current_url'] is not None:
+                        url = row['current_url']
 
-                    url = dict[conf['urlname']]
-                    if dict['current_url'] is not None:
-                        url = dict['current_url']
-                    type_p = 'rg'
-                    if 'readtype' in conf.keys():
-                        type_p = conf['readtype']
-                    chartset = "utf8"
-                    if 'chartset' in conf.keys():
-                        chartset = conf['chartset']
-                    self.crawlerNext(conf, url=url, uuid=dict['主键'], type_p=type_p, chartset=chartset)
+                    self.crawlerNext(conf, url=url, uuid=row['主键'], type_p=type_p, chartset=chartset)
         except Exception as e:
             print(e.args, "runList")
             if e.args[0] == "更新时间" or 'current_url' == e.args[0]:
@@ -441,25 +459,28 @@ class PageList:
     def runProcess(self, conf):
         dictable = conf['urltable']
         top = 10
+        if 'top' in conf.keys():
+            top = conf['top']
+        type_p = 'rg'
+        if 'readtype' in conf.keys():
+            type_p = conf['readtype']
+        chartset = "utf8"
+        if 'chartset' in conf.keys():
+            chartset = conf['chartset']
         try:
             self.databaseInsertList.updateAllStatue(db_pool=self.db_pool, table=dictable, statue=2)
             dictList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=dictable, top=top)
             while dictList is not False:
                 # 数据写入
-                for dict in dictList:
-                    self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=dict['主键'],
+                for row in dictList:
+                    self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=row['主键'],
                                                           statue=2)
-                    url = dict[conf['urlname']]
-                    if dict['current_url'] is not None:
-                        url = dict['current_url']
-                    type_p = 'rg'
-                    if 'readtype' in conf.keys():
-                        type_p = conf['readtype']
-                    chartset = "utf8"
-                    if 'chartset' in conf.keys():
-                        chartset = conf['chartset']
-                    p = Process(target=self.crawlerNext, name="crawlerNext" + dict['主键'],
-                                args=(conf, url, dict['主键'], type_p, chartset))
+                    url = row[conf['urlname']]
+                    if row['current_url'] is not None:
+                        url = row['current_url']
+                    # self.crawlerNext(conf, url=url, uuid=dict['主键'], type_p=type_p, chartset=chartset)
+                    p = Process(target=self.crawlerNext, name="crawlerNext" + row['主键'],
+                                args=(conf, url, row['主键'], type_p, chartset))
                     p.start()
                 time.sleep(5)
                 dictList = self.databaseInsertList.readExsistTop(table=dictable, top=top)
@@ -467,6 +488,24 @@ class PageList:
 
         except Exception as e:
             print(e)
+            if e.args[0] == "更新时间" or 'current_url' == e.args[0]:
+                try:
+                    altersql = " alter table `" + dictable + "` add column `更新时间` timestamp on update current_timestamp"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, "更新时间 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+                try:
+                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
+                    self.db_pool.update(altersql)
+                except Exception as e:
+                    if e.args[0] == 1060:
+                        print(dictable, "current_url 字段已经存在！")
+                    else:
+                        print(e.args, "更新表字段")
+            self.runProcess(conf)
 
     def crawlerNext(self, conf, url='', uuid='', type_p='rg', chartset='utf8'):
         print(url, uuid, type_p, chartset)
@@ -545,8 +584,8 @@ class PageDetail:
         self.databaseInsertList.updateAllStatue(self.db_pool, table=listtable, statue=2)
         listList = self.databaseInsertList.readExsistTop(db_pool=self.db_pool, table=listtable)
         while listList is not False:
-            for list in listList:
-                self.crawlerDetail(conf, listtable, type_p, chartset, columnNames)
+            for row in listList:
+                self.crawlerDetail(conf, listtable, type_p, chartset, columnNames,row)
             listList = self.databaseInsertList.readExsistTop(db_pool=self.db_pool, table=listtable)
 
     # 多进程采集
@@ -564,20 +603,21 @@ class PageDetail:
         self.databaseInsertList.updateAllStatue(self.db_pool, table=listtable, statue=2)
         listList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=listtable, top=10)
         while listList is not False:
-            for list in listList:
-                p = Process(target=self.crawlerDetail, name="crawlerDetail" + dict['主键'],
-                            args=(conf, listtable, type_p, chartset, columnNames))
+            for row in listList:
+                p = Process(target=self.crawlerDetail, name="crawlerDetail" + row['主键'],
+                            args=(conf, listtable, type_p, chartset, columnNames,row))
                 p.start()
-            listList = self.databaseInsertList.readTop(db_pool=self.db_pool, table=listtable, top=10)
+            time.sleep(3)
+            listList = self.databaseInsertList.readExsistTop(table=listtable, top=10)
 
     # 采集入库
-    def crawlerDetail(self, conf, listtable, type_p, chartset, columnNames):
+    def crawlerDetail(self, conf, listtable, type_p, chartset, columnNames,row):
         rule = Rule()
-        self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=2)
-        result = rule.crawler_detail(conf=conf, url=list[conf['urlname']], type_p=type_p, chartset=chartset)
+        self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=row['主键'], statue=2)
+        result = rule.crawler_detail(conf=conf, url=row[conf['urlname']], type_p=type_p, chartset=chartset)
         self.databaseInsertList.insertDetail(result=result, table=conf['tablename'], column_names=columnNames,
                                              db_pool=self.db_pool)
-        self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=list['主键'], statue=1)
+        self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=row['主键'], statue=1)
 
 
 # 通过配置项 pageType 控制采集

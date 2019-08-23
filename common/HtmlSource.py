@@ -59,7 +59,8 @@ class HtmlSource:
                     txt = self.driver.page_source
 
         except Exception as e:
-           print(e.args)
+            print(e.args)
+            raise e
         return txt
 
     #  获取网页原文 （ulib）

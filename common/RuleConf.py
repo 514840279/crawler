@@ -14,7 +14,7 @@ import json, hashlib, uuid, time, pymysql
 class Rule:
 
     # 采集列表页面
-    def crawler_list(self, url, conf, type_p='rp', charset='utf8'):
+    def crawler_list(self, url, conf, type_p='rp', charset='utf8',row={}):
         try:
             htmlSource = HtmlSource()
             # 获取网页原文
@@ -31,7 +31,7 @@ class Rule:
             # 解析原文
             tree = html.fromstring(html_context)
             result_list = tree.xpath(conf['group'])
-            result_list_context = self._analysis_list(list=result_list, columns=conf['columns'], url=url)
+            result_list_context = self._analysis_list(list=result_list, columns=conf['columns'], url=url,row=row)
             if 'nextPage' in conf.keys():
                 next_page = tree.xpath(conf['nextPage'])
                 if len(next_page) > 0:
@@ -44,13 +44,13 @@ class Rule:
             raise e
 
     # 解析列表页面
-    def _analysis_list(self, list, columns, url=""):
+    def _analysis_list(self, list, columns, url="",row={}):
         list_context = []
         for tree in list:
-            list_context.append(self._analysis_context(tree=tree, columns=columns, url=url))
+            list_context.append(self._analysis_context(tree=tree, columns=columns, url=url,row=row))
         return list_context
 
-    def crawler_detail(self, conf, url='', type_p='rp', charset='utf8'):
+    def crawler_detail(self, conf, url='', type_p='rp', charset='utf8',row={}):
         htmlSource = HtmlSource()
         # 获取网页原文
         try:
@@ -67,13 +67,13 @@ class Rule:
         tree = html.fromstring(html_context)
         result_list = tree.xpath(conf['group'])
         if result_list is not None and len(result_list) > 0:
-            result_list_context = self._analysis_context(tree=result_list[0], columns=conf['columns'], url=url)
+            result_list_context = self._analysis_context(tree=result_list[0], columns=conf['columns'], url=url,row=row)
             return result_list_context
         else:
             return None
 
     # 解析页面
-    def _analysis_context(self, tree, columns, url=""):
+    def _analysis_context(self, tree, columns, url="",row={}):
         columns_context = {}
         column_id = {}
         id_flag = False
@@ -83,7 +83,7 @@ class Rule:
                 id_flag = True
             else:
                 # 除主键其他数据解析
-                columns_context[column["名称"]] = self._analysis_(tree=tree, column=column, url=url)
+                columns_context[column["名称"]] = self._analysis_(tree=tree, column=column, url=url,row=row)
         # 主键解析
         if id_flag:
             if 'md5' == column_id["规则"]:
@@ -92,7 +92,7 @@ class Rule:
         return columns_context
 
     # 解析页面
-    def _analysis_(self, tree, column, url=""):
+    def _analysis_(self, tree, column, url="",row={}):
         column_context = ''
         try:
             if column["类型"] == '主键':
@@ -179,7 +179,10 @@ class Rule:
             if column["类型"] == '本地连接':
                 # 进行lxml方式解析
                 column_context = url
-            if column["类型"] == '数组':
+            if column["类型"] == '继承':
+                # 进行lxml方式解析
+                column_context = url
+            if column["类型"] == row[column["规则"]]:
                 # 进行lxml方式解析
                 column_context = tree.xpath(column["规则"])
             if column["类型"] == 'list':
@@ -486,7 +489,7 @@ class PageList:
                     if row['current_url'] is not None and row['current_url'] != '':
                         url = row['current_url']
 
-                    self.crawlerNext(conf, url=url, uuid=row['主键'], type_p=type_p, charset=charset)
+                    self.crawlerNext(conf, url=url, uuid=row['主键'], type_p=type_p, charset=charset,row=row)
         except Exception as e:
             print(e.args, "runList")
             if e.args[0] == "更新时间" or 'current_url' == e.args[0]:
@@ -559,11 +562,11 @@ class PageList:
                         print(e.args, "更新表字段")
             self.runProcess(conf)
 
-    def crawlerNext(self, conf, url='', uuid='', type_p='rg', charset='utf8'):
+    def crawlerNext(self, conf, url='', uuid='', type_p='rg', charset='utf8',row_p={}):
         print(url, uuid, type_p, charset)
         try:
             rule = Rule()
-            result, next_page = rule.crawler_list(url, conf, type_p, charset)
+            result, next_page = rule.crawler_list(url, conf, type_p, charset,row=row_p)
             print(next_page)
             if len(result) > 0:
                 list_list = []
@@ -678,7 +681,7 @@ class PageDetail:
         rule = Rule()
         self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=row['主键'], statue=2)
         try:
-            result = rule.crawler_detail(conf=conf, url=row[conf['urlname']], type_p=type_p, charset=charset)
+            result = rule.crawler_detail(conf=conf, url=row[conf['urlname']], type_p=type_p, charset=charset,row=row)
             self.databaseInsertList.insertDetail(result=result, table=conf['tablename'], column_names=columnNames,
                                                  db_pool=self.db_pool)
             self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=listtable, uuid=row['主键'], statue=1)

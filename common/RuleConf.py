@@ -501,14 +501,6 @@ class PageList:
                         print(dictable, "更新时间 字段已经存在！")
                     else:
                         print(e.args, "更新表字段")
-                try:
-                    altersql = " alter table `" + dictable + "` add column `current_url` varchar(500)"
-                    self.db_pool.update(altersql)
-                except Exception as e:
-                    if e.args[0] == 1060:
-                        print(dictable, "current_url 字段已经存在！")
-                    else:
-                        print(e.args, "更新表字段")
             self.run(conf)
 
     def runProcess(self, conf):

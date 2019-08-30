@@ -523,9 +523,6 @@ class PageList:
                     self.databaseInsertList.updateStatue2(db_pool=self.db_pool, table=dictable, uuid=row['主键'],
                                                           statue=2)
                     url = row[conf['urlname']]
-                    if row['current_url'] is not None and row['current_url'] != '':
-                        url = row['current_url']
-                    # self.crawlerNext(conf, url=url, uuid=dict['主键'], type_p=type_p, charset=charset)
                     p = Process(target=self.crawlerNext, name="crawlerNext" + row['主键'],
                                 args=(conf, url, row['主键'], type_p, charset))
                     p.start()

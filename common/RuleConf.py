@@ -138,7 +138,7 @@ class Rule:
                     imgs = []
                     for img in imgurl:
                         if str(img).index("ftp://") > -1 or str(img).index("thunder://") > -1 or str(img).index(
-                                "ed2k:") > -1 or str(img).index("freenet:") > -1 or str(imgurl[0]).index(
+                                "ed2k:") > -1 or str(img).index("freenet:") > -1 or str(img).index(
                                 "magnet:") > -1:
                             imgs.append(img)
                     column_context = imgs

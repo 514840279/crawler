@@ -96,7 +96,7 @@ class DateUtils:
     def getAccurateDate(self,datestr):
         flag = True
         # 正常顺序的 Y%M%D%
-        regex_str_sort_ymd = ".*?(\d{4}[年、/.-]?)(\d{1,2}([月、/.-]*))(\d{1,2}([日号、/.]?))"
+        regex_str_sort_ymd = ".*?(\d{4}[年、/\.-]?)(\d{1,2}([月、/\.-]*))(\d{1,2}([日号、/\.]?))"
         sort_ymd = re.match(regex_str_sort_ymd, datestr)
         if sort_ymd and flag and len(sort_ymd[0]) >= 8:
             monthstr = sort_ymd[2][0:2].replace("月",'').replace("、",'').replace("/",'').replace(".",'').replace("-",'')
@@ -104,17 +104,17 @@ class DateUtils:
             datestr = datestr.replace(sort_ymd[0],newdatestr)
             flag=False
 
-        # 错乱顺序的 M%D%Y%  D%M%Y%  M%Y%D% TODO
+        # 错乱顺序的 M%D%Y%  D%M%Y%  M%Y%D%  TODO
         # 考虑话术中不应有乱序，只有文档中会乱，文档中一般如何区分年月日的
-        regex_str_sort_no_ymd = ".*?((\d{1,4}([年月日号、/.-]*)){3})"
+        regex_str_sort_no_ymd = ".*?((\d{1,4}([年月日号、/\.-]*)){3})"
         sort_no_ymd = re.match(regex_str_sort_no_ymd, datestr)
         if sort_no_ymd and flag and len(sort_no_ymd[0]) >= 8:
             print("sort_no_ymd", sort_no_ymd[0])
             # 如何拆解年月日
             flag = False
 
-        # 日期不全的 Y%M% M%D%  默认补全 今年 这个月 TODO
-        regex_str_sort_ymormd = ".*?(\d{1,4}([年月、/.-]*){2})"
+        # 日期不全的 Y%M% M%D% 19/9/9 默认补全 今年 这个月   TODO
+        regex_str_sort_ymormd = ".*?(\d{1,4}([年月、/\.-]*){2})"
         sort_ymormd = re.match(regex_str_sort_ymormd, datestr)
         if sort_ymormd and flag:
             print("sort_ymormd",datestr)
@@ -172,21 +172,17 @@ class DateUtils:
 
 # 测试实例
 def main():
-    datetools = DateUtils()
-
     strlines = csv.read_csv_file_line(file_path='2_测试实例文档.txt')
     for strline in strlines:
-        resultDate = datetools.getDate(datestr= strline[0])
+        resultDate = DateUtils().getDate(datestr= strline[0])
         print(strline[0],resultDate)
 
 # 单实例测试
 def run():
-    datetools = DateUtils()
-    resultDate = datetools.getDate(datestr="25号6月今年")
-    print(resultDate)
+    print(DateUtils().getDate(datestr="25号6月今年"))
 
 if __name__ == '__main__':
 
     # 字符串短语转化日期格式化
-    #main()
-    run()
+    main()
+    #run()

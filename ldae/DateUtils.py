@@ -6,12 +6,13 @@ from common.inc_csv import Csv_base
 # DateUtils用日期计算工具
 from datetime import datetime,  timedelta, date, timezone
 from time import time, ctime, localtime, strftime, strptime, mktime
-import re
+import re,json
 # 寿星天文历 农历转公历 公历转农历
 import sxtwl
+from common.inc_file import File_file
 
-csv = Csv_base();
-
+csv = Csv_base()
+file = File_file()
 
 class DateUtils:
 
@@ -85,7 +86,8 @@ class DateUtils:
         # 节气转换日期，取值必须包含年 节气计算每年，每个节气参数不同
         datestr = self.zh_cn_solar_terms(datestr)
 
-        # 节假日 新年，五一，国庆，十一（春节，端午，中秋）， TODO
+        # 阳历节假日 元旦，五一，国庆/十一 TODO
+        # 阳历节日（新年/春节/大年初一/正月初一，端午，中秋/月饼节/八月十五，上元/正月十五/元宵节/灯节,鬼节/七月十五/中元节、下元节/十月十五）， TODO
         # 朔望月 转换日期 TODO
         #datestr = self.zh_cn_to_ccdate(datestr)
         # 获取准确的日期，并统一格式，返回
@@ -100,7 +102,8 @@ class DateUtils:
         sort_ymd = re.match(regex_str_sort_ymd, datestr)
         if sort_ymd and flag and len(sort_ymd[0]) >= 8:
             monthstr = sort_ymd[2][0:2].replace("月",'').replace("、",'').replace("/",'').replace(".",'').replace("-",'')
-            newdatestr = date(int(sort_ymd[1][0:4]), int(monthstr),int(sort_ymd[4][0:2])).strftime('%Y-%m-%d')
+            dayhstr = sort_ymd[4][0:2].replace("日", '').replace("号", '').replace("、", '').replace("/", '').replace(".", '').replace("-",'')
+            newdatestr = date(int(sort_ymd[1][0:4]), int(monthstr),int(dayhstr)).strftime('%Y-%m-%d')
             datestr = datestr.replace(sort_ymd[0],newdatestr)
             flag=False
 
@@ -109,7 +112,7 @@ class DateUtils:
         regex_str_sort_no_ymd = ".*?((\d{1,4}([年月日号、/\.-]*)){3})"
         sort_no_ymd = re.match(regex_str_sort_no_ymd, datestr)
         if sort_no_ymd and flag and len(sort_no_ymd[0]) >= 8:
-            print("sort_no_ymd", sort_no_ymd[0])
+            #print("sort_no_ymd", sort_no_ymd[0])
             # 如何拆解年月日
             flag = False
 
@@ -117,13 +120,21 @@ class DateUtils:
         regex_str_sort_ymormd = ".*?(\d{1,4}([年月、/\.-]*){2})"
         sort_ymormd = re.match(regex_str_sort_ymormd, datestr)
         if sort_ymormd and flag:
-            print("sort_ymormd",datestr)
+            #print("sort_ymormd",datestr)
             flag = False
 
         return datestr
 
-    # 二十四节气查询
+    # 二十四节气查询 格式必须是 YYYY年节气
     def zh_cn_solar_terms(self,datestr):
+        yearstr = re.findall(r'.*?(\d{4})年',datestr)
+        if len(yearstr)>0:
+            jsonstr = file.open_source_fullpath_read_line(file_path='jieqi.json',end=int(yearstr[0]),start=int(yearstr[0])-1)
+            jsondic = json.loads(jsonstr[0].replace("'","\""))
+            for jieqi in self.cn_date_jqmc:
+                if datestr.find(jieqi) >= 0:
+                    jieqidate = jsondic[yearstr[0]][jieqi]
+                    datestr =datestr.replace(jieqi,jieqidate)
         return datestr
 
     # 特殊转、替换日期
@@ -154,6 +165,8 @@ class DateUtils:
                 datestr = datestr.replace(cnyear, str(newyear)+"年")
         # 中文星期计算替换 指定星期几的可以计算准确日期，未指定为模糊时间 TODO
 
+        # 阴历转阳历 须文本标识 阴历、农历的字样 TODO
+
         return datestr
 
     # 汉字转阿拉伯数字
@@ -179,7 +192,7 @@ def main():
 
 # 单实例测试
 def run():
-    print(DateUtils().getDate(datestr="25号6月今年"))
+    print(DateUtils().getDate(datestr="二〇〇八年谷雨"))
 
 if __name__ == '__main__':
 

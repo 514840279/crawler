@@ -337,6 +337,19 @@ class File_file(File_floder):
             file_object.close()
         return all_the_text
 
+    # 打开编辑源码
+    def open_source_fullpath_read_line(self,file_path,encoding_='utf-8',end=999999,start=0):
+        csv_list = []
+        file_object = open(file_path  ,"r",encoding=encoding_)
+        try:
+            all_the_text = file_object.readlines()
+            for i,rows in enumerate(all_the_text):
+                if i < end and i >= start :
+                    csv_list.append(rows)
+        finally:
+            file_object.close()
+        return csv_list
+
     # 保存源码
     def save_source(self,path,file,all_the_text,encoding_='utf-8',mode='a+'):
         with open(path + "/" + file,mode=mode,encoding=encoding_) as file_object:

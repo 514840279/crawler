@@ -4,9 +4,9 @@
 from common.inc_csv import Csv_base
 
 # DateUtils用日期计算工具
-from datetime import datetime,  timedelta, date, timezone
+from datetime import datetime,  timedelta, date,timezone
 from time import time, ctime, localtime, strftime, strptime, mktime
-import re,json
+import re,json,calendar
 # 寿星天文历 农历转公历 公历转农历
 import sxtwl
 from common.inc_file import File_file
@@ -21,7 +21,7 @@ class DateUtils:
         '零': '0', '壹': '1', '贰': '2', '叁': '3', '肆': '4', '伍': '5', '陆': '6', '柒': '7', '捌': '8', '玖': '9',
         '貮': '2', '两': '2', '俩': '2', '十': '',
     }
-    cn_date_day ={
+    cn_date_day = {
         "大前天": -3,
         "大后天": 3,
         "明天": 1,
@@ -30,7 +30,7 @@ class DateUtils:
         "今天": 0,
         "前天": -2,
     }
-    en_date_mon ={
+    en_date_mon = {
         "Jan.": '01', "January": '01',
         "Feb.": '02', "February": '02',
         "Mar.": '03', "March": '03',
@@ -45,12 +45,12 @@ class DateUtils:
         "Nov.": '11', "November": '11',
         "Dec.": '12', "December": '12',
     }
-    cn_date_mon={
+    cn_date_mon = {
         "本月": 0, "这个月": 0,
         "上个月": -1,
         "下个月": 1
     }
-    cn_date_year={
+    cn_date_year = {
         "今年": 0,
         "去年": -1,
         "大前年": -3,
@@ -61,21 +61,21 @@ class DateUtils:
         "大后年": 3,
         "后年": 2
     }
-    cn_date_week ={
+    cn_date_week = {
         "这周": 0, "这礼拜": 0, "这个礼拜": 0, "这星期": 0, "这个星期": 0,
         "大上周": -2, "大上个礼拜": -2, "大上个星期": -2,
         "上周": -1, "上个礼拜": -1, "上礼拜": -1, "上个星期": -1, "上星期": -1,
         "大下周": 2, "大下个星期": 2, "大下个礼拜": 2,
         "下周": 1, "下星期": 1, "下个星期": 1, "下礼拜": 1, "下个礼拜": 2,
     }
-
+    cn_date_week_7 = ["周日", "周天","礼拜天", "礼拜日", "星期天", "星期日"]
     cn_date_jqmc = [
         "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种",
         "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪"
     ]
 
     # https://baike.baidu.com/item/世界动物日/1073877
-    _jieri_={
+    _jieri_ = {
         "元旦":"01月01日","New Year's Day":"01月01日",
         "国际大屠杀纪念日":"01月27日","The Holocaust and the United Nations Outreach Programme":"01月27日",
 
@@ -282,15 +282,18 @@ class DateUtils:
         "京东购物节": "06月18日",
     }
 
-    #resultDate=[]
+
     # 获取日期时间
     def getDate(self,datestr=""):
         if datestr == "":
             return ""
+
         # 转数字
         datestr = self.zh_cn_to_num(datestr)
+
         # 特殊转日期
         datestr = self.zh_cn_to_date(datestr)
+
         # 节气转换日期，取值必须包含年 节气计算每年，每个节气参数不同
         datestr = self.zh_cn_solar_terms(datestr)
 
@@ -298,13 +301,14 @@ class DateUtils:
         datestr = self.zh_cn_en_jieri(datestr)
 
         # 阴历节日（新年/春节/大年初一/正月初一，端午，中秋/月饼节/八月十五，上元/正月十五/元宵节/灯节,鬼节/七月十五/中元节、下元节/十月十五）， TODO
+
         # 朔望月 转换日期 TODO
-        #datestr = self.zh_cn_to_ccdate(datestr)
+        #datestr = self.monday_to_date(datestr)
+
         # 获取准确的日期，并统一格式，返回
         resultDate = self.getAccurateDate(datestr)
+
         return resultDate
-
-
 
     # 使用替换特殊标点，正则匹配等替换日期
     def getAccurateDate(self,datestr):
@@ -318,8 +322,6 @@ class DateUtils:
             newdatestr = date(int(sort_ymd[1][0:4]), int(monthstr),int(dayhstr)).strftime('%Y-%m-%d')
             datestr = datestr.replace(sort_ymd[0],newdatestr)
             flag=False
-
-
 
         # 错乱顺序的 M%D%Y%  D%M%Y%  M%Y%D%  TODO
         # 考虑话术中不应有乱序，只有文档中会乱，文档中一般如何区分年月日的
@@ -368,18 +370,22 @@ class DateUtils:
             if datestr.find(cndate) > -1:
                 datestr = datestr.replace(cndate, self._jieri_[cndate])
         return datestr
+
     # 特殊转、替换日期
     def zh_cn_to_date(self,datestr=""):
+
         # 中文准确日期 替换
         for cndate in self.cn_date_day.keys():
             if datestr.find(cndate) > -1:
                 nowdate = datetime.now()
                 newdate = nowdate + timedelta(self.cn_date_day[cndate])
                 datestr = datestr.replace(cndate, newdate.strftime('%Y-%m-%d'))
+
         # 英文替换月份
         for enmonth in self.en_date_mon.keys():
             if datestr.find(enmonth) > -1:
                 datestr = datestr.replace(enmonth, self.en_date_mon[enmonth]+"月")
+
         # 中文替换月份
         for cnmon in self.cn_date_mon.keys():
             if datestr.find(cnmon) > -1:
@@ -394,7 +400,27 @@ class DateUtils:
                 nowyear = datetime.now().year
                 newyear = nowyear + self.cn_date_year[cnyear]
                 datestr = datestr.replace(cnyear, str(newyear)+"年")
-        # 中文星期计算替换 指定星期几的可以计算准确日期，未指定为模糊时间 TODO
+
+        # 中文星期计算替换 指定星期几的可以计算准确日期，未指定为模糊时间,给定默认周一为日期
+        if datestr.find("周") > -1 or datestr.find("礼拜") > -1 or datestr.find("星期") > -1:
+            reg_week = r".*?((周|礼拜|星期)((\d)+|天|日)?)"
+            sort_week = re.match(reg_week, datestr)
+
+            if sort_week is not None:
+                add_week = sort_week[3] if sort_week[3] == '' else 1
+                if add_week == "天" or add_week == "日":
+                    add_week = 7
+                else:
+                    add_week = int(add_week)
+            else:
+                add_week = calendar.MONDAY + 1
+
+            for cndate in self.cn_date_week.keys():
+                if datestr.find(cndate) > -1:
+                    nowdate = datetime.now()
+                    week = datetime.now().weekday()
+                    newdate = nowdate + timedelta(weeks=(self.cn_date_week[cndate]), days=(add_week - week - 1))
+                    datestr = datestr.replace(sort_week[0], newdate.strftime('%Y-%m-%d'))
 
         # 阴历转阳历 须文本标识 阴历、农历的字样 TODO
 
@@ -424,7 +450,11 @@ def main():
 
 # 单实例测试
 def run():
-    print(DateUtils().getDate(datestr="二〇〇八年谷雨"))
+    print(DateUtils().getDate(datestr="上周六"))
+    print(DateUtils().getDate(datestr="下礼拜天"))
+    print(DateUtils().getDate(datestr="这星期二"))
+    print(DateUtils().getDate(datestr="下星期"))
+
 
 if __name__ == '__main__':
 

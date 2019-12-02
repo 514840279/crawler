@@ -8,7 +8,7 @@ from datetime import datetime,  timedelta, date,timezone
 from time import time, ctime, localtime, strftime, strptime, mktime
 import re,json,calendar
 # 寿星天文历 农历转公历 公历转农历
-import sxtwl
+#import sxtwl
 from common.inc_file import File_file
 
 csv = Csv_base()
@@ -62,13 +62,13 @@ class DateUtils:
         "后年": 2
     }
     cn_date_week = {
-        "这周": 0, "这礼拜": 0, "这个礼拜": 0, "这星期": 0, "这个星期": 0,
+        "这周": 0, "这礼拜": 0, "这个礼拜": 0, "这星期": 0, "这个星期": 0,"本周": 0,"本星期": 0,"本礼拜": 0,
         "大上周": -2, "大上个礼拜": -2, "大上个星期": -2,
         "上周": -1, "上个礼拜": -1, "上礼拜": -1, "上个星期": -1, "上星期": -1,
         "大下周": 2, "大下个星期": 2, "大下个礼拜": 2,
         "下周": 1, "下星期": 1, "下个星期": 1, "下礼拜": 1, "下个礼拜": 2,
     }
-    cn_date_week_7 = ["周日", "周天","礼拜天", "礼拜日", "星期天", "星期日"]
+
     cn_date_jqmc = [
         "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种",
         "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪"
@@ -392,6 +392,12 @@ class DateUtils:
                 nowyear = datetime.now().year
                 nowmon = datetime.now().month
                 newmon = nowmon + self.cn_date_mon[cnmon]
+                if newmon > 12:
+                    newmon = 1
+                    nowyear = nowyear + 1
+                elif newmon < 1:
+                    newmon = 12
+                    nowyear = nowyear - 1
                 datestr = datestr.replace(cnmon, str(nowyear)+"年"+str(newmon)+"月")
 
         # 中文替换年份
@@ -407,7 +413,7 @@ class DateUtils:
             sort_week = re.match(reg_week, datestr)
 
             if sort_week is not None:
-                add_week = sort_week[3] if sort_week[3] == '' else 1
+                add_week = sort_week[3] if sort_week[3] is not None else 1
                 if add_week == "天" or add_week == "日":
                     add_week = 7
                 else:
@@ -452,8 +458,19 @@ def main():
 def run():
     print(DateUtils().getDate(datestr="上周六"))
     print(DateUtils().getDate(datestr="下礼拜天"))
-    print(DateUtils().getDate(datestr="这星期二"))
+    print(DateUtils().getDate(datestr="这周二"))
     print(DateUtils().getDate(datestr="下星期"))
+    print(DateUtils().getDate(datestr="下周"))
+    print(DateUtils().getDate(datestr="本周"))
+    print(DateUtils().getDate(datestr="这周"))
+    print(DateUtils().getDate(datestr="上周"))
+    print(DateUtils().getDate(datestr="下星期"))
+    print(DateUtils().getDate(datestr="上星期"))
+    print(DateUtils().getDate(datestr="上礼拜"))
+    print(DateUtils().getDate(datestr="下礼拜"))
+
+
+
 
 
 if __name__ == '__main__':

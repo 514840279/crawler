@@ -333,21 +333,43 @@ class DateUtils:
             flag = False
 
         # 日期不全的 M%D% 默认补全   一般处理 “MM月DD日” 类型的
-        regex_str_sort_ymormd = ".*?((\d{1,2}([月、/\.-]+))(\d{1,2}([日号、/\.]?)))"
-        sort_ymormd = re.match(regex_str_sort_ymormd, datestr)
-        if sort_ymormd is not None and flag is True:
-            #print(sort_ymormd[0], sort_ymormd[1], sort_ymormd[2], sort_ymormd[3], sort_ymormd[4])
-            #print("sort_ymormd", datestr)
-            monthstr = sort_ymormd[2][0:2].replace("月", '').replace("、", '').replace("/", '').replace(".",'').replace("-", '')
+        regex_str_sort_md = ".*?((\d{1,2}([月、/\.-]+))(\d{1,2}([日号、/\.]?)))"
+        sort_md = re.match(regex_str_sort_md, datestr)
+        if sort_md is not None and flag is True:
+            # print(sort_ymormd[0], sort_ymormd[1], sort_ymormd[2], sort_ymormd[3], sort_ymormd[4])
+            # print("sort_ymormd", datestr)
+            monthstr = sort_md[2][0:2].replace("月", '').replace("、", '').replace("/", '').replace(".",'').replace("-", '')
             if (int(monthstr) > 12):
                 return datestr  # 区分不了月日的
-            laststr = datestr[datestr.find(sort_ymormd[0]) + len(sort_ymormd[0]):datestr.find(sort_ymormd[0]) + len(sort_ymormd[0]) + 4]
-            if re.match(r"\d*", laststr).span(0)[1] is not 0:
-                return datestr  # 区分不了年月日的
-            dayhstr = sort_ymormd[4][0:2].replace("日", '').replace("号", '').replace("、", '').replace("/",'').replace(".", '').replace("-", '')
+            laststr=datestr[datestr.find(sort_md[0])+len(sort_md[0]):datestr.find(sort_md[0])+len(sort_md[0])+4]
+            if re.match(r"\d*",laststr).span(0)[1] is not 0:
+                return datestr # 区分不了年月日的
+            dayhstr = sort_md[4][0:2].replace("日", '').replace("号", '').replace("、", '').replace("/",'').replace(".", '').replace("-", '')
             nowyear = datetime.now().year
             newdatestr = date(nowyear, int(monthstr), int(dayhstr)).strftime('%Y-%m-%d')
-            datestr = datestr.replace(sort_ymormd[0], newdatestr)
+            datestr = datestr.replace(sort_md[0], newdatestr)
+            flag = False
+
+        # 日期不全的 Y%M% 默认补全   一般处理 “YYYY年MM月” 类型的
+        regex_str_sort_ym = r".*?(((\d{2}|\d{4})([年、/\.-]+))(\d{1,2}[月、/\.-]+))"
+        sort_ym = re.match(regex_str_sort_ym, datestr)
+        if sort_ym is not None and flag is True:
+            #print(sort_ym[0], sort_ym[1], sort_ym[2], sort_ym[3], sort_ym[4], sort_ym[5])
+            # print("sort_ymormd", datestr)
+            monthstr = sort_ym[5][0:2].replace("月", '').replace("、", '').replace("/", '').replace(".",'').replace("-", '')
+            if (int(monthstr) > 12):
+                return datestr  # 区分不了的
+
+            if int(sort_ym[3]) > 1900:
+                year = int(sort_ym[3])
+            else:
+                if (2000- int('19'+sort_ym[3])) < (int('20'+sort_ym[3]) - 2000):
+                    year = int('19'+sort_ym[3])
+                else:
+                    year = int('20' + sort_ym[3])
+
+            newdatestr = date(year, int(monthstr), 1).strftime('%Y-%m-%d')
+            datestr = datestr.replace(sort_ym[0], newdatestr)
             flag = False
 
         return datestr

@@ -167,7 +167,7 @@ class Rule:
 
     # 数据提取详细页的
     def html_content_analysis_detial(self,html_text, column,url):
-        md5 = self.get_md5_value(src=html_text)
+        # md5 = self.get_md5_value(src=html_text)
         tree = html.fromstring(html_text)
         return self._analysis_(tree=tree,column=column,url=url)
 

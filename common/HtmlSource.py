@@ -69,8 +69,9 @@ class HtmlSource:
         return txt
 
     #  获取网页原文 （selenium）
-    def get_html_selenium(self,url_p):
-        driver = webdriver.Chrome("../driver/chromedriver.exe")
+    def get_html_selenium(self,url_p,driver):
+        if driver == None :
+            driver = webdriver.Chrome("../driver/chromedriver.exe")
 
         driver.get(url_p)
         js = "document.documentElement.scrollTop=1000000"
